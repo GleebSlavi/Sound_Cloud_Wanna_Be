@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/jdbc_security
+    username: root
+    password: jdbctest
+
+server:
+  error:
+    include-binding-errors: always
+    include-message: always

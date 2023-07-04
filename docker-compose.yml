@@ -1,0 +1,12 @@
+services:
+  mysql:
+    container_name: jdbc_security_mysql
+    image: arm64v8/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: jdbctest
+      MYSQL_DATABASE: jdbc_security
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/data/mysql
