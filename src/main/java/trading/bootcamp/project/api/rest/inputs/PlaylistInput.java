@@ -18,13 +18,18 @@ public class PlaylistInput {
 
     private final Type type;
 
-    @JsonCreator PlaylistInput(@JsonProperty("userId") String userId,
-                               @JsonProperty("name") String name,
-                               @JsonProperty("description") String description,
-                               @JsonProperty("type") String type) {
+    private final String imageUrl;
+
+    @JsonCreator
+    public PlaylistInput(@JsonProperty("userId") String userId,
+                         @JsonProperty("name") String name,
+                         @JsonProperty("description") String description,
+                         @JsonProperty("type") String type,
+                         @JsonProperty("imageUrl") String imageUrl) {
         this.userId = UUID.fromString(userId);
         this.name = name;
         this.description = description;
         this.type = Type.valueOf(type);
+        this.imageUrl = imageUrl;
     }
 }

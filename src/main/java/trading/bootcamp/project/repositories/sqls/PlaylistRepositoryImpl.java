@@ -48,21 +48,21 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     private static class Queries {
 
         public final static String LIST_PLAYLISTS_BY_USER = """
-                SELECT id, user_id, name, description, create_date, type
+                SELECT id, user_id, name, description, create_date, type, image_url
                 FROM playlist
                 WHERE user_id = ?
                 LIMIT 100;
                 """;
 
         public final static String GET_PLAYLIST_BY_ID = """
-                SELECT id, user_id, name, description, create_date, type
+                SELECT id, user_id, name, description, create_date, type, image_url
                 FROM playlist
                 WHERE id = ?;
                 """;
 
         public final static String INSERT_PLAYLIST = """
-                INSERT INTO playlist(id, user_id, name, description, create_date, type)
-                VALUES(?, ?, ?, ?, ?, ?);
+                INSERT INTO playlist(id, user_id, name, description, create_date, type, image_url)
+                VALUES(?, ?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_PLAYLIST = """

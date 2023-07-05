@@ -17,7 +17,7 @@ public class PlaylistRowMapper implements RowMapper<PlaylistEntity> {
                 resultSet.getString("name"),
                 resultSet.getString("description"),
                 resultSet.getDate("create_date").toLocalDate(),
-                Type.valueOf(resultSet.getString("type"))
-        );
+                Type.valueOf(resultSet.getString("type")),
+                resultSet.getString("image_url"));
     }
 }
