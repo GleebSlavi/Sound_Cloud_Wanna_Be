@@ -36,4 +36,9 @@ public class PlaylistController {
     public PlaylistEntity deletePlaylist(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
         return service.deletePlaylist(id);
     }
+
+    @GetMapping("songs/{playlistId}")
+    public List<UUID> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
+        return service.getSongsInPlaylistIDs(playlistId);
+    }
 }

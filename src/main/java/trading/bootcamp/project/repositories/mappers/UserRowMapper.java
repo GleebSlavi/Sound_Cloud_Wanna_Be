@@ -15,7 +15,8 @@ public class UserRowMapper implements RowMapper<UserEntity> {
                 resultSet.getString("username"),
                 resultSet.getString("email"),
                 resultSet.getString("password"),
-                resultSet.getDate("create_date").toLocalDate()
+                resultSet.getDate("create_date").toLocalDate(),
+                resultSet.getString("image_url")
         );
     }
 }

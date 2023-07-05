@@ -1,5 +1,6 @@
 package trading.bootcamp.project.repositories;
 
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.UserEntity;
 
 import java.time.LocalDate;
@@ -16,7 +17,9 @@ public interface UserRepository {
 
     Optional<UserEntity> getUserByUsername(String username);
 
-    int createUser(UUID id, String username, String email, String password, LocalDate createDate);
+    int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl);
 
     int deleteUser(UUID id);
+
+    List<UUID> getUserFavouritePlaylistsIDs(UUID userId);
 }

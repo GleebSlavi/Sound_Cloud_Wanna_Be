@@ -50,4 +50,8 @@ public class PlaylistService {
         }
         return playlist.get();
     }
+
+    public List<UUID> getSongsInPlaylistIDs(UUID playlistId) {
+        return repository.getSongsInPlaylistIDs(playlistId);
+    }
 }

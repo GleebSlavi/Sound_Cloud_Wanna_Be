@@ -24,18 +24,18 @@ public class UserEntity implements UserDetails {
 
     private final LocalDate createDate;
 
-    //private final String imageUrl;
+    private final String imageUrl;
 
     private Role role;
 
     public UserEntity(UUID id, String username, String email,
-                      String password, LocalDate createDate /*String imageUrl*/) {
+                      String password, LocalDate createDate, String imageUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
-        //this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl;
         role = Role.USER;
     }
 

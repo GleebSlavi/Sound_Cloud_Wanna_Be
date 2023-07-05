@@ -53,9 +53,9 @@ public class AuthenticationService {
         }
 
         UserEntity user = new UserEntity(UUID.randomUUID(), request.getUsername(),
-                email, passwordEncoder.encode(password), LocalDate.now());
+                email, passwordEncoder.encode(password), LocalDate.now(), null);
         userRepository.createUser(user.getId(), user.getUsername(),
-                user.getEmail(), user.getPassword(), user.getCreateDate());
+                user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl());
 
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

@@ -45,6 +45,12 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
         return jdbcTemplate.update(Queries.DELETE_PLAYLIST, id.toString());
     }
 
+    @Override
+    public List<UUID> getSongsInPlaylistIDs(UUID playlistId) {
+        return jdbcTemplate.query(GET_SONGS_IN_PLAYLIST_IDS,
+            (resultSet, rowNum) -> UUID.fromString(resultSet.getString("song_id")), playlistId.toString());
+    }
+
     private static class Queries {
 
         public final static String LIST_PLAYLISTS_BY_USER = """
@@ -70,4 +76,10 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 WHERE id = ?;
                 """;
     }
+
+    public final static String GET_SONGS_IN_PLAYLIST_IDS = """
+                SELECT song_id
+                FROM playlist_song
+                WHERE playlist_id = ?;
+                """;
 }

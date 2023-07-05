@@ -36,6 +36,8 @@ public class SongService {
             song.imageUrl(), song.cloudUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the song");
         }
+
+        return song;
     }
 
     public SongEntity deleteSong(UUID id) throws NoSuchSongException {

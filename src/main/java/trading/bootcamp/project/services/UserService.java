@@ -69,8 +69,8 @@ public class UserService {
         }
 
         UserEntity user = Mappers.fromUserInput(userInput);
-        if (repository.createUser(user.getId(), user.getUsername(),
-                email, passwordEncoder.encode(password), user.getCreateDate()) != 1) {
+        if (repository.createUser(user.getId(), user.getUsername(), email,
+            passwordEncoder.encode(password), user.getCreateDate(), user.getImageUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the user");
         }
         return user;
@@ -86,5 +86,9 @@ public class UserService {
             throw new IllegalStateException("Couldn't delete the user");
         }
         return user.get();
+    }
+
+    public List<UUID> getUserFavouritePlaylistsIDs(UUID userId) {
+        return repository.getUserFavouritePlaylistsIDs(userId);
     }
 }

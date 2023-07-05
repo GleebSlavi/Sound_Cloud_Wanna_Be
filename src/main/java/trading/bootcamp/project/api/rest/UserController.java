@@ -49,4 +49,9 @@ public class UserController {
     public UserEntity deleteUser(@PathVariable("id") UUID id) throws NoSuchUserException {
         return service.deleteUser(id);
     }
+
+    @GetMapping("/playlists/{userId}")
+    public List<UUID> getUserFavouritePlaylistsIDs(@PathVariable("userId") UUID userId) {
+        return service.getUserFavouritePlaylistsIDs(userId);
+    }
 }

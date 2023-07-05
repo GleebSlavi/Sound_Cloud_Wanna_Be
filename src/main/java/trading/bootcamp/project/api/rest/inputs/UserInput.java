@@ -13,13 +13,17 @@ public class UserInput {
 
     private final String password;
 
+    private final String imageUrl;
+
     @JsonCreator
     public UserInput(@JsonProperty("username") String username,
                      @JsonProperty("email") String email,
-                     @JsonProperty("password") String password) {
+                     @JsonProperty("password") String password,
+                     @JsonProperty("imageUrl") String imageUrl) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.imageUrl = imageUrl;
     }
 
 }

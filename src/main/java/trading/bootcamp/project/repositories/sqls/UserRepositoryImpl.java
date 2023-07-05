@@ -45,9 +45,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int createUser(UUID id, String username, String email, String password, LocalDate createDate) {
+    public int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl) {
         return jdbcTemplate.update(Queries.INSERT_USER,
-                id.toString(), username, email, password, createDate.toString());
+                id.toString(), username, email, password, createDate.toString(), imageUrl);
     }
 
 
@@ -56,16 +56,22 @@ public class UserRepositoryImpl implements UserRepository {
         return jdbcTemplate.update(Queries.DELETE_USER, id.toString());
     }
 
+    @Override
+    public List<UUID> getUserFavouritePlaylistsIDs(UUID userId) {
+        return jdbcTemplate.query(Queries.GET_USER_FAVOURITE_PLAYLISTS_IDS,
+            (resultSet, rowNum) -> UUID.fromString(resultSet.getString("playlist_id")), userId.toString());
+    }
+
     private static class Queries {
 
         private final static String GET_USER_BY = """
-                SELECT id, username, email, password, create_date
+                SELECT id, username, email, password, create_date, image_url
                 FROM user
                 WHERE %s = ?;
                 """;
 
         public final static String LIST_USERS = """
-                SELECT id, username, email, password, create_date
+                SELECT id, username, email, password, create_date, image_url
                 FROM user
                 LIMIT 100;
                 """;
@@ -77,8 +83,8 @@ public class UserRepositoryImpl implements UserRepository {
         public final static String GET_USER_BY_EMAIL = String.format(GET_USER_BY, "email");
 
         public final static String INSERT_USER = """
-                INSERT INTO user(id, username, email, password, create_date)
-                VALUES(?, ?, ?, ?, ?);
+                INSERT INTO user(id, username, email, password, create_date, image_url)
+                VALUES(?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_USER = """
@@ -86,7 +92,11 @@ public class UserRepositoryImpl implements UserRepository {
                 WHERE id = ?;
                 """;
 
-
+        public final static String GET_USER_FAVOURITE_PLAYLISTS_IDS = """
+                SELECT playlist_id
+                FROM user_playlist
+                WHERE user_id = ?;
+                """;
     }
 }
 
