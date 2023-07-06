@@ -35,14 +35,14 @@ CREATE TABLE user_playlist(
     user_id VARCHAR(255),
     playlist_id VARCHAR(255),
     PRIMARY KEY (user_id, playlist_id),
-    FOREIGN KEY (user_id) REFERENCES user(id) DELETE ON CASCADE,
-    FOREIGN KEY (playlist_id) REFERENCES playlist(id) DELETE ON CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE
 );
 
 CREATE TABLE playlist_song(
   playlist_id VARCHAR(255),
   song_id VARCHAR(255),
   PRIMARY KEY (playlist_id, song_id),
-  FOREIGN KEY (playlist_id) REFERENCES playlist(id) DELETE ON CASCADE,
-  FOREIGN KEY (song_id) REFERENCES song(id) DELETE ON CASCADE
+  FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE,
+  FOREIGN KEY (song_id) REFERENCES song(id) ON DELETE CASCADE
 );

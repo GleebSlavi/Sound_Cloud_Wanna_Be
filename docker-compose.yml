@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: jdbctest
-      MYSQL_DATABASE: jdbc_security
+      MYSQL_DATABASE: project
     ports:
       - "3306:3306"
     volumes:
