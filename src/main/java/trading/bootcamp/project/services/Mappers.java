@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Mappers {
 
     public static UserEntity fromUserInput(UserInput user) {
-        return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getPassword(), LocalDate.now());
+        return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getPassword(), LocalDate.now(), user.getImageUrl());
     }
 
     public static PlaylistEntity fromPlaylistInput(PlaylistInput playlist) {

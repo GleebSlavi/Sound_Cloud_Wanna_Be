@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import trading.bootcamp.project.auth.requests.AuthenticationRequest;
 import trading.bootcamp.project.auth.requests.RegisterRequest;
 import trading.bootcamp.project.auth.responses.AuthenticationResponse;
-import trading.bootcamp.project.exceptions.InvalidEmailException;
-import trading.bootcamp.project.exceptions.InvalidPasswordException;
-import trading.bootcamp.project.exceptions.NoSuchUserException;
-import trading.bootcamp.project.exceptions.NullUserDetailsException;
+import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.UserEntity;
 
@@ -39,9 +36,14 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) throws InvalidPasswordException, NullUserDetailsException, InvalidEmailException {
         String email = request.getEmail();
         String password = request.getPassword();
+        String username = request.getUsername();
 
-        if (request.getUsername() == null || email == null || password == null) {
+        if (username == null || email == null || password == null) {
             throw new NullUserDetailsException("Email, username and password can not be null");
+        }
+
+        if (username.isBlank() || username.length() < 3) {
+            throw new InvalidUsernameException("Username can't be less than 3 symbols");
         }
 
         if (isInvalidEmail(email)) {

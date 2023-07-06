@@ -1,6 +1,6 @@
 services:
   mysql:
-    container_name: jdbc_security_mysql
+    container_name: mysql
     image: arm64v8/mysql
     restart: unless-stopped
     environment:
@@ -10,3 +10,14 @@ services:
       - "3306:3306"
     volumes:
       - ./data/mysql:/data/mysql
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: arm64v8/elasticsearch:8.8.1
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./data/elasticsearch:/data/elasticsearch

@@ -5,6 +5,12 @@ spring:
     username: root
     password: jdbctest
 
+  data:
+    elasticsearch:
+      cluster-names: docker-cluster
+      cluster-node: localhost:9200
+
+
 server:
   error:
     include-binding-errors: always

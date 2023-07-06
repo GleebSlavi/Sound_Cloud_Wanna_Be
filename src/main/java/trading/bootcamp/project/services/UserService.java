@@ -5,10 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.auth.services.AuthenticationService;
-import trading.bootcamp.project.exceptions.InvalidEmailException;
-import trading.bootcamp.project.exceptions.InvalidPasswordException;
-import trading.bootcamp.project.exceptions.NoSuchUserException;
-import trading.bootcamp.project.exceptions.NullUserDetailsException;
+import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.UserEntity;
 
@@ -55,9 +52,14 @@ public class UserService {
     public UserEntity addUser(UserInput userInput) throws NullUserDetailsException, InvalidPasswordException, InvalidEmailException {
         String email = userInput.getEmail();
         String password = userInput.getPassword();
+        String username = userInput.getUsername();
 
-        if (userInput.getUsername() == null || email == null || password == null) {
+        if (username == null || email == null || password == null) {
             throw new NullUserDetailsException("Email, username and password can not be null");
+        }
+
+        if (username.isBlank() || username.length() < 3) {
+            throw new InvalidUsernameException("Username can't be less than 3 symbols");
         }
 
         if (AuthenticationService.isInvalidEmail(email)) {
