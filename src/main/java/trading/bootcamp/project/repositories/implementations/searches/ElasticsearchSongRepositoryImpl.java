@@ -16,19 +16,8 @@ public class ElasticsearchSongRepositoryImpl implements ElasticsearchSongReposit
 
     private final RestClient elasticsearchClient;
 
-
     @Override
-    public List<ElasticsearchSongEntity> searchSongsByName(String name) {
-        return null;
-    }
-
-    @Override
-    public List<ElasticsearchSongEntity> searchSongsByArtist(String artist) {
-        return null;
-    }
-
-    @Override
-    public List<ElasticsearchSongEntity> searchSongsByGenre(String genre) {
+    public List<UUID> searchSongsByTerm(String field, String term) {
         return null;
     }
 

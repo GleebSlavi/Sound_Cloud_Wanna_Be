@@ -8,11 +8,7 @@ import java.util.UUID;
 
 public interface ElasticsearchSongRepository {
 
-    List<ElasticsearchSongEntity> searchSongsByName(String name);
-
-    List<ElasticsearchSongEntity> searchSongsByArtist(String artist);
-
-    List<ElasticsearchSongEntity> searchSongsByGenre(String genre);
+    List<UUID> searchSongsByTerm(String field, String term);
 
     void insertSong(SongEntity song);
 
