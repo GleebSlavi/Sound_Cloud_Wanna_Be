@@ -6,7 +6,7 @@ import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.exceptions.InvalidEmailException;
 import trading.bootcamp.project.exceptions.InvalidPasswordException;
 import trading.bootcamp.project.exceptions.NullUserDetailsException;
-import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 import trading.bootcamp.project.exceptions.NoSuchUserException;
 import trading.bootcamp.project.services.UserService;
 

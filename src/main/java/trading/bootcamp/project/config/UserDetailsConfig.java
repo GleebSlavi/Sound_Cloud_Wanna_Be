@@ -13,7 +13,7 @@ import trading.bootcamp.project.repositories.UserRepository;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig {
+public class UserDetailsConfig {
 
     private final UserRepository repository;
 

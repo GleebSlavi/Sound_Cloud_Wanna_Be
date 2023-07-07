@@ -1,10 +1,10 @@
-package trading.bootcamp.project.repositories.sqls;
+package trading.bootcamp.project.repositories.implementations.sqls;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.UserRepository;
-import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 import trading.bootcamp.project.repositories.mappers.UserRowMapper;
 
 import java.time.LocalDate;

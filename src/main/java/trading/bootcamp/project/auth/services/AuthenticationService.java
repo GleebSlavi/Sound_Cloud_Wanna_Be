@@ -10,7 +10,7 @@ import trading.bootcamp.project.auth.requests.RegisterRequest;
 import trading.bootcamp.project.auth.responses.AuthenticationResponse;
 import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.UserRepository;
-import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -42,7 +42,7 @@ public class AuthenticationService {
             throw new NullUserDetailsException("Email, username and password can not be null");
         }
 
-        if (username.isBlank() || username.length() < 3) {
+        if (username.isBlank() || username.strip().length() < 3) {
             throw new InvalidUsernameException("Username can't be less than 3 symbols");
         }
 

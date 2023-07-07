@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
-import trading.bootcamp.project.repositories.entities.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.services.PlaylistService;
 
 import java.util.List;

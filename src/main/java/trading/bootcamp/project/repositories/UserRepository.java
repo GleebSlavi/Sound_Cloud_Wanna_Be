@@ -1,7 +1,6 @@
 package trading.bootcamp.project.repositories;
 
-import trading.bootcamp.project.repositories.entities.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 
 import java.time.LocalDate;
 import java.util.List;

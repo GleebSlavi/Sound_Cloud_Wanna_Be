@@ -1,7 +1,6 @@
 package trading.bootcamp.project.repositories;
 
-import trading.bootcamp.project.repositories.entities.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.SongEntity;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.Type;
 
 import java.time.LocalDate;

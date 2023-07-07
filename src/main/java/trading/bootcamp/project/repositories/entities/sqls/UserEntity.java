@@ -1,4 +1,4 @@
-package trading.bootcamp.project.repositories.entities;
+package trading.bootcamp.project.repositories.entities.sqls;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

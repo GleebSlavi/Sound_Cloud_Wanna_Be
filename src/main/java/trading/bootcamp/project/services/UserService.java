@@ -7,7 +7,7 @@ import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.auth.services.AuthenticationService;
 import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.UserRepository;
-import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +58,7 @@ public class UserService {
             throw new NullUserDetailsException("Email, username and password can not be null");
         }
 
-        if (username.isBlank() || username.length() < 3) {
+        if (username.isBlank() || username.strip().length() < 3) {
             throw new InvalidUsernameException("Username can't be less than 3 symbols");
         }
 

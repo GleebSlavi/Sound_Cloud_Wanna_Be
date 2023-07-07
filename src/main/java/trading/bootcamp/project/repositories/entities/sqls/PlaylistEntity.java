@@ -1,6 +1,5 @@
-package trading.bootcamp.project.repositories.entities;
+package trading.bootcamp.project.repositories.entities.sqls;
 
-import lombok.Data;
 import trading.bootcamp.project.repositories.entities.enums.Type;
 
 import java.time.LocalDate;

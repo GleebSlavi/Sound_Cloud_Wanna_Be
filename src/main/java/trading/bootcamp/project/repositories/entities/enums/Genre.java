@@ -1,7 +1,5 @@
 package trading.bootcamp.project.repositories.entities.enums;
 
-import org.w3c.dom.html.HTMLOptGroupElement;
-
 public enum Genre {
 
     POP("Pop"),

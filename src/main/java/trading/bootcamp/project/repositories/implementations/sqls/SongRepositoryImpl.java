@@ -1,12 +1,11 @@
-package trading.bootcamp.project.repositories.sqls;
+package trading.bootcamp.project.repositories.implementations.sqls;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.SongRepository;
-import trading.bootcamp.project.repositories.entities.SongEntity;
+import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import trading.bootcamp.project.repositories.entities.enums.Genre;
-import trading.bootcamp.project.repositories.entities.enums.Type;
 import trading.bootcamp.project.repositories.mappers.SongRowMapper;
 
 import java.time.LocalDate;
