@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 .section-container {
   display: grid;
   grid-template-rows: 1fr 2fr 0.5fr;
