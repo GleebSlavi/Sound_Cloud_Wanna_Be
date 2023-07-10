@@ -1,12 +1,9 @@
 import './App.css';
-import Section from './components/section/Section';
+import Main from './components/main/Main';
 
 const App = () => {
   return (
-    <div className="main">
-      <div className='background' />
-      <Section />
-    </div>
+    <Main />
   );
 }
 
