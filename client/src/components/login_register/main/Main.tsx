@@ -1,7 +1,7 @@
 import Section from '../section/Section';
 import './main.css';
 
-const Main = () => {
+const LoginRegisterMain = () => {
   return (
     <div className="main">
       <div className='background' />
@@ -10,4 +10,4 @@ const Main = () => {
   );
 }
 
-export default Main;
+export default LoginRegisterMain;
