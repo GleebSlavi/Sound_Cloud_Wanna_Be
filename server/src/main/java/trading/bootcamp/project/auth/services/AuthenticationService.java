@@ -2,6 +2,8 @@ package trading.bootcamp.project.auth.services;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
 
     public static boolean isInvalidEmail(String email) {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -73,7 +77,8 @@ public class AuthenticationService {
             throw new NullUserDetailsException("Email or password are null");
         }
 
-        new UsernamePasswordAuthenticationToken(username, password);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        //new UsernamePasswordAuthenticationToken(username, password);
         UserEntity user = userRepository.getUserByUsername(username)
                 .orElseThrow(() -> new NoSuchUserException("User not found"));
 

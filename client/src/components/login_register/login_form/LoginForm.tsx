@@ -2,10 +2,13 @@ import './login_form.css'
 import Field from '../field/Field'
 import { useState } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = event.target;
@@ -31,17 +34,14 @@ const Login = () => {
 
         try {
             const response = await axios.post("http://localhost:8080/api/auth/authenticate", registerData);
-            console.log(response.data);
 
-			const token = response.data.token;
-			localStorage.setItem("token", token);
+			      const token = response.data.token;
+			      localStorage.setItem("token", token);
+            navigate('/');
+          
         } catch (error) {
             console.log(error);
         }
-
-        setUsername("");
-        setPassword("");
-
       }
 
     return (

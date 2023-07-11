@@ -1,12 +1,8 @@
-import './App.css';
-import { BrowserRouter } from 'react-router-dom';
-import LoginRegisterMain from './components/login_register/main/Main';
+import LocalRoutes from './LocalRoutes'
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <LoginRegisterMain />
-    </BrowserRouter>
+    <LocalRoutes />
   );
 }
 

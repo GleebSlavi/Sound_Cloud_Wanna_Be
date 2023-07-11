@@ -22,26 +22,21 @@ const Field = ({ labelValue, inputType, value, onChange }: FieldProps) => {
     return isPasswordCheck() ? (showPassword ? 'text' : inputType) : inputType;
   };
 
-  const handleTogglePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setShowPassword(!showPassword);
-  };
-
   return (
     <div className="field-container">
-      <label>{labelValue + ": "}</label>
+      <label>{ labelValue + ": " }</label>
       <div className='password-container'>
         <input 
         className={ isPasswordCheck() ? 'password-input' : "" } 
         type={ getType() } 
         name={ lowerCaseLabel } 
-        placeholder={"Enter " + lowerCaseLabel}
-        value={value}
-        onChange={onChange}
+        placeholder={ "Enter " + lowerCaseLabel }
+        value={ value }
+        onChange={ onChange }
         required
         />
         { isPasswordCheck() && (
-          <button className='eye-button' onClick={ handleTogglePassword }>
+          <button className='eye-button' type="button" onClick={ () => setShowPassword(!showPassword) }>
             <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
           </button>
         )}

@@ -27,6 +27,7 @@
   line-height: 1.5;
   border-bottom-style: solid;
   border-bottom-width: 3px;
+  user-select: none;
 }
 
 .switch-container {
