@@ -2,6 +2,7 @@
 .register-form {
   display: grid;
   grid-template-rows: 1.2fr 1.2fr 1.2fr 1fr;
+  place-items: center;
   margin: 0 15px;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -11,16 +12,10 @@
   box-shadow: 1px 1px 50px rgba(70, 0, 70, 0.6);
 }
 
-.button-container {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-}
-
 .form-button {
   width: 350px;
   height: 36px;
-  border:darkmagenta;
+  border: darkmagenta;
   border-radius: 16px;
   font-family: 'Press Start 2P';
   font-size: 12px;

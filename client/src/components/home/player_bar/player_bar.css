@@ -1,0 +1,10 @@
+
+.player-bar {
+  position: fixed;
+  background-color: black;
+  border-top: solid white;
+  top: 657px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

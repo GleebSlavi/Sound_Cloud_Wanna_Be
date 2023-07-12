@@ -1,0 +1,9 @@
+
+.button-bar {
+  display: grid;
+  grid-template-columns: 2.3fr 1.2fr 1.2fr 2.3fr;
+  background-color: rgba(6, 1, 13, 0.925);
+  height: 70px;
+  align-items: end;
+  justify-items: center;
+}

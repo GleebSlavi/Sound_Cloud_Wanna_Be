@@ -1,0 +1,56 @@
+
+
+.navbar {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 3.5fr 1.2fr;
+  place-items: center;
+  height: 90px;
+  background-color: black;
+  box-shadow: 0px 2px 100px rgba(70, 0, 70, 0.7);
+  border-bottom: solid white;
+  border-top: solid white;
+}
+
+.button {
+  height: 45px;
+  width: 200px;
+  font-family: 'Press Start 2P';
+  font-size: 13px;
+  border-radius: 16px;
+  border: darkmagenta;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+}
+
+.search-bar-container {
+  position: relative;
+}
+
+.search-button {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  padding-right: 0;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.search-bar, .search-bar::placeholder {
+  text-indent: 12px;
+  font-size: 13px;
+  color: black;
+}
+
+.search-bar {
+  height: 45px;
+  width: 600px;
+  border-radius: 24px;
+  border-style: solid;
+  padding-right: 55px;
+  box-sizing: border-box;
+}
