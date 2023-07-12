@@ -75,7 +75,7 @@ const RegisterForm = () => {
         onChange={handleInputChange}
       />
       <button
-        className="form-button"
+        className="register-form-button"
         type="submit"
         onClick={handleRegistration}
       >

@@ -1,16 +1,27 @@
 import "./navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <header>
       <nav className="navbar">
-        <button className="button" type="button">
+        <button className="nav-bar-button" type="button">
           Home
         </button>
-        <button className="button" type="button">
+        <button className="nav-bar-button" type="button">
           Profile
+        </button>
+        <button className="nav-bar-button" type="button">
+          Streams
         </button>
         <div className="search-bar-container">
           <input
@@ -23,7 +34,8 @@ const Navbar = () => {
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
-        <button className="button" type="button">
+        <button className="nav-bar-button" type="button"
+        onClick={handleLogout} >
           Log Out
         </button>
       </nav>

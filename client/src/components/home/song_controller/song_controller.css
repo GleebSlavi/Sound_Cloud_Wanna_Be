@@ -1,0 +1,63 @@
+
+.song-controller-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.controller-container {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 1fr;
+  align-items: center;
+}
+
+.forward-container,
+.backward-container,
+.start-stop-container {
+  display: grid;
+  align-items: center;
+}
+
+.forward-container {
+  justify-items: start;
+}
+
+.backward-container {
+  justify-items: end;
+}
+
+.start-stop-container {
+  justify-items: center;
+}
+
+.shuffle-songs-container {
+  display: grid;
+  align-items: center;
+  justify-items: end;
+}
+
+.shuffle-button {
+  margin-right: 30px;
+}
+
+.song-controller-button {
+  position: absolute;
+  top: 50%;
+  color: white;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 30px;
+}
+
+.stream-controller {
+  display: grid;
+  align-items: center;
+  justify-items: start;
+}
+
+.stream-button {
+  margin-left: 25px;
+}

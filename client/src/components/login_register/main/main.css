@@ -1,6 +1,6 @@
-.main {
+.login-register-main {
   display: grid;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
   height: 100vh;
   position: relative;

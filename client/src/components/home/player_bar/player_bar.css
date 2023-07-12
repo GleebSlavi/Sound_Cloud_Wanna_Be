@@ -1,10 +1,11 @@
 
 .player-bar {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr;
   position: fixed;
+  bottom: 0;
+  height: 8%;
+  width: 100%;
   background-color: black;
   border-top: solid white;
-  top: 657px;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }

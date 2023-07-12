@@ -1,0 +1,51 @@
+
+.song-data-container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 0.45fr 2fr;
+}
+
+.picture-container {
+  display: grid;
+  align-items: center;
+}
+
+.picture {
+  height: 57px;
+  width: 57px;
+  background-color: rgb(70, 0, 70);
+  margin-left: 25px;
+}
+
+.song-info-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+p {
+  color: white;
+  margin: 0;
+  font-family: 'Press Start 2P';
+  width: 80%;
+}
+
+.song-name-container {
+  display: grid;
+  align-items: end;
+}
+
+.song-artist-container {
+  display: grid;
+  align-items: start;
+}
+
+.player-bar-song-name {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.player-bar-song-artist {
+  font-size: 10px;
+  margin-top: 5px;
+}

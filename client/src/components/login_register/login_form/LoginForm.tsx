@@ -62,7 +62,7 @@ const Login = () => {
         value={password}
         onChange={handleInputChange}
       />
-      <button className="form-button" type="submit" onClick={handleLogin}>
+      <button className="login-form-button" type="submit" onClick={handleLogin}>
         Login
       </button>
     </form>

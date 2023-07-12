@@ -3,7 +3,7 @@ import './main.css';
 
 const LoginRegisterMain = () => {
   return (
-    <div className="main">
+    <div className="login-register-main">
       <div className='background' />
       <Section />
     </div>

@@ -7,8 +7,8 @@ const Section = () => {
   const [isRegisterForm, setRegisterForm] = useState(false);
 
   return (
-    <section className="section-container">
-      <h2 className="header">SoundCloud Wanna&ndash;Be</h2>
+    <section className="login-register-section-container">
+      <h2 className="login-register-header">SoundCloud Wanna&ndash;Be</h2>
       {!isRegisterForm ? <LoginForm /> : <RegisterForm />}
       <div className="switch-container">
         <label className="switch">

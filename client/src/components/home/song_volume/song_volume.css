@@ -1,0 +1,25 @@
+
+.song-volume-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mute-button-container {
+  display: grid;
+  align-items: center;
+  justify-items: end;
+}
+
+.slide-container {
+  display: grid;
+  align-items: center;
+}
+
+.volume-slider {
+  width: 85%;
+  height: 50%;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+
