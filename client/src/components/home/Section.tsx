@@ -1,6 +1,6 @@
 import "./section.css";
 
-const Section = () => {
+const HomeSection = () => {
   return (
     <section className="home-section">
       <div className="home-header-container">
@@ -10,4 +10,4 @@ const Section = () => {
   );
 };
 
-export default Section;
+export default HomeSection;

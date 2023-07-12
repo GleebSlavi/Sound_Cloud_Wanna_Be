@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   display: grid;
-  grid-template-columns: 1.2fr 1.2fr 1.2fr 3.5fr 1.2fr;
+  grid-template-columns: 1fr 1fr 1fr 2.5fr 1fr;
   place-items: center;
   height: 10%;
   width: 100%;
@@ -14,7 +14,7 @@
 
 .nav-bar-button {
   height: 50px;
-  width: 215px;
+  width: 250px;
   font-family: 'Press Start 2P';
   font-size: 13px;
   border-radius: 16px;

@@ -1,0 +1,27 @@
+.streams-section {
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+  background-color: rgba(6, 1, 13, 0.925);
+  width: 100%;
+  position: absolute;
+  top: 10.7%;
+  bottom: 8%;
+}
+
+.streams-header {
+  color: white;
+  margin-top: 10px;
+  font-family: 'Press Start 2P';
+  border-bottom: 3px solid white;
+  padding-left: 70px;
+  padding-right: 70px;
+  padding-bottom: 20px;
+  user-select: none;
+  text-align: center;
+}
+
+.streams-header-container {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}

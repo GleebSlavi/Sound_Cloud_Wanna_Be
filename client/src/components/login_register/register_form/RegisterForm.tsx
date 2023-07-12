@@ -2,11 +2,14 @@ import "./register_form.css";
 import Field from "../field/Field";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -45,6 +48,7 @@ const RegisterForm = () => {
 
       const token = response.data.token;
       localStorage.setItem("token", token);
+      navigate("/home")
     } catch (error) {
       console.log(error);
     }

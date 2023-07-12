@@ -22,7 +22,7 @@ const Navbar = () => {
         </button>
         <button className="nav-bar-button" type="button">
           Streams
-        </button>
+        </button> 
         <div className="search-bar-container">
           <input
             className="search-bar"

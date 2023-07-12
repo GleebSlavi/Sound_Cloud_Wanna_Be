@@ -12,10 +12,11 @@
 }
 
 .picture {
-  height: 57px;
+  height: 55px;
   width: 57px;
   background-color: rgb(70, 0, 70);
   margin-left: 25px;
+  border-radius: 10px;
 }
 
 .song-info-container {

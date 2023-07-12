@@ -3,7 +3,3 @@
   grid-template-rows: auto 1fr auto;
   height: 100vh;
 }
-
-.section-container {
-  overflow-y: auto;
-}
