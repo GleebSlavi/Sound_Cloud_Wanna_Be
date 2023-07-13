@@ -3,9 +3,9 @@
   position: fixed;
   top: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2.5fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   place-items: center;
-  height: 10%;
+  height: 9%;
   width: 100%;
   background-color: black;
   border-bottom: solid white;
@@ -13,8 +13,8 @@
 }
 
 .nav-bar-button {
-  height: 50px;
-  width: 250px;
+  height: 45px;
+  width: 235px;
   font-family: 'Press Start 2P';
   font-size: 13px;
   border-radius: 16px;
@@ -23,6 +23,22 @@
   cursor: pointer;
   background-color: rgb(70, 0, 70);
   color: white;
+  transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
+}
+
+.nav-bar-button:hover {
+  height: 47px;
+  width: 237px;
+  font-size: 14px;
+  border-radius: 18px;
+}
+
+.nav-bar-button:active {
+  transform: translate(1px, 1px);
+  height: 45px;
+  width: 235px;
+  font-size: 14px;
+  border-radius: 16px;
 }
 
 .search-bar-container {
@@ -49,8 +65,8 @@
 }
 
 .search-bar {
-  height: 50px;
-  width: 650px;
+  height: 40px;
+  width: 640px;
   border-radius: 24px;
   border-style: solid;
   box-sizing: border-box;

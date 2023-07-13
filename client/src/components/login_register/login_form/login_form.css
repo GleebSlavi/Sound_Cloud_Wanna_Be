@@ -24,4 +24,20 @@
   margin-bottom: 10px;
   background-color: rgb(70, 0, 70);
   color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+}
+
+.login-form-button:active {
+  transform: translate(1px, 1px);
+  width: 350px;
+  height: 36px;
+  font-size: 12px;
+  border-radius: 16px;
+}
+
+.login-form-button:hover {
+  width: 352px;
+  height: 38px;
+  font-size: 13px;
+  border-radius: 18px;
 }

@@ -1,0 +1,27 @@
+
+.profile-buttons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  justify-items: start;
+  width: 100%;
+  height: 100%;
+  margin-left: 35px;
+}
+
+.profile-button {
+  height: 50px;
+  width: 325px;
+  font-family: 'Press Start 2P';
+  font-size: 15px;
+  border-radius: 18px;
+  border: darkmagenta;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  margin-left: 50px;
+  margin-bottom: 20px;
+  padding: 0;
+  transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
+}

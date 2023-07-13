@@ -9,13 +9,17 @@
 .picture-container {
   display: grid;
   align-items: center;
+  position: relative;
 }
 
 .picture {
-  height: 55px;
-  width: 57px;
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 15%;
+  right: 15%;
+  margin-left: 0;
   background-color: rgb(70, 0, 70);
-  margin-left: 25px;
   border-radius: 10px;
 }
 
@@ -29,6 +33,7 @@ p {
   margin: 0;
   font-family: 'Press Start 2P';
   width: 80%;
+  user-select: none;
 }
 
 .song-name-container {

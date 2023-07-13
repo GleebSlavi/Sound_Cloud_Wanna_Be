@@ -23,7 +23,10 @@ const Navbar = () => {
         <button className="nav-bar-button" type="button">
           Streams
         </button> 
-        <div className="search-bar-container">
+        <button className="nav-bar-button" type="button">
+          Search
+        </button> 
+        {/* <div className="search-bar-container">
           <input
             className="search-bar"
             type="text"
@@ -33,7 +36,7 @@ const Navbar = () => {
           <button className="search-button" type="submit">
             <FontAwesomeIcon icon={faSearch} />
           </button>
-        </div>
+        </div> */}
         <button className="nav-bar-button" type="button"
         onClick={handleLogout} >
           Log Out

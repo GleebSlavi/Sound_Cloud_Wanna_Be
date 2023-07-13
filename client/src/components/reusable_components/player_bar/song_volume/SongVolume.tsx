@@ -41,7 +41,7 @@ const SongVolume = () => {
   return (
     <div className="song-volume-container">
       <div className="mute-button-container">
-        <button className="song-controller-button" type="button"
+        <button className="song-controller-button click" type="button"
         onClick={handleVolumeMute}>
           <FontAwesomeIcon icon={ (isVolumeMuted && sliderValue === 0) ? 
             faVolumeMute : faVolumeUp } />

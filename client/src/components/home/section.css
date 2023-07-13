@@ -1,18 +1,20 @@
 
 .home-section {
   display: grid;
-  grid-template-rows: 1fr 5fr;
+  grid-template-rows: 0.8fr 5fr;
   background-color: rgba(6, 1, 13, 0.925);
   width: 100%;
   position: absolute;
   width: 100%;
-  top: 10.7%;
+  top: 9.7%;
   bottom: 8%;
+  overflow-y: scroll;
 }
 
 .home-header {
   color: white;
   margin-top: 10px;
+  margin-bottom: 0;
   font-family: 'Press Start 2P';
   border-bottom: 3px solid white;
   padding-left: 70px;

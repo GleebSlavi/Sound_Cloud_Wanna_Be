@@ -1,6 +1,6 @@
-import SongController from "../song_controller/SongController";
-import SongData from "../song_data/SongData";
-import SongVolume from "../song_volume/SongVolume";
+import SongController from "./song_controller/SongController";
+import SongData from "./song_data/SongData";
+import SongVolume from "./song_volume/SongVolume";
 import "./player_bar.css";
 
 const PlayerBar = () => {

@@ -1,0 +1,20 @@
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  width: 95%;
+}
+
+.profile-picture-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.profile-picture {
+  background-color: rgb(70, 0, 70);
+  width: 75%;
+  height: 90%;
+  border-radius: 50%;
+}
+

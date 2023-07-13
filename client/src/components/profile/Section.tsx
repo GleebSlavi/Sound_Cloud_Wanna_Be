@@ -1,13 +1,15 @@
 import './section.css'
-import ProfileContainer from "../profile_container/ProfileContainer";
+import ProfileInfo from "./profile_info/ProfileInfo";
 
 
 const ProfileSection = () => {
   return (
     <section className="profile-section">
-      <ProfileContainer />
+      <ProfileInfo />
+      <div className='playlists-header-container'>
+          <h3 className='playlists-header'>Your Playlists</h3>
+      </div>
       <div className="playlists-container">
-
       </div>
     </section>
   );
