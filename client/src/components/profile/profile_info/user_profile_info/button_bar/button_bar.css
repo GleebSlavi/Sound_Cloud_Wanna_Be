@@ -25,3 +25,18 @@
   padding: 0;
   transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
 }
+
+.profile-button:hover {
+  height: 53px;
+  width: 328px;
+  font-size: 16px;
+  border-radius: 20px;
+}
+
+.profile-button:active {
+  transform: translate(2px, 2px);
+  height: 50px;
+  width: 325px;
+  font-size: 16px;
+  border-radius: 18px;
+}
