@@ -221,8 +221,17 @@
   transition: font-size 0.15s;
 }
 
+.type-playlist:active {
+  font-size: 19px;
+}
+
 .active-playlist-type {
   color: rgb(70, 0, 70);
   font-size: 19px;
+  transition: font-size 0.15s;
+}
+
+.active-playlist-type:active {
+  font-size: 18px
 }
 
