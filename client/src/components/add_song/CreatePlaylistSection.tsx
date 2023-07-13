@@ -1,6 +1,9 @@
+import { useState } from "react";
 import "./create_playlist_section.css"
 
 const CreatePlaylistSection = () => {
+  const [isPrivateType, setPrivateType] = useState(false);
+
   return (
     <section className="create-playlist-section">
       <div className="create-playlist-field">
@@ -13,17 +16,31 @@ const CreatePlaylistSection = () => {
           </div>
           <div className="playlist-data-container">
             <div className="playlist-name-container">
-              <label className="playlist-label">Playlist name:</label>
-              <input className="playlist-name-field"/>
+              <label className="playlist-label">Name:</label>
+              <input className="playlist-name-field" placeholder="Enter playlist name"/>
             </div>
             <div className="playlist-description-container">
               <label className="playlist-label">Description:</label>
-              <textarea className="playlist-description-field" />
+              <textarea className="playlist-description-field" placeholder="Enter playlist description"/>
             </div>
             <div className="playlist-type-container">
-              <label className="playlist-label">Type:</label>
-              <div className="public-playlist"></div>
-              <div className="private-playlist"></div>
+              <div className="label-container">
+                <label className="playlist-label">Type:</label>
+              </div>
+              <div className="type-container">
+                <button 
+                className={`type-playlist ${ isPrivateType ? "" : "active-playlist-type"}`}
+                type="button" 
+                onClick={() => setPrivateType(false)}>
+                  Public
+                  </button>
+                <button 
+                className={`type-playlist ${ !isPrivateType ? "" : "active-playlist-type"}`}
+                type="button"
+                onClick={() => setPrivateType(true)}>
+                  Private
+                  </button>
+              </div>
             </div>
           </div>
         </div>
