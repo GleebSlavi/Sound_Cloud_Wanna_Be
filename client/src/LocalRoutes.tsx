@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import LoginRegisterMain from "./components/login_register/main/Main";
+import LoginRegisterMain from "./components/login_register/Main";
 import Main from "./components/main/Main";
 
 const LocalRoutes = () => {

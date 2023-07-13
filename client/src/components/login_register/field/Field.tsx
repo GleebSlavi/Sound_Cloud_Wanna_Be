@@ -27,7 +27,7 @@ const Field = ({ labelValue, inputType, value, onChange }: FieldProps) => {
       <label>{ labelValue + ": " }</label>
       <div className='password-container'>
         <input 
-        className={ isPasswordCheck() ? 'password-input' : "" } 
+        className={ isPasswordCheck() ? 'password-input' : "welcome-input" } 
         type={ getType() } 
         name={ lowerCaseLabel } 
         placeholder={ "Enter " + lowerCaseLabel }

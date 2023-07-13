@@ -1,4 +1,4 @@
-import Section from '../section/Section';
+import Section from './section/Section';
 import './main.css';
 
 const LoginRegisterMain = () => {

@@ -5,6 +5,7 @@ import PlayerBar from "../reusable_components/player_bar/PlayerBar";
 import HomeSection from "../home/Section";
 import StreamsSection from "../streams/Section";
 import ProfileSection from "../profile/Section";
+import CreatePlaylistSection from "../add_song/CreatePlaylistSection";
 
 const Main = () => {
   return (
@@ -12,7 +13,7 @@ const Main = () => {
       <Navbar />
       <div  className="section-container">
         <Routes>
-          <Route path="/" element={<ProfileSection />} />
+          <Route path="/" element={<CreatePlaylistSection />} />
           <Route path="/streams" element={<StreamsSection />} />
         </Routes>
       </div>
