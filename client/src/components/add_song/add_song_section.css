@@ -1,0 +1,255 @@
+
+
+.add-song-section {
+  display: grid;
+  background-color: rgba(6, 1, 13, 0.925);
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  position: absolute;
+  top: 9.7%;
+  bottom: 8%;
+}
+
+.add-song-header-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.add-song-header {
+  color: white;
+  font-family: 'Press Start 2P';
+  padding-left: 70px;
+  padding-right: 70px;
+  user-select: none;
+  text-align: center;
+  border-bottom: 3px solid white;
+  margin: 0;
+  padding-bottom: 20px;
+}
+
+.add-song-field {
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 65%;
+  height: 80%;
+  background-color: black;
+  box-shadow: 1px 1px 100px rgba(70, 0, 70, 0.6);
+  border-width: 5px;
+  border-radius: 15px;
+}
+
+.add-song-data-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  justify-items: center;
+  width: 90%;
+  height: 100%;
+  border: 4px solid white;
+  border-radius: 2px;
+}
+
+.add-song-info-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  padding-right: 5%;
+}
+
+.add-song-button-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.add-song-button {
+  width: 375px;
+  height: 50px;
+  border-radius: 16px;
+  border: darkmagenta;
+  font-family: 'Press Start 2P';
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+}
+
+.add-song-button:hover {
+  width: 377px;
+  height: 52px;
+  font-size: 15px;
+  border-radius: 17px;
+}
+
+.add-song-button:active {
+  transform: translate(1px, 1px);
+  width: 375px;
+  height: 50px;
+  font-size: 15px;
+  border-radius: 16px;
+}
+
+.song-picture-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.song-picture {
+  background-color: rgb(70, 0, 70);
+  width: 65%;
+  height: 60%;
+  border-radius: 10px;
+}
+
+.song-label {
+  color: white;
+  font-family: 'Press Start 2P';
+  font-size: 17px;
+  margin-bottom: 0;
+  padding-top: 15px;
+}
+
+.song-data-input-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 90%;
+  height: 100%;
+  align-items: center;
+}
+
+.song-year-upload-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 90%;
+  height: 100%;
+  align-items: center;
+}
+
+.upload-container {
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  padding-left: 15%;
+}
+
+.upload-button {
+  width: 70%;
+  height: 40%;
+  border-radius: 10px;
+  border: darkmagenta;
+  font-family: 'Press Start 2P';
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+}
+
+.upload-button:hover {
+  width: 71%;
+  height: 41%;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.upload-button:active {
+  transform: translate(1px, 1px);
+  width: 70%;
+  height: 40%;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.upload-button-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: end;
+}
+
+.song-input-field, .song-input-year {
+  font-family: 'Press Start 2P';
+  color: black;
+  text-indent: 5px;
+  font-size: 15px;
+  border-style: solid;
+  border-radius: 2px;
+  border-color: darkmagenta;
+  transition: box-shadow 0.15s, border-wdith 0.15s;
+}
+
+.song-input-field:hover, .song-input-year:hover {
+  box-shadow: 1px 1px 5px rgba(70, 0, 70, 0.6);
+  border-width: 3px;
+}
+
+.song-input-field {
+  width: 100%;
+  height: 65%;
+}
+
+.song-input-year {
+  width: 100%;
+  height: 60%;
+}
+
+.song-input-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: start;
+  justify-items: center;
+}
+
+.song-year-input-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding-bottom: 3%;
+}
+
+.song-input-year::placeholder, .song-input-field::placeholder {
+  font-size: 13px;
+}
+
+.song-input-year:focus::placeholder,
+.song-input-field:focus::placeholder {
+  color: transparent;
+}
+
+.uploaded-song-icon-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: start;
+}
+
+.uploaded-song-icon {
+  color: white;
+  width: 15%;
+  height: 15%;
+  padding-left: 10%;
+}

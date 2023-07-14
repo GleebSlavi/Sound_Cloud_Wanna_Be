@@ -1,11 +1,12 @@
 import "./main.css";
 import { Route, Routes } from 'react-router-dom';
-import Navbar from "../reusable_components/navbar/Navbar";
-import PlayerBar from "../reusable_components/player_bar/PlayerBar";
+import Navbar from "../fixed_components/navbar/Navbar";
+import PlayerBar from "../fixed_components/player_bar/PlayerBar";
 import HomeSection from "../home/Section";
 import StreamsSection from "../streams/Section";
 import ProfileSection from "../profile/Section";
-import CreatePlaylistSection from "../add_song/CreatePlaylistSection";
+import CreatePlaylistSection from "../create_playlist/CreatePlaylistSection";
+import AddSongSection from "../add_song/AddSongSection";
 
 const Main = () => {
   return (
@@ -13,7 +14,7 @@ const Main = () => {
       <Navbar />
       <div  className="section-container">
         <Routes>
-          <Route path="/" element={<CreatePlaylistSection />} />
+          <Route path="/" element={<AddSongSection />} />
           <Route path="/streams" element={<StreamsSection />} />
         </Routes>
       </div>

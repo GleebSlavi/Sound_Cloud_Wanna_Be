@@ -10,11 +10,11 @@ const CreatePlaylistSection = () => {
         <div className="create-playlist-header-container">
           <h2 className="create-playlist-header">Create Playlist</h2>
         </div>
-        <div className="playlist-info-container">
+        <div className="playlist-data-container">
           <div className="playlist-picture-container">
             <div className="playlist-picture"></div>
           </div>
-          <div className="playlist-data-container">
+          <div className="playlist-info-container">
             <div className="playlist-name-container">
               <label className="playlist-label">Name:</label>
               <input className="playlist-name-field" placeholder="Enter playlist name"/>
