@@ -1,9 +1,9 @@
 
 .navbar {
   position: fixed;
-  top: 0;
+  top: 0%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
   place-items: center;
   height: 9%;
   width: 100%;
@@ -13,10 +13,10 @@
 }
 
 .nav-bar-button {
-  height: 45px;
-  width: 235px;
+  height: 50%;
+  width: 75%;
   font-family: 'Press Start 2P';
-  font-size: 13px;
+  font-size: 0.8125rem;
   border-radius: 16px;
   border: darkmagenta;
   text-align: center;
@@ -27,48 +27,52 @@
 }
 
 .nav-bar-button:hover {
-  height: 47px;
-  width: 237px;
-  font-size: 14px;
-  border-radius: 18px;
+  height: 51%;
+  width: 76%;
+  font-size: 0.875rem;
+  border-radius: 17px;
 }
 
 .nav-bar-button:active {
   transform: translate(1px, 1px);
-  height: 45px;
-  width: 235px;
-  font-size: 14px;
+  height: 50%;
+  width: 75%;
+  font-size: 0.875rem;
   border-radius: 16px;
 }
 
 .search-bar-container {
+  display: grid;
+  align-items: center;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .search-button {
   position: absolute;
   top: 50%;
-  right: 20px;
-  padding-right: 0;
+  right: 8%;
+  padding-right: 0%;
   transform: translateY(-50%);
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: black;
 }
 
 .search-bar, .search-bar::placeholder {
-  text-indent: 12px;
-  font-size: 13px;
+  text-indent: 2%;
+  font-size: 0.8125rem;
 }
 
 .search-bar {
-  height: 47px;
-  width: 640px;
+  height: 51%;
+  width: 95%;
   border-radius: 24px;
   border-style: solid;
   box-sizing: border-box;
   color: black;
+  padding-right: 8%;
 }
-

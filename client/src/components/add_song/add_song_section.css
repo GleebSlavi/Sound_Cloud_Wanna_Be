@@ -15,6 +15,7 @@
   display: grid;
   align-items: center;
   justify-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
 }
@@ -22,13 +23,15 @@
 .add-song-header {
   color: white;
   font-family: 'Press Start 2P';
-  padding-left: 70px;
-  padding-right: 70px;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 8%;
   user-select: none;
   text-align: center;
-  border-bottom: 3px solid white;
+  border-bottom: solid white;
   margin: 0;
-  padding-bottom: 20px;
+  width: 100%;
+  justify-items: center;
 }
 
 .add-song-field {
@@ -39,8 +42,9 @@
   width: 65%;
   height: 80%;
   background-color: black;
-  box-shadow: 1px 1px 100px rgba(70, 0, 70, 0.6);
-  border-width: 5px;
+  box-shadow:
+    -1px 0 50px rgba(70, 0, 70, 0.6),
+    1px 0 50px rgba(70, 0, 70, 0.6);
   border-radius: 15px;
 }
 
@@ -74,12 +78,12 @@
 }
 
 .add-song-button {
-  width: 375px;
-  height: 50px;
+  width: 25%;
+  height: 40%;
   border-radius: 16px;
   border: darkmagenta;
   font-family: 'Press Start 2P';
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: center;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
@@ -88,17 +92,17 @@
 }
 
 .add-song-button:hover {
-  width: 377px;
-  height: 52px;
-  font-size: 15px;
+  width: 26%;
+  height: 41%;
+  font-size: 0.9375rem;
   border-radius: 17px;
 }
 
 .add-song-button:active {
   transform: translate(1px, 1px);
-  width: 375px;
-  height: 50px;
-  font-size: 15px;
+  width: 25%;
+  height: 40%;
+  font-size: 0.9375rem;
   border-radius: 16px;
 }
 
@@ -112,17 +116,17 @@
 
 .song-picture {
   background-color: rgb(70, 0, 70);
-  width: 65%;
-  height: 60%;
+  width: 70%;
+  height: 70%;
   border-radius: 10px;
 }
 
 .song-label {
   color: white;
   font-family: 'Press Start 2P';
-  font-size: 17px;
+  font-size: 1.0625rem;
   margin-bottom: 0;
-  padding-top: 15px;
+  padding-top: 2.5%;
 }
 
 .song-data-input-container {
@@ -157,7 +161,7 @@
   border-radius: 10px;
   border: darkmagenta;
   font-family: 'Press Start 2P';
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-align: center;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
@@ -168,15 +172,15 @@
 .upload-button:hover {
   width: 71%;
   height: 41%;
-  font-size: 14px;
-  border-radius: 12px;
+  font-size: 0.875rem;
+  border-radius: 11px;
 }
 
 .upload-button:active {
   transform: translate(1px, 1px);
   width: 70%;
   height: 40%;
-  font-size: 14px;
+  font-size: 0.875rem;
   border-radius: 10px;
 }
 
@@ -191,8 +195,8 @@
 .song-input-field, .song-input-year {
   font-family: 'Press Start 2P';
   color: black;
-  text-indent: 5px;
-  font-size: 15px;
+  text-indent: 2%;
+  font-size: 0.9375rem;
   border-style: solid;
   border-radius: 2px;
   border-color: darkmagenta;
@@ -231,7 +235,7 @@
 }
 
 .song-input-year::placeholder, .song-input-field::placeholder {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: black;
 }
 

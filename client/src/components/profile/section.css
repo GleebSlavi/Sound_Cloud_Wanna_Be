@@ -16,27 +16,27 @@
   display: grid;
   height: 100%;
   width: 95%;
-  margin-top: 15px;
+  margin-top: 1%;
   align-items: center;
   justify-items: start;
-  border-top: 3px solid white;
-  padding-top: 10px;
+  border-top: solid white;
+  padding-top: 0.5%;
 }
 
 .playlists-header {
   width: 95%;
   font-family: 'Press Start 2P';
   color: white;
-  font-size: 24px;
+  font-size: 1.5rem;
   margin: 0;
-  margin-left: 50px;
-  padding-top: 10px;
+  margin-left: 3%;
+  padding-top: 1%;
 }
 
 .header-container {
   width: 100%;
   height: 100%;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 6%;
 }
 

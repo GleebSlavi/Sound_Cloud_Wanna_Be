@@ -5,16 +5,16 @@
   grid-template-rows: 0.8fr 0.5fr;
   width: 100%;
   align-items: center;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 .user-username-header {
-  font-size: 40px;
+  font-size: 2.5rem;
   color: white;
   width: 80%;
   font-family: 'Press Start 2P';
   user-select: none;
-  margin-top: 15px;
+  margin-top: 2%;
   margin-bottom: 0;
-  margin-left: 40px;
+  margin-left: 3%;
 }

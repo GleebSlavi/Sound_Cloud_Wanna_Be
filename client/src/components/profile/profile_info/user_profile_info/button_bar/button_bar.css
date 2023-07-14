@@ -6,37 +6,37 @@
   justify-items: start;
   width: 100%;
   height: 100%;
-  margin-left: 35px;
+  margin-left: 2.5%;
 }
 
 .profile-button {
-  height: 50px;
-  width: 325px;
+  height: 60%;
+  width: 70%;
   font-family: 'Press Start 2P';
-  font-size: 15px;
+  font-size: 0.9375rem;
   border-radius: 18px;
   border: darkmagenta;
   text-align: center;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
   color: white;
-  margin-left: 50px;
-  margin-bottom: 20px;
+  margin-left: 15%;
+  margin-bottom: 5%;
   padding: 0;
   transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
 }
 
 .profile-button:hover {
-  height: 52px;
-  width: 327px;
-  font-size: 16px;
+  height: 61%;
+  width: 71%;
+  font-size: 1rem;
   border-radius: 19px;
 }
 
 .profile-button:active {
-  transform: translate(2px, 2px);
-  height: 50px;
-  width: 325px;
-  font-size: 16px;
+  transform: translate(1px, 1px);
+  height: 60%;
+  width: 70%;
+  font-size: 1rem;
   border-radius: 18px;
 }

@@ -8,4 +8,6 @@
   width: 100%;
   background-color: black;
   border-top: solid white;
+  align-items: center;
+  justify-items: center
 }

@@ -1,8 +1,11 @@
+import "./App.css"
 import LocalRoutes from './LocalRoutes'
 
 const App = () => {
   return (
-    <LocalRoutes />
+    <div className="app">
+      <LocalRoutes />
+    </div>
   );
 }
 

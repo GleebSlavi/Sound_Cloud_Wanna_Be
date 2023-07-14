@@ -3,22 +3,20 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 0.45fr 2fr;
+  grid-template-columns: 0.4fr 2fr;
 }
 
 .picture-container {
   display: grid;
+  width: 100%;
+  height: 100%;
   align-items: center;
-  position: relative;
+  justify-items: center;
 }
 
 .picture {
-  position: absolute;
-  top: 12%;
-  bottom: 12%;
-  left: 15%;
-  right: 15%;
-  margin-left: 0;
+  width: 70%;
+  height: 70%;
   background-color: rgb(70, 0, 70);
   border-radius: 10px;
 }
@@ -26,32 +24,40 @@
 .song-info-container {
   display: grid;
   grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
 }
 
-p {
+.player-bar-song-text {
   color: white;
   margin: 0;
   font-family: 'Press Start 2P';
-  width: 80%;
+  width: 90%;
   user-select: none;
 }
 
 .song-name-container {
   display: grid;
+  width: 100%;
+  height: 100%;
   align-items: end;
 }
 
 .song-artist-container {
   display: grid;
+  width: 100%;
+  height: 100%;
   align-items: start;
 }
 
 .player-bar-song-name {
-  font-size: 13px;
-  margin-bottom: 5px;
+  font-size: 0.8125rem;
+  margin-bottom: 1%;
 }
 
 .player-bar-song-artist {
-  font-size: 10px;
-  margin-top: 5px;
+  font-size: 0.625rem;
+  margin-top: 1%;
 }

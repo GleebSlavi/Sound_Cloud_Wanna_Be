@@ -14,6 +14,7 @@
   display: grid;
   align-items: center;
   justify-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
 }
@@ -21,13 +22,15 @@
 .create-playlist-header {
   color: white;
   font-family: 'Press Start 2P';
-  padding-left: 70px;
-  padding-right: 70px;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 5%;
   user-select: none;
   text-align: center;
-  border-bottom: 3px solid white;
+  border-bottom: solid white;
   margin: 0;
-  padding-bottom: 20px;
+  width: 100%;
+  justify-items: center;
 }
 
 .create-playlist-field {
@@ -38,8 +41,9 @@
   width: 65%;
   height: 80%;
   background-color: black;
-  box-shadow: 1px 1px 100px rgba(70, 0, 70, 0.6);
-  border-width: 5px;
+  box-shadow: 
+    -1px 0 50px rgba(70, 0, 70, 0.6),
+    1px 0 50px rgba(70, 0, 70, 0.6);
   border-radius: 15px;
 }
 
@@ -61,7 +65,7 @@
   height: 100%;
   align-items: center;
   justify-items: center;
-  margin-top: 10px;
+  margin-top: 2%;
 }
 
 .playlist-name-container {
@@ -78,7 +82,7 @@
   width: 90%;
   height: 100%;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 2%;
 }
 
 .playlist-type-container {
@@ -124,7 +128,7 @@
   font-family: 'Press Start 2P';
   font-size: 17px;
   margin-bottom: 0;
-  padding-top: 20px;
+  padding-top: 3%;
 }
 
 .create-playlist-button-container {
@@ -136,12 +140,12 @@
 }
 
 .create-playlist-button {
-  width: 375px;
-  height: 50px;
+  width: 25%;
+  height: 40%;
   border-radius: 16px;
   border: darkmagenta;
   font-family: 'Press Start 2P';
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: center;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
@@ -150,17 +154,17 @@
 }
 
 .create-playlist-button:hover {
-  width: 377px;
-  height: 52px;
-  font-size: 15px;
+  width: 26%;
+  height: 41%;
+  font-size: 0.9375rem;
   border-radius: 17px;
 }
 
 .create-playlist-button:active {
-  transform: translate(1px, 1px);
-  width: 375px;
-  height: 50px;
-  font-size: 15px;
+  transform: translate(0.625%, 0.625%);
+  width: 25%;
+  height: 40%;
+  font-size: 0.9375rem;
   border-radius: 16px;
 }
 
@@ -168,8 +172,8 @@
 .playlist-description-field, .playlist-description-field::placeholder {
   font-family: 'Press Start 2P';
   color: black;
-  text-indent: 5px;
-  font-size: 15px;
+  text-indent: 1%;
+  font-size: 0.9375rem;
 }
 
 .playlist-description-field:focus::placeholder,
@@ -178,7 +182,7 @@
 }
 
 .playlist-name-field {
-  height: 40px;
+  height: 60%;
   border-style: solid;
   border-radius: 2px;
   border-color: darkmagenta;
@@ -187,7 +191,7 @@
 
 
 .playlist-description-field {
-  height: 100px;
+  height: 75%;
   border-style: solid;
   border-radius: 2px;
   border-color: darkmagenta;
@@ -210,13 +214,12 @@
 .type-playlist {
   color: white;
   font-family: 'Press Start 2P';
-  font-size: 18px;
-  padding-bottom: 20px;
+  font-size: 1.125rem;
   cursor: pointer;
   background: none;
   border: none;
   padding: 0;
-  padding-bottom: 30px;
+  padding-bottom: 21%;
   height: 100%;
   transition: font-size 0.15s;
 }
@@ -227,11 +230,11 @@
 
 .active-playlist-type {
   color: rgb(70, 0, 70);
-  font-size: 19px;
+  font-size: 1.1875rem;
   transition: font-size 0.15s;
 }
 
 .active-playlist-type:active {
-  font-size: 18px
+  font-size: 1.125rem;
 }
 
