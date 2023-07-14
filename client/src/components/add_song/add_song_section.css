@@ -185,7 +185,7 @@
   width: 100%;
   height: 100%;
   align-items: center;
-  justify-items: end;
+  justify-items: center;
 }
 
 .song-input-field, .song-input-year {
@@ -232,6 +232,7 @@
 
 .song-input-year::placeholder, .song-input-field::placeholder {
   font-size: 13px;
+  color: black;
 }
 
 .song-input-year:focus::placeholder,

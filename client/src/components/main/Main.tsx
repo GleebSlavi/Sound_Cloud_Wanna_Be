@@ -7,6 +7,7 @@ import StreamsSection from "../streams/Section";
 import ProfileSection from "../profile/Section";
 import CreatePlaylistSection from "../create_playlist/CreatePlaylistSection";
 import AddSongSection from "../add_song/AddSongSection";
+import ChangePasswordSection from "../change_password_section.css/ChangePasswordSection";
 
 const Main = () => {
   return (
@@ -14,7 +15,7 @@ const Main = () => {
       <Navbar />
       <div  className="section-container">
         <Routes>
-          <Route path="/" element={<AddSongSection />} />
+          <Route path="/" element={<ChangePasswordSection />} />
           <Route path="/streams" element={<StreamsSection />} />
         </Routes>
       </div>

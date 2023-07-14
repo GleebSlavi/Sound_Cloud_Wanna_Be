@@ -6,7 +6,7 @@ const AddSongSection = () => {
   return (
     <section className="add-song-section">
       <div className="add-song-field">
-        <div className="Create-playlist-header-container">
+        <div className="create-playlist-header-container">
           <h2 className="add-song-header">Add Song</h2>
         </div>
         <div className="add-song-data-container">
