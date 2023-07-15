@@ -1,12 +1,12 @@
-import "./App.css"
-import LocalRoutes from './LocalRoutes'
+import "./App.css";
+import Routes from "./LocalRoutes";
 
 const App = () => {
   return (
     <div className="app">
-      <LocalRoutes />
+      <Routes />
     </div>
   );
-}
+};
 
 export default App;

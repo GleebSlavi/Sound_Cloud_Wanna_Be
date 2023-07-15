@@ -11,13 +11,13 @@ services:
     volumes:
       - ./data/mysql:/data/mysql
 
-  elasticsearch:
-    container_name: elasticsearch
-    image: arm64v8/elasticsearch:8.8.1
-    restart: unless-stopped
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-    volumes:
-      - ./data/elasticsearch:/data/elasticsearch
+#  elasticsearch:
+#    container_name: elasticsearch
+#    image: arm64v8/elasticsearch:8.8.1
+#    restart: unless-stopped
+#    environment:
+#      - discovery.type=single-node
+#    ports:
+#      - "9200:9200"
+#    volumes:
+#      - ./data/elasticsearch:/data/elasticsearch

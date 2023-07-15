@@ -42,7 +42,7 @@ const Login = () => {
 
       const token = response.data.token;
       localStorage.setItem("token", token);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,5 @@
 import "./main.css";
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./fixed_components/navbar/Navbar";
 import PlayerBar from "./fixed_components/player_bar/PlayerBar";
 import HomeSection from "./home/Section";
@@ -13,9 +13,11 @@ const Main = () => {
   return (
     <div className="home-main">
       <Navbar />
-      <div  className="section-container">
+      <div className="section-container">
         <Routes>
-          <Route path="/" element={<ProfileSection />} />
+          <Route path="/" element={<HomeSection />} />
+          <Route path="/streams" element={<StreamsSection />} />
+          <Route path="/profile" element={<ProfileSection />} />
           <Route path="/streams" element={<StreamsSection />} />
         </Routes>
       </div>
