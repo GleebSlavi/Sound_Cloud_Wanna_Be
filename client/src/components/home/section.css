@@ -1,5 +1,5 @@
 
-.home-streams-section {
+.home-section {
   display: grid;
   grid-template-rows: 0.8fr 5fr;
   background-color: rgba(6, 1, 13, 0.925);
@@ -10,7 +10,7 @@
   overflow-y: scroll;
 }
 
-.home-streams-header {
+.home-header {
   color: white;
   margin-top: 0.8%;
   margin-bottom: 0;

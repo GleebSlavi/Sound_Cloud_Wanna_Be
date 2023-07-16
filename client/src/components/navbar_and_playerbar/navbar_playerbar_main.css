@@ -1,7 +1,7 @@
-.home-main {
+
+.navbar_playerbar_main {
   display: grid;
   grid-template-rows: auto 1fr auto;
   width: 100%;
   height: 100%;
-  background-color: rgba(6, 1, 13, 0.925);
 }
