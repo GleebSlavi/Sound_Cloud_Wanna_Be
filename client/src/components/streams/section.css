@@ -1,7 +1,7 @@
 .streams-section {
   display: grid;
   grid-template-rows: 0.8fr 5fr;
-  background-color: rgba(6, 1, 13, 0.925);
+  background-color: transparent;
   width: 100%;
   position: absolute;
   top: 9.7%;

@@ -7,7 +7,7 @@
   width: 100%;
   top: 9.7%;
   bottom: 8%;
-  background-color: rgba(6, 1, 13, 0.925);
+  background-color: transparent;
   overflow-y: scroll;
   overflow-x: hidden;
 }

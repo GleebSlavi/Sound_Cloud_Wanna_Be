@@ -13,7 +13,9 @@
   border-width: 5px;
   border-radius: 2px;
   z-index: 100;
-  box-shadow: 1px 1px 500px rgba(70, 0, 70, 0.6);
+  box-shadow: 
+  -1px 0 50px rgba(70, 0, 70, 0.6),
+  1px 0 50px rgba(70, 0, 70, 0.6);
 }
 
 .login-register-header {

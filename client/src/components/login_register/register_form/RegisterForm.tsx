@@ -64,18 +64,24 @@ const RegisterForm = () => {
         labelValue="Username"
         inputType="text"
         value={username}
+        pattern="^[A-Za-z][A-Za-z0-9_.-]{2,}$"
+        title="Please enter a username that starts with a letter and is more than 2 characters"
         onChange={handleInputChange}
       />
       <Field
         labelValue="Email"
         inputType="email"
         value={email}
+        pattern="^[A-Za-z0-9._-]+@[A-Za-z0-9._-]+\.[A-Za-z]{2,}$"
+        title="Please enter a valid email address"
         onChange={handleInputChange}
       />
       <Field
         labelValue="Password"
         inputType="password"
         value={password}
+        pattern="^\S{8,}$"
+        title="Please enter a password with more than 7 non-whitespace characters"
         onChange={handleInputChange}
       />
       <button

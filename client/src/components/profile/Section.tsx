@@ -3,6 +3,8 @@ import ProfileInfo from "./profile_info/ProfileInfo";
 
 
 const ProfileSection = () => {
+  
+
   return (
     <section className="profile-section">
       <ProfileInfo />

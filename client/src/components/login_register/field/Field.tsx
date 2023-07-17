@@ -7,10 +7,12 @@ interface FieldProps {
   labelValue: string;
   inputType: string;
   value: string;
+  pattern: string;
+  title: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; 
 }
 
-const Field = ({ labelValue, inputType, value, onChange }: FieldProps) => {
+const Field = ({ labelValue, inputType, value, pattern, title, onChange }: FieldProps) => {
   const lowerCaseLabel: string = labelValue.toLowerCase();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,6 +35,8 @@ const Field = ({ labelValue, inputType, value, onChange }: FieldProps) => {
         placeholder={ "Enter " + lowerCaseLabel }
         value={ value }
         onChange={ onChange }
+        pattern={ pattern }
+        title={ title }
         required
         />
         { isPasswordCheck() && (
