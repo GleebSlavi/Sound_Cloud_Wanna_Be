@@ -1,7 +1,7 @@
 
 .register-form {
   display: grid;
-  grid-template-rows: 1.2fr 1.2fr 1.2fr 1fr;
+  grid-template-rows: 1.2fr 1.2fr 1.2fr 1.2fr 1fr;
   align-items: center;
   justify-items: center;
   margin: 0 15px;

@@ -17,7 +17,7 @@ const Field = ({ labelValue, inputType, value, pattern, title, onChange }: Field
   const [showPassword, setShowPassword] = useState(false);
 
   const isPasswordCheck = (): boolean => {
-    return lowerCaseLabel === 'password';
+    return lowerCaseLabel.includes('password');
   }
 
   const getType = (): string => {

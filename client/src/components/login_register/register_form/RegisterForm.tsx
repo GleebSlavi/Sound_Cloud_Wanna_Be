@@ -8,6 +8,7 @@ const RegisterForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
 
@@ -24,6 +25,9 @@ const RegisterForm = () => {
         break;
       case "password":
         setPassword(value);
+        break;
+      case "confirm password":
+        setConfirmPassword(value);
         break;
       default:
         break;
@@ -56,6 +60,7 @@ const RegisterForm = () => {
     setUsername("");
     setEmail("");
     setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -82,6 +87,14 @@ const RegisterForm = () => {
         value={password}
         pattern="^\S{8,}$"
         title="Please enter a password with more than 7 non-whitespace characters"
+        onChange={handleInputChange}
+      />
+      <Field
+        labelValue="Confirm password"
+        inputType="password"
+        value={confirmPassword}
+        pattern={password}
+        title="Please enter a password that matches"
         onChange={handleInputChange}
       />
       <button

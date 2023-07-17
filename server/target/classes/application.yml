@@ -5,10 +5,10 @@ spring:
     username: root
     password: jdbctest
 
-  data:
-    elasticsearch:
-      cluster-names: docker-cluster
-      cluster-node: localhost:9200
+#  data:
+#    elasticsearch:
+#      cluster-names: docker-cluster
+#      cluster-node: localhost:9200
 
 
 server:
