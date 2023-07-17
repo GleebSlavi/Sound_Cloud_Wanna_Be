@@ -7,7 +7,7 @@
   width: 100%;
   top: 9.7%;
   bottom: 8%;
-  background-color: transparent;
+  background-color: tran;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -33,10 +33,4 @@
   padding-top: 1%;
 }
 
-.header-container {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  margin-top: 6%;
-}
 

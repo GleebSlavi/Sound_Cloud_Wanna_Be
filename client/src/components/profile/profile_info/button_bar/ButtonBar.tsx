@@ -3,8 +3,6 @@ import "./button_bar.css";
 
 const ButtonBar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  console.log(location.pathname);
 
   const handleOnClickButtons = (path: string) => () => {
     navigate("/profile" + path);

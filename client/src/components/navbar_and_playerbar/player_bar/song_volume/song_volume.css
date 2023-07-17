@@ -31,15 +31,4 @@
   background-color: rgb(70, 0, 70);
 }
 
-.volume-slider::-webkit-slider-thumb {
-  color: transparent; /* Override thumb color for Chrome */
-}
-
-.volume-slider::-moz-range-thumb {
-  background-color: transparent; /* Override thumb color for Firefox */
-}
-
-.volume-slider::-ms-thumb {
-  background-color: transparent; /* Override thumb color for Edge */
-}
 

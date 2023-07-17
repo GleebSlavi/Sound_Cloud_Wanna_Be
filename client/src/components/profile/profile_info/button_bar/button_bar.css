@@ -10,10 +10,10 @@
 }
 
 .profile-button {
-  height: 60%;
-  width: 70%;
+  height: 55%;
+  width: 65%;
   font-family: 'Press Start 2P';
-  font-size: 0.9375rem;
+  font-size: 0.857rem;
   border-radius: 18px;
   border: darkmagenta;
   text-align: center;
@@ -27,16 +27,16 @@
 }
 
 .profile-button:hover {
-  height: 61%;
-  width: 71%;
-  font-size: 1rem;
+  height: 56%;
+  width: 66%;
+  font-size: 0.9375rem;
   border-radius: 19px;
 }
 
 .profile-button:active {
   transform: translate(1px, 1px);
-  height: 60%;
-  width: 70%;
-  font-size: 1rem;
+  height: 56%;
+  width: 66%;
+  font-size: 0.9375rem;
   border-radius: 18px;
 }

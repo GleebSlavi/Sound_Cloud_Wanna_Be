@@ -25,19 +25,9 @@ public class UserController {
         return service.getUsers();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("{id}")
     public UserEntity getById(@PathVariable("id") UUID id) throws NoSuchUserException {
         return service.getUserById(id);
-    }
-
-    @GetMapping("/email/{email}")
-    public UserEntity getByEmail(@PathVariable("email") String email) throws NoSuchUserException {
-        return service.getUserByEmail(email);
-    }
-
-    @GetMapping("/username/{username}")
-    public UserEntity getByUsername(@PathVariable("username") String username) throws NoSuchUserException {
-        return service.getUserByUsername(username);
     }
 
     @PostMapping

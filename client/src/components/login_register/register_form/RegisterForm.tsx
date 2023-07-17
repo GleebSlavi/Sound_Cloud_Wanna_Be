@@ -48,10 +48,9 @@ const RegisterForm = () => {
         "http://localhost:8080/api/auth/register",
         registerData
       );
-      console.log(response.data);
 
-      const token = response.data.token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("id", response.data.userId);
       navigate("/");
     } catch (error) {
       console.log(error);

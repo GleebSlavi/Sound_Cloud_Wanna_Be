@@ -2,9 +2,9 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import HomeSection from "./home/Section";
 import StreamsSection from "./streams/Section";
 import ProfileSection from "./profile/Section";
-import CreatePlaylistSection from "./profile/profile_info/user_profile_info/button_bar/create_playlist/CreatePlaylistSection";
-import AddSongSection from "./profile/profile_info/user_profile_info/button_bar/add_song/AddSongSection";
-import ChangePasswordSection from "./profile/profile_info/user_profile_info/button_bar/change_password_section.css/ChangePasswordSection";
+import CreatePlaylistSection from "./profile/profile_info/button_bar/create_playlist/CreatePlaylistSection";
+import AddSongSection from "./profile/profile_info/button_bar/add_song/AddSongSection";
+import ChangePasswordSection from "./profile/profile_info/button_bar/change_password_section.css/ChangePasswordSection";
 import LoginRegisterMain from "./login_register/Main";
 import NavbarAndPlayerBarMain from "./navbar_and_playerbar/NavbarAndPlayerBarMain";
 import { useEffect } from "react";
@@ -16,7 +16,9 @@ const AppRoutes = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!isValidToken() && isValidRoute(location.pathname)) {
+    if (/*!isValidToken()*/ false && isValidRoute(location.pathname)) {
+      localStorage.clear();
+      alert("Session expired. Log in again!")
       navigate("/login")
     }
 
@@ -43,7 +45,7 @@ const AppRoutes = () => {
     <div>
       <Routes>
         <Route path="/login" element={<LoginRegisterMain />} />
-        {isLoggedIn && (
+        {/* {isLoggedIn && ( */}
            <Route path="/" element={<NavbarAndPlayerBarMain />}>
            <Route index element={<HomeSection />} />
            <Route path="/streams" element={<StreamsSection />} />
@@ -54,10 +56,10 @@ const AppRoutes = () => {
              <Route path="create_playlist" element={<CreatePlaylistSection />} />
            </Route>
          </Route>
-        )}
-        {!isValidPath && (
+        {/* )}
+        {!isValidPath && ( */}
           <Route path="*" element={<NotFoundSection />} />
-        )}
+        {/* )} */}
       </Routes>
     </div>
   );
