@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.UserRepository;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.repositories.mappers.PlaylistRowMapper;
 import trading.bootcamp.project.repositories.mappers.UserRowMapper;
 
 import java.time.LocalDate;
@@ -57,9 +59,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<UUID> getUserFavouritePlaylistsIDs(UUID userId) {
-        return jdbcTemplate.query(Queries.GET_USER_FAVOURITE_PLAYLISTS_IDS,
-            (resultSet, rowNum) -> UUID.fromString(resultSet.getString("playlist_id")), userId.toString());
+    public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId) {
+        return jdbcTemplate.query(Queries.GET_USER_FAVOURITE_PLAYLISTS,
+                new PlaylistRowMapper(), userId.toString());
+    }
+
+    @Override
+    public int insertFavoritePlaylist(UUID userId, UUID playlistId) {
+        return jdbcTemplate.update(Queries.INSERT_FAVORITE_PLAYLIST, userId.toString(), playlistId.toString());
     }
 
     private static class Queries {
@@ -92,10 +99,16 @@ public class UserRepositoryImpl implements UserRepository {
                 WHERE id = ?;
                 """;
 
-        public final static String GET_USER_FAVOURITE_PLAYLISTS_IDS = """
-                SELECT playlist_id
-                FROM user_playlist
-                WHERE user_id = ?;
+        public final static String GET_USER_FAVOURITE_PLAYLISTS = """
+                SELECT p.id, p.user_id, p.name, p.description, p.is_all_songs, p.create_date, p.type, p.image_url
+                FROM user_playlist up
+                JOIN playlist p ON up.playlist_id = p.id
+                WHERE up.user_id = ?;
+                """;
+
+        public final static String INSERT_FAVORITE_PLAYLIST = """
+                INSERT INTO user_playlist(user_id, playlist_id)
+                VALUES(?, ?);
                 """;
     }
 }

@@ -1,10 +1,5 @@
 package trading.bootcamp.project.config;
 
-import org.apache.http.HttpHost;
-import org.apache.http.client.methods.HttpPost;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

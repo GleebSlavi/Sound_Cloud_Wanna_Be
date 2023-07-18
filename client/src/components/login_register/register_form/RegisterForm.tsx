@@ -68,8 +68,8 @@ const RegisterForm = () => {
         labelValue="Username"
         inputType="text"
         value={username}
-        pattern="^[A-Za-z][A-Za-z0-9_.-]{2,}$"
-        title="Please enter a username that starts with a letter and is more than 2 characters"
+        pattern="^[A-Za-z][A-Za-z0-9_.-]{3,}$"
+        title="Please enter a username that starts with a letter and is more than 3 characters"
         onChange={handleInputChange}
       />
       <Field

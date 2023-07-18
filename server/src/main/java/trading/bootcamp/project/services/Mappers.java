@@ -18,11 +18,11 @@ public class Mappers {
 
     public static PlaylistEntity fromPlaylistInput(PlaylistInput playlist) {
         return new PlaylistEntity(UUID.randomUUID(), playlist.getUserId(), playlist.getName(),
-            playlist.getDescription(), LocalDate.now(), playlist.getType(), playlist.getImageUrl());
+            playlist.getDescription(), false, LocalDate.now(), playlist.getType(), playlist.getImageUrl());
     }
 
     public static SongEntity fromSongInput(SongInput song) {
         return new SongEntity(UUID.randomUUID(), song.getUserid(), song.getName(), song.getArtist(),
-            song.getReleaseYear(), song.getGenre(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
+            song.getReleaseYear(), song.getType(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
     }
 }

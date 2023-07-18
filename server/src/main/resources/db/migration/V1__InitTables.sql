@@ -26,6 +26,7 @@ CREATE TABLE playlist(
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255),
     create_date DATE NOT NULL,
+    is_all_songs BOOLEAN NOT NULL,
     type VARCHAR(255) NOT NULL,
     image_url VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE

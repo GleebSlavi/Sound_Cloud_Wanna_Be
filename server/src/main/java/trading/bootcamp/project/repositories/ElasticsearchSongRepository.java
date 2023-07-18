@@ -1,6 +1,5 @@
 package trading.bootcamp.project.repositories;
 
-import trading.bootcamp.project.repositories.entities.searches.ElasticsearchSongEntity;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 
 import java.util.List;

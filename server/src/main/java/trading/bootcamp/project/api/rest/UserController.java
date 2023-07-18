@@ -6,6 +6,7 @@ import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.exceptions.InvalidEmailException;
 import trading.bootcamp.project.exceptions.InvalidPasswordException;
 import trading.bootcamp.project.exceptions.NullUserDetailsException;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 import trading.bootcamp.project.exceptions.NoSuchUserException;
 import trading.bootcamp.project.services.UserService;
@@ -40,8 +41,8 @@ public class UserController {
         return service.deleteUser(id);
     }
 
-    @GetMapping("/playlists/{userId}")
-    public List<UUID> getUserFavouritePlaylistsIDs(@PathVariable("userId") UUID userId) {
-        return service.getUserFavouritePlaylistsIDs(userId);
+    @GetMapping("/{userId}/playlists")
+    public List<PlaylistEntity> getUserFavouritePlaylists(@PathVariable("userId") UUID userId) {
+        return service.getUserFavouritePlaylists(userId);
     }
 }

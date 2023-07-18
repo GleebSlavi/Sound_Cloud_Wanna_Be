@@ -12,7 +12,6 @@ import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +48,7 @@ public class SongService {
 
         SongEntity song = Mappers.fromSongInput(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
-            song.artist(), song.releaseYear(), song.genre(), song.uploadDate(),
+            song.artist(), song.releaseYear(), song.type(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the song");
         }

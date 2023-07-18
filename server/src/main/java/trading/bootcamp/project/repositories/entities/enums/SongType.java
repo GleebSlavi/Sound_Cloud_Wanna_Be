@@ -1,7 +1,7 @@
 package trading.bootcamp.project.repositories.entities.enums;
 
-public enum Type {
+public enum SongType {
 
-    PRIVATE,
-    PUBLIC
+    FREE,
+    PAID
 }

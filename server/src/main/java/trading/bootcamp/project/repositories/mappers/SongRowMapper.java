@@ -1,8 +1,8 @@
 package trading.bootcamp.project.repositories.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
+import trading.bootcamp.project.repositories.entities.enums.SongType;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
-import trading.bootcamp.project.repositories.entities.enums.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ public class SongRowMapper implements RowMapper<SongEntity> {
             resultSet.getString("name"),
             resultSet.getString("artist"),
             resultSet.getInt("release_year"),
-            Genre.valueOf(resultSet.getString("genre")),
+            SongType.valueOf(resultSet.getString("type")),
             resultSet.getDate("upload_date").toLocalDate(),
             resultSet.getString("image_url"),
             resultSet.getString("cloud_url")

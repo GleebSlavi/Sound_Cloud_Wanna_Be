@@ -10,7 +10,9 @@ import trading.bootcamp.project.auth.requests.AuthenticationRequest;
 import trading.bootcamp.project.auth.requests.RegisterRequest;
 import trading.bootcamp.project.auth.responses.AuthenticationResponse;
 import trading.bootcamp.project.exceptions.*;
+import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.UserRepository;
+import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 
 import java.time.LocalDate;
@@ -24,6 +26,8 @@ public class AuthenticationService {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
     private final UserRepository userRepository;
+
+    private final PlaylistRepository playlistRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -45,8 +49,8 @@ public class AuthenticationService {
             throw new NullUserDetailsException("Email, username and password can not be null");
         }
 
-        if (username.isBlank() || username.strip().length() < 3) {
-            throw new InvalidUsernameException("Username can't be less than 3 symbols");
+        if (username.isBlank() || username.strip().length() < 4) {
+            throw new InvalidUsernameException("Username can't be less than 4 symbols");
         }
 
         if (isInvalidEmail(email)) {
@@ -61,6 +65,12 @@ public class AuthenticationService {
                 email, passwordEncoder.encode(password), LocalDate.now(), null);
         userRepository.createUser(user.getId(), user.getUsername(),
                 user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl());
+
+        UUID playlistId = UUID.randomUUID();
+        playlistRepository.createPlaylist(playlistId, user.getId(), "All songs",
+                "Playlist that consists of all uploaded songs", true, LocalDate.now(), PlaylistType.PUBLIC, null);
+        userRepository.insertFavoritePlaylist(user.getId(), playlistId);
+
 
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

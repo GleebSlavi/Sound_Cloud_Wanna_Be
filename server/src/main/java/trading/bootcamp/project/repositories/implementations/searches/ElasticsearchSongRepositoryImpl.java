@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.elasticsearch.client.RestClient;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.ElasticsearchSongRepository;
-import trading.bootcamp.project.repositories.entities.searches.ElasticsearchSongEntity;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 
 import java.util.List;

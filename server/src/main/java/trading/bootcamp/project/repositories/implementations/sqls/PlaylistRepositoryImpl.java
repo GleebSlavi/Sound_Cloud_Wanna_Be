@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.enums.Type;
+import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 import trading.bootcamp.project.repositories.mappers.PlaylistRowMapper;
 
 import java.time.LocalDate;
@@ -34,10 +34,10 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
-    public int createPlaylist(UUID id, UUID userId, String name, String description, LocalDate createDate, Type type) {
+    public int createPlaylist(UUID id, UUID userId, String name, String description, boolean isAllSongs, LocalDate createDate, PlaylistType type, String imageUrl) {
         return jdbcTemplate.update(Queries.INSERT_PLAYLIST,
-                id.toString(), userId.toString(), name, description,
-                createDate.toString(), type.name());
+                id.toString(), userId.toString(), name, description, isAllSongs,
+                createDate.toString(), type.name(), imageUrl);
     }
 
     @Override
@@ -54,21 +54,21 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     private static class Queries {
 
         public final static String LIST_PLAYLISTS_BY_USER = """
-                SELECT id, user_id, name, description, create_date, type, image_url
+                SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url
                 FROM playlist
                 WHERE user_id = ?
                 LIMIT 100;
                 """;
 
         public final static String GET_PLAYLIST_BY_ID = """
-                SELECT id, user_id, name, description, create_date, type, image_url
+                SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url
                 FROM playlist
                 WHERE id = ?;
                 """;
 
         public final static String INSERT_PLAYLIST = """
-                INSERT INTO playlist(id, user_id, name, description, create_date, type, image_url)
-                VALUES(?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO playlist(id, user_id, name, description, is_all_songs, create_date, type, image_url)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_PLAYLIST = """

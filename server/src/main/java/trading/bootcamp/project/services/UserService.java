@@ -7,6 +7,7 @@ import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.auth.services.AuthenticationService;
 import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.UserRepository;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 
 import java.util.List;
@@ -58,8 +59,8 @@ public class UserService {
             throw new NullUserDetailsException("Email, username and password can not be null");
         }
 
-        if (username.isBlank() || username.strip().length() < 3) {
-            throw new InvalidUsernameException("Username can't be less than 3 symbols");
+        if (username.isBlank() || username.strip().length() < 4) {
+            throw new InvalidUsernameException("Username can't be less than 4 symbols");
         }
 
         if (AuthenticationService.isInvalidEmail(email)) {
@@ -90,7 +91,8 @@ public class UserService {
         return user.get();
     }
 
-    public List<UUID> getUserFavouritePlaylistsIDs(UUID userId) {
-        return repository.getUserFavouritePlaylistsIDs(userId);
+
+    public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId) {
+        return repository.getUserFavouritePlaylists(userId);
     }
 }

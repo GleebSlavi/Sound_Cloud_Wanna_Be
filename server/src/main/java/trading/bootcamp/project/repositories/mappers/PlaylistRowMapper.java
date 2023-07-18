@@ -2,7 +2,7 @@ package trading.bootcamp.project.repositories.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.enums.Type;
+import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,8 +16,9 @@ public class PlaylistRowMapper implements RowMapper<PlaylistEntity> {
                 UUID.fromString(resultSet.getString("user_id")),
                 resultSet.getString("name"),
                 resultSet.getString("description"),
+                resultSet.getBoolean("is_all_songs"),
                 resultSet.getDate("create_date").toLocalDate(),
-                Type.valueOf(resultSet.getString("type")),
+                PlaylistType.valueOf(resultSet.getString("type")),
                 resultSet.getString("image_url"));
     }
 }

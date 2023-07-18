@@ -38,7 +38,7 @@ public class PlaylistService {
 
         PlaylistEntity playlist = Mappers.fromPlaylistInput(playlistInput);
         if (repository.createPlaylist(playlist.id(), playlist.userId(), playlist.name(),
-                playlist.description(), playlist.createDate(), playlist.type()) != 1) {
+                playlist.description(), false, playlist.createDate(), playlist.type(), playlist.imageUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the playlist");
         }
         return playlist;

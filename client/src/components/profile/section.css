@@ -1,22 +1,21 @@
 
 .profile-section {
   display: grid;
-  grid-template-rows: 2fr 0.5fr 4fr;
+  grid-template-rows: 2fr 0.8fr 4fr;
   position: absolute;
   justify-items: center;
   width: 100%;
   top: 9.7%;
   bottom: 8%;
-  background-color: tran;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  margin-bottom: 1%;
+  background-color: transparent;
+  overflow-y: auto;
 }
 
 .playlists-header-container {
   display: grid;
   height: 100%;
   width: 95%;
-  margin-top: 1%;
   align-items: center;
   justify-items: start;
   border-top: solid white;
@@ -25,12 +24,27 @@
 
 .playlists-header {
   width: 95%;
+  height: 100%;
   font-family: 'Press Start 2P';
   color: white;
   font-size: 1.5rem;
   margin: 0;
   margin-left: 3%;
+  padding-top: 2.5%;
+  align-content: center;
+}
+
+
+.profile-playlists-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 45%;
+  gap: 1.5%;
+  width: 85%;
+  height: 100vh;
+  justify-items: center;
   padding-top: 1%;
 }
+
 
 

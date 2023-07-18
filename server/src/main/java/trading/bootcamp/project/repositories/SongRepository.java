@@ -1,7 +1,7 @@
 package trading.bootcamp.project.repositories;
 
+import trading.bootcamp.project.repositories.entities.enums.SongType;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
-import trading.bootcamp.project.repositories.entities.enums.Genre;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface SongRepository {
     Optional<SongEntity> getSongById(UUID id);
 
     int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear,
-                   Genre genre, LocalDate uploadDate, String imageUrl, String couldUrl);
+                   SongType type, LocalDate uploadDate, String imageUrl, String couldUrl);
 
     int deleteSong(UUID id);
 }
