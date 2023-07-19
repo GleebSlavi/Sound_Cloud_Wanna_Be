@@ -40,36 +40,43 @@ public class AuthenticationService {
         return !pattern.matcher(email).matches();
     }
 
-    public AuthenticationResponse register(RegisterRequest request) throws InvalidPasswordException, NullUserDetailsException, InvalidEmailException {
+    public AuthenticationResponse register(RegisterRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
         String username = request.getUsername();
 
-        if (username == null || email == null || password == null) {
-            throw new NullUserDetailsException("Email, username and password can not be null");
-        }
-
         if (username.isBlank() || username.strip().length() < 4) {
-            throw new InvalidUsernameException("Username can't be less than 4 symbols");
+            throw new InvalidFieldException("Username can't be less than 4 symbols");
         }
 
         if (isInvalidEmail(email)) {
-            throw new InvalidEmailException("Invalid email");
+            throw new InvalidFieldException("Invalid email");
         }
 
         if (password.isBlank() || password.length() < 8) {
-            throw new InvalidPasswordException("Password must be 8 or more symbols");
+            throw new InvalidFieldException("Password must be 8 or more symbols");
         }
 
         UserEntity user = new UserEntity(UUID.randomUUID(), request.getUsername(),
                 email, passwordEncoder.encode(password), LocalDate.now(), null);
-        userRepository.createUser(user.getId(), user.getUsername(),
-                user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl());
+
+        if (userRepository.createUser(user.getId(), user.getUsername(),
+                user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl()) != 1) {
+            throw new IllegalStateException("Couldn't create the user");
+        }
 
         UUID playlistId = UUID.randomUUID();
-        playlistRepository.createPlaylist(playlistId, user.getId(), "All songs",
-                "Playlist that consists of all uploaded songs", true, LocalDate.now(), PlaylistType.PUBLIC, null);
-        userRepository.insertFavoritePlaylist(user.getId(), playlistId);
+        if (playlistRepository.createPlaylist(playlistId, user.getId(), "All songs", "Playlist that consists of all uploaded songs",
+                true, LocalDate.now(), PlaylistType.PUBLIC, null) != 1) {
+            userRepository.deleteUser(user.getId());
+            throw new IllegalStateException("Couldn't create all songs playlist");
+        }
+
+        if (userRepository.insertFavoritePlaylist(user.getId(), playlistId) != 1) {
+            userRepository.deleteUser(user.getId());
+            playlistRepository.deletePlaylist(playlistId);
+            throw new IllegalStateException("Couldn't add the favorite playlist");
+        }
 
 
         String jwtToken = jwtService.generateToken(user);
@@ -79,16 +86,11 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) throws NullUserDetailsException, NoSuchUserException {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
 
-        if (username == null || password == null) {
-            throw new NullUserDetailsException("Email or password are null");
-        }
-
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        //new UsernamePasswordAuthenticationToken(username, password);
         UserEntity user = userRepository.getUserByUsername(username)
                 .orElseThrow(() -> new NoSuchUserException("User not found"));
 

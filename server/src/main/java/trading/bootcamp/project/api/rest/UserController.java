@@ -1,14 +1,12 @@
 package trading.bootcamp.project.api.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
-import trading.bootcamp.project.exceptions.InvalidEmailException;
-import trading.bootcamp.project.exceptions.InvalidPasswordException;
-import trading.bootcamp.project.exceptions.NullUserDetailsException;
+import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
-import trading.bootcamp.project.exceptions.NoSuchUserException;
 import trading.bootcamp.project.services.UserService;
 
 import java.util.List;
@@ -31,9 +29,18 @@ public class UserController {
         return service.getUserById(id);
     }
 
-    @PostMapping
-    public UserEntity createUser(@RequestBody UserInput user) throws NullUserDetailsException, InvalidPasswordException, InvalidEmailException {
-        return service.addUser(user);
+    @PatchMapping("{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable("id") UUID id, @RequestBody UserInput user) {
+        try {
+            service.updateUser(id, user);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchUserException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (InvalidFieldException ex) {
+            return ResponseEntity.badRequest().build();
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @DeleteMapping("{id}")

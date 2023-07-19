@@ -7,5 +7,5 @@ export interface Playlist {
   isAllSongs: boolean;
   createDate: string;
   type: string;
-  imageUrl: string;
+  imageUrl: string | null;
 }

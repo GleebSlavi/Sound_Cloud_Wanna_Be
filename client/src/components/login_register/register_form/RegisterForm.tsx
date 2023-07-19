@@ -12,6 +12,19 @@ const RegisterForm = () => {
 
   const navigate = useNavigate();
 
+  const handleErrors = (error: unknown) => {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 400) {
+        alert(error.message)
+      } else if (error.response.status === 500) {
+        alert("There is a problem with the server! Try again later!");
+      } 
+      else {
+        alert(`An error occured: ${error.message}`);
+      }
+    }
+  }
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -53,7 +66,7 @@ const RegisterForm = () => {
       localStorage.setItem("id", response.data.userId);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      handleErrors(error);
     }
 
     setUsername("");
@@ -63,7 +76,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="register-form">
+    <form className="register-form" onSubmit={handleRegistration}>
       <Field
         labelValue="Username"
         inputType="text"
@@ -99,7 +112,6 @@ const RegisterForm = () => {
       <button
         className="register-form-button"
         type="submit"
-        onClick={handleRegistration}
       >
         Register
       </button>

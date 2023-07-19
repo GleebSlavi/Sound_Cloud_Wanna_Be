@@ -14,6 +14,10 @@ public interface PlaylistRepository {
 
     Optional<PlaylistEntity> getPlaylistById(UUID id);
 
+    Optional<PlaylistEntity> getPlaylistByName(String name);
+
+    Optional<PlaylistEntity> getPlaylistByNameAndUserId(UUID userId, String playlistName);
+
     int createPlaylist(UUID id, UUID userId, String name, String description, boolean isAllSongs, LocalDate createDate, PlaylistType type, String imageUrl);
 
     int deletePlaylist(UUID id);

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-interface FieldProps {
+interface Props {
   labelValue: string;
   inputType: string;
   value: string;
@@ -12,7 +12,7 @@ interface FieldProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; 
 }
 
-const Field = ({ labelValue, inputType, value, pattern, title, onChange }: FieldProps) => {
+const Field = ({ labelValue, inputType, value, pattern, title, onChange }: Props) => {
   const lowerCaseLabel: string = labelValue.toLowerCase();
   const [showPassword, setShowPassword] = useState(false);
 

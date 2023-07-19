@@ -59,6 +59,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public int updateUserPassword(UUID id, String password) {
+        return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "password"), password, id.toString());
+    }
+
+    @Override
+    public int updateUserImageUrl(UUID id, String imageUrl) {
+        return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "image_url"), imageUrl, id.toString());
+    }
+
+    @Override
     public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId) {
         return jdbcTemplate.query(Queries.GET_USER_FAVOURITE_PLAYLISTS,
                 new PlaylistRowMapper(), userId.toString());
@@ -70,6 +80,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private static class Queries {
+
+        public final static String UPDATE_USER = """
+                UPDATE user
+                SET %s = ?
+                WHERE id = ?;
+                """;
 
         private final static String GET_USER_BY = """
                 SELECT id, username, email, password, create_date, image_url

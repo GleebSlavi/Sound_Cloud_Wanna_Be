@@ -50,33 +50,31 @@ public class UserService {
         return user.get();
     }
 
-    public UserEntity addUser(UserInput userInput) throws NullUserDetailsException, InvalidPasswordException, InvalidEmailException {
-        String email = userInput.getEmail();
-        String password = userInput.getPassword();
-        String username = userInput.getUsername();
-
-        if (username == null || email == null || password == null) {
-            throw new NullUserDetailsException("Email, username and password can not be null");
+    public void updateUser(UUID id, UserInput inputUser) {
+        Optional<UserEntity> user = repository.getUserById(id);
+        if (user.isEmpty()) {
+            throw new NoSuchUserException("There is no user with such id");
         }
 
-        if (username.isBlank() || username.strip().length() < 4) {
-            throw new InvalidUsernameException("Username can't be less than 4 symbols");
+        if (inputUser.getOldPassword() != null && inputUser.getNewPassword() != null) {
+            if (!passwordEncoder.matches(inputUser.getOldPassword(), user.get().getPassword())) {
+                throw new InvalidFieldException("Passwords don't match");
+            }
+
+            if (inputUser.getNewPassword().strip().length() < 8) {
+                throw new InvalidFieldException("New password must be more than 7 characters!");
+            }
+
+            if(repository.updateUserPassword(id, passwordEncoder.encode(inputUser.getNewPassword())) != 1) {
+                throw new IllegalStateException("Couldn't update the user");
+            }
         }
 
-        if (AuthenticationService.isInvalidEmail(email)) {
-            throw new InvalidEmailException("Invalid email");
+        if (inputUser.getImageUrl() != null) {
+            if (repository.updateUserImageUrl(id, inputUser.getImageUrl()) != 1) {
+                throw new IllegalStateException("Couldn't update the user");
+            }
         }
-
-        if (password.isBlank() || password.length() < 8) {
-            throw new InvalidPasswordException("Password must be 8 or more symbols");
-        }
-
-        UserEntity user = Mappers.fromUserInput(userInput);
-        if (repository.createUser(user.getId(), user.getUsername(), email,
-            passwordEncoder.encode(password), user.getCreateDate(), user.getImageUrl()) != 1) {
-            throw new IllegalStateException("Couldn't insert the user");
-        }
-        return user;
     }
 
     public UserEntity deleteUser(UUID id) throws NoSuchUserException {

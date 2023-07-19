@@ -2,11 +2,11 @@ import "./profile_info.css";
 import ButtonBar from "./button_bar/ButtonBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import default_picture from './pictures/default_profile_picture.png'
+import default_picture from '../../pictures/default_profile_picture.png'
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -26,7 +26,7 @@ const ProfileInfo = () => {
     <div className="profile-container">
       <div className="profile-picture-container">
         <img className="profile-picture" src={
-          imageUrl === "" ? default_picture : ""
+          !imageUrl ? default_picture : ""
         } />
       </div>
       <div className="user-profile-info-container">

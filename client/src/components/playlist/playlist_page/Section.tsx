@@ -3,7 +3,7 @@ import "./section.css"
 import { useEffect, useState } from "react";
 import { Playlist } from "../../../interfaces/Playlists";
 import axios from "axios";
-import default_playlist_picture from "../pictures/playlist_default_picture.png"
+import default_playlist_picture from "../../pictures/playlist_default_picture.png"
 
 const PlaylistPageSection = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const PlaylistPageSection = () => {
     isAllSongs: false,
     createDate: "",
     type: "",
-    imageUrl: ""
+    imageUrl: null
   });
   const [username, setUsername] = useState("");
 

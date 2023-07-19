@@ -4,6 +4,7 @@ package trading.bootcamp.project.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
+import trading.bootcamp.project.exceptions.InvalidFieldException;
 import trading.bootcamp.project.exceptions.InvalidPlaylistNameException;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.PlaylistRepository;
@@ -31,9 +32,19 @@ public class PlaylistService {
         return playlist.get();
     }
 
+    public PlaylistEntity getPlaylistByNameAndUserId(UUID userId, String playlistName) {
+        Optional<PlaylistEntity> playlist = repository.getPlaylistByNameAndUserId(userId, playlistName);
+        return playlist.orElse(null);
+    }
+
+    public PlaylistEntity getPlaylistByName(String name) {
+        Optional<PlaylistEntity> playlist = repository.getPlaylistByName(name);
+        return playlist.orElse(null);
+    }
+
     public PlaylistEntity addPlaylist(PlaylistInput playlistInput) {
         if (playlistInput.getName().strip().length() < 1) {
-            throw new InvalidPlaylistNameException("Playlist name can't be less than 1 symbol");
+            throw new InvalidFieldException("Playlist name can't be less than 1 symbol");
         }
 
         PlaylistEntity playlist = Mappers.fromPlaylistInput(playlistInput);

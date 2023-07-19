@@ -10,6 +10,19 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const handleErrors = (error: unknown) => {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 404) {
+        alert("Invalid user! Try again!")
+      } else if (error.response.status === 400) {
+        alert("Invalid login data! Please try again!");
+      }
+      else {
+        alert(`An error occured: ${error.message}`);
+      }
+    }
+  }
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -29,7 +42,7 @@ const Login = () => {
   const handleLogin = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
-    const registerData = {
+    const loginData = {
       username: username,
       password: password,
     };
@@ -37,19 +50,19 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/auth/authenticate",
-        registerData
+        loginData
       );
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.userId);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      handleErrors(error);
     }
   };
 
   return (
-    <form className="login-form">
+    <form className="login-form" onSubmit={handleLogin}>
       <Field
         labelValue="Username"
         inputType="text"
@@ -66,7 +79,7 @@ const Login = () => {
         title="Please enter a password with more than 7 non-whitespace characters"
         onChange={handleInputChange}
       />
-      <button className="login-form-button" type="submit" onClick={handleLogin}>
+      <button className="login-form-button" type="submit">
         Login
       </button>
     </form>

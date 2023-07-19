@@ -26,7 +26,7 @@ public class UserEntity implements UserDetails {
 
     private final String imageUrl;
 
-    private Role role;
+    private final Role role;
 
     public UserEntity(UUID id, String username, String email,
                       String password, LocalDate createDate, String imageUrl) {

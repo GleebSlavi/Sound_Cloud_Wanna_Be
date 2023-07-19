@@ -50,7 +50,7 @@ const HomeSection = () => {
       </div>
       <div className="home-playlists-container">
       {items.map((item, index) => (
-          <PlaylistBox id={item.id} name={item.name} creator={usernames[index]} imageUrl={item.imageUrl ? item.imageUrl : ""} />
+          <PlaylistBox id={item.id} name={item.name} creator={usernames[index]} imageUrl={item.imageUrl} />
         ))}
       </div>
     </section>

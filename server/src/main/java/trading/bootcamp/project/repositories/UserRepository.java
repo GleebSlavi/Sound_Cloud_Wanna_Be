@@ -21,6 +21,10 @@ public interface UserRepository {
 
     int deleteUser(UUID id);
 
+    int updateUserPassword(UUID id, String password);
+
+    int updateUserImageUrl(UUID id, String imageUrl);
+
     List<PlaylistEntity> getUserFavouritePlaylists(UUID userId);
 
     int insertFavoritePlaylist(UUID userId, UUID playlistId);

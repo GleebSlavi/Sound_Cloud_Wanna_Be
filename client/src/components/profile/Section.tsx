@@ -36,7 +36,7 @@ const ProfileSection = () => {
       </div>
       <div className="profile-playlists-container">
         {items.map((item) => (
-          <PlaylistBox id={item.id} name={item.name} creator="you" imageUrl={item.imageUrl ? item.imageUrl : ""} />
+          <PlaylistBox id={item.id} name={item.name} creator="you" imageUrl={item.imageUrl} />
         ))}
       </div>
     </section>
