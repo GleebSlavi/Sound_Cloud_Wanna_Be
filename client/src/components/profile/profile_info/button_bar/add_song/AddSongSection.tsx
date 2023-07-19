@@ -6,6 +6,7 @@ import default_song_picture from '../../../../pictures/default_song_picture.png'
 
 const AddSongSection = () => {
   const [isFreeSong, setFreeSong] = useState(true);
+  const [imageUrl, setImageUrl] = useState(null);
 
   return (
     <section className="add-song-section">
@@ -17,7 +18,8 @@ const AddSongSection = () => {
         <div className="add-song-data-container">
           <div className="song-picture-upload-container">
             <div className="song-picture-container">
-              <img className="song-picture" src={default_song_picture}/>
+              <img className="song-picture" src={
+                !imageUrl ? default_song_picture : imageUrl}/>
             </div>
             <div className="upload-container">
               <div className="upload-button-container">
