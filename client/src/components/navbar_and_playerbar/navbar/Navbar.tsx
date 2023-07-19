@@ -9,6 +9,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    alert("You are leaving SoundCloud Wanna-Be! Goodbye :c !");
     navigate("/login");
   };
 

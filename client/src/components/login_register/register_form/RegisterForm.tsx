@@ -64,6 +64,7 @@ const RegisterForm = () => {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.userId);
+      alert("Welcome to SoundCloud Wanna-Be :D");
       navigate("/");
     } catch (error) {
       handleErrors(error);
