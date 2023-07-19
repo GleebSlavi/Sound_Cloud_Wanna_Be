@@ -2,6 +2,7 @@ import "./add_song_section.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import default_song_picture from '../../../../pictures/default_song_picture.png'
 
 const AddSongSection = () => {
   const [isFreeSong, setFreeSong] = useState(true);
@@ -16,7 +17,7 @@ const AddSongSection = () => {
         <div className="add-song-data-container">
           <div className="song-picture-upload-container">
             <div className="song-picture-container">
-              <div className="song-picture"></div>
+              <img className="song-picture" src={default_song_picture}/>
             </div>
             <div className="upload-container">
               <div className="upload-button-container">
