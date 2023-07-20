@@ -19,7 +19,6 @@ const AppRoutes = () => {
   useEffect(() => {
     if (/*!isValidToken()*/ false && isValidRoute(location.pathname)) {
       localStorage.clear();
-      alert("Session expired. Log in again!")
       navigate("/login")
     }
 
@@ -48,7 +47,7 @@ const AppRoutes = () => {
     <div>
       <Routes>
         <Route path="/login" element={<LoginRegisterMain />} />
-        {/* {isLoggedIn && ( */}
+         {/* {isLoggedIn && ( */}
            <Route path="/" element={<NavbarAndPlayerBarMain />}>
             <Route index element={<HomeSection />} />
             <Route path="/streams" element={<StreamsSection />} />
@@ -61,7 +60,7 @@ const AppRoutes = () => {
            <Route path="/playlist/:uuid" element={<PlaylistPageSection />} />
          </Route>
         {/* )}
-        {!isValidPath && ( */}
+        {!isValidPath && (  */}
           <Route path="*" element={<NotFoundSection />} />
         {/* )} */}
       </Routes>

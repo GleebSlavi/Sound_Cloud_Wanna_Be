@@ -20,7 +20,7 @@ const RegisterForm = () => {
         alert("There is a problem with the server! Try again later!");
       } 
       else {
-        alert(`An error occured: ${error.message}`);
+        alert(`An error occured: ${error.response.data.message}`);
       }
     }
   }

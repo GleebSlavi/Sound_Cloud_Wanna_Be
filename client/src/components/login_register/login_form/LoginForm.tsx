@@ -18,7 +18,7 @@ const Login = () => {
         alert("Invalid login data! Please try again!");
       }
       else {
-        alert(`An error occured: ${error.message}`);
+        alert(`An error occured: ${error.response.data.message}`);
       }
     }
   }

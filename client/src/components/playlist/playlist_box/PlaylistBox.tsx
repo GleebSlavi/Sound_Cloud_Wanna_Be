@@ -1,5 +1,5 @@
 import "./playlist_box.css"
-import playlist_default_picture from '../../pictures/playlist_default_picture.png'
+import playlist_default_picture from '../../../pictures/playlist_default_picture.png'
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {

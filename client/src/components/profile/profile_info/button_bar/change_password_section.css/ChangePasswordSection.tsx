@@ -15,9 +15,11 @@ const ChangePasswordSection = () => {
   const handleErros = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
       if (error.response.status === 404) {
-        alert("Invalid user! Log in again!")
+        alert("Invalid user! Log in again!");
+        localStorage.clear()
+        navigate("/login")
       } else if (error.response.status === 400) {
-        alert("The old password doesn't match the current one");
+        alert("The old password doesn't match or the new is less than 8 chracters!");
       } else if (error.response.status === 500) {
         alert("There is a problem with the server! Try again later!");
       } else {

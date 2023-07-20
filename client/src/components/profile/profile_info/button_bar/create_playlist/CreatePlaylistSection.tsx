@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./create_playlist_section.css"
-import default_playlist_picture from "../../../../pictures/playlist_default_picture.png"
+import default_playlist_picture from "../../../../../pictures/playlist_default_picture.png"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +34,7 @@ const CreatePlaylistSection = () => {
           } else if (error.response.status === 500) {
             alert("There is a problem with the server! Try again later!");
           } else {
-            alert(`An error occured: ${error.message}`);
+            alert(`An error occured: ${error.response.data.message}`);
           }
         }
       })
@@ -54,7 +54,7 @@ const CreatePlaylistSection = () => {
           if (error.response.status === 404) {
             handleNotFoundPlaylist();
           } else {
-            alert(`An error occured: ${error.message}`)
+            alert(`An error occured: ${error.response.data.message}`)
           }
         }
       }

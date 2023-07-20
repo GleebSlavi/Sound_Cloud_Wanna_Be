@@ -122,6 +122,7 @@
   justify-items: center;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .song-picture-container {
@@ -130,6 +131,9 @@
   justify-items: center;
   width: 100%;
   height: 100%;
+  position: relative;
+  border-radius: 100%;
+  transition: opacity 0.15s;
 }
 
 .song-picture {
@@ -137,6 +141,31 @@
   width: 65%;
   height: 70%;
   border-radius: 10px;
+  transition: filter 0.15s;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.change-image-text-song {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: 'Press Start 2P';
+  font-size: 1.125rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.song-picture:hover {
+  filter: brightness(70%);
+}
+
+.song-picture-container:hover .change-image-text-song{
+  opacity: 1;
 }
 
 .song-label {
@@ -267,6 +296,7 @@
   height: 72%;
   align-items: start;
   justify-items: start;
+  cursor: pointer;
 }
 
 .uploaded-song-icon {
