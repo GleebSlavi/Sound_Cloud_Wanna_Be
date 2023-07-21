@@ -1,9 +1,9 @@
-import "./add_song_section.css"
+import "./add_song_section.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faL, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
-import default_song_picture from '../../../../../pictures/default_song_picture.png'
-import {uploadFileToS3} from "../../../../../s3";
+import default_song_picture from "../../../../../pictures/default_song_picture.png";
+import { uploadFileToS3 } from "../../../../../s3";
 import axios from "axios";
 import { songsEndpoint } from "../../../../../reusable";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const AddSongSection = () => {
   const [fileUrl, setFileUrl] = useState<string>("");
   const [hovering, setHovering] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [audioSrc, setAudioSrc] = useState('');
+  const [audioSrc, setAudioSrc] = useState("");
 
   const fileInputRefSong = useRef<HTMLInputElement>(null);
   const fileInputRefImg = useRef<HTMLInputElement>(null);
@@ -28,14 +28,16 @@ const AddSongSection = () => {
   const navigate = useNavigate();
 
   const handleFileSelectSong = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const selectedFile = event.target.files && event.target.files[0];
-      if (selectedFile) {
-        setFile(selectedFile);
-        setAudioSrc(URL.createObjectURL(selectedFile));
-      }
-  }
+    const selectedFile = event.target.files && event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setAudioSrc(URL.createObjectURL(selectedFile));
+    }
+  };
 
-  const handleFileSelectImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelectImg = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const selectedFile = event.target.files && event.target.files[0];
     if (selectedFile) {
       setImage(selectedFile);
@@ -45,7 +47,7 @@ const AddSongSection = () => {
       };
       reader.readAsDataURL(selectedFile);
     }
-}
+  };
 
   const handleIconClick = () => {
     if (file) {
@@ -57,16 +59,26 @@ const AddSongSection = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
     }
-  }
+  };
 
   const handleAddSong = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
     if (file) {
-      await uploadFileToS3(file, process.env.REACT_APP_AWS_SONGS_BUCKET, setFileUrl);
+      await uploadFileToS3(
+        file,
+        process.env.REACT_APP_AWS_SONGS_BUCKET,
+        setFileUrl,
+        null
+      );
 
       if (image) {
-        await uploadFileToS3(image, process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET, setImageUrl);
+        await uploadFileToS3(
+          image,
+          process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET,
+          setImageUrl,
+          null
+        );
       }
 
       const songData = {
@@ -77,21 +89,18 @@ const AddSongSection = () => {
         duration: duration,
         type: isFreeSong ? "FREE" : "PAID",
         imageUrl: imageUrl ? imageUrl : null,
-        cloudUrl: fileUrl
-      }
+        cloudUrl: fileUrl,
+      };
 
       try {
-        await axios.post(
-          `${songsEndpoint}`,
-          songData
-        )
+        await axios.post(`${songsEndpoint}`, songData);
         alert(`Successfuly uploaded ${name} by ${artist}`);
         navigate("/profile");
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           if (error.response.status === 400) {
             alert("Song name and artist can't be less than 1 character!");
-          } else if (error.response.status === 500){
+          } else if (error.response.status === 500) {
             alert("There is a problem with the server! Try again later!");
           } else {
             alert(`An error occured: ${error.response.data.message}`);
@@ -101,7 +110,7 @@ const AddSongSection = () => {
       return;
     }
     alert("You need to upload an .mp3 file!");
-  }
+  };
 
   return (
     <section className="add-song-section">
@@ -110,124 +119,146 @@ const AddSongSection = () => {
           <h2 className="add-song-header">Add Song</h2>
         </div>
         <form className="add-song-form" onSubmit={handleAddSong}>
-        <div className="add-song-data-container">
-          <div className="song-picture-upload-container">
-            <div className="song-picture-container">
-              <img className="song-picture"
-                src={!imageUrl ? default_song_picture : imageUrl}
-                onClick={() => fileInputRefImg.current?.click()}
-                onMouseEnter={() => setHovering(true)}
-                onMouseLeave={() => setHovering(false)}/>
-                {hovering && <span className="change-image-text-song">Add photo</span>}
-                <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRefImg}
-                style={{ display: 'none' }}
-                onChange={handleFileSelectImg}
+          <div className="add-song-data-container">
+            <div className="song-picture-upload-container">
+              <div className="song-picture-container">
+                <img
+                  className="song-picture"
+                  src={!imageUrl ? default_song_picture : imageUrl}
+                  onClick={() => fileInputRefImg.current?.click()}
+                  onMouseEnter={() => setHovering(true)}
+                  onMouseLeave={() => setHovering(false)}
                 />
-            </div>
-            <div className="upload-container">
-              <div className="upload-button-container">
-                <button className="upload-button" type="button"
-                onClick={() => fileInputRefSong.current?.click()}>Upload song</button>
+                {hovering && (
+                  <span className="change-image-text-song">Add photo</span>
+                )}
                 <input
-                type="file"
-                ref={fileInputRefSong}
-                style={{ display: 'none' }}
-                accept=".mp3"
-                onChange={handleFileSelectSong}
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRefImg}
+                  style={{ display: "none" }}
+                  onChange={handleFileSelectImg}
                 />
-                <audio ref={audioRef} controls={false} preload="metadata" 
-                src={audioSrc} onLoadedMetadata={handleMetadataLoaded}/>
               </div>
-              <div className="uploaded-song-icon-container">
-                <FontAwesomeIcon className="uploaded-song-icon" icon={!file ? faX : faCheck}
-                onClick={handleIconClick}/>
-              </div>
-          </div>
-          </div>
-          <div className="add-song-info-container">
-            <div className="song-data-input-container">
-              <label className="song-label">Name:</label>
-              <div className="song-input-container">
-                <input 
-                className="song-input-field" 
-                placeholder="Enter song name" 
-                required
-                onChange={
-                  (event: React.ChangeEvent<HTMLInputElement>) => {
-                    setName(event.target.value);
-                  }
-                }
-                pattern="^.+$"
-                title="Song can't have no name!"/>
-              </div>
-            </div>
-            <div className="song-data-input-container">
-              <label className="song-label">Artist:</label>
-              <div className="song-input-container">
-                <input 
-                className="song-input-field" 
-                placeholder="Enter song artist" 
-                required
-                onChange={
-                  (event: React.ChangeEvent<HTMLInputElement>) => {
-                    setArtist(event.target.value);
-                  }
-                }
-                pattern="^.+$"
-                title="Artist can't have no name!"/>
+              <div className="upload-container">
+                <div className="upload-button-container">
+                  <button
+                    className="upload-button"
+                    type="button"
+                    onClick={() => fileInputRefSong.current?.click()}
+                  >
+                    Upload song
+                  </button>
+                  <input
+                    type="file"
+                    ref={fileInputRefSong}
+                    style={{ display: "none" }}
+                    accept=".mp3"
+                    onChange={handleFileSelectSong}
+                  />
+                  <audio
+                    ref={audioRef}
+                    controls={false}
+                    preload="metadata"
+                    src={audioSrc}
+                    onLoadedMetadata={handleMetadataLoaded}
+                  />
+                </div>
+                <div className="uploaded-song-icon-container">
+                  <FontAwesomeIcon
+                    className="uploaded-song-icon"
+                    icon={!file ? faX : faCheck}
+                    onClick={handleIconClick}
+                  />
+                </div>
               </div>
             </div>
-            <div className="song-year-upload-container">
-              <div className="song-data-input-container song-year-input-container">
-                <label className="song-label">Release year:</label>
+            <div className="add-song-info-container">
+              <div className="song-data-input-container">
+                <label className="song-label">Name:</label>
                 <div className="song-input-container">
-                  <input 
-                  className="song-input-year" 
-                  placeholder="Enter song year" 
-                  required
-                  onChange={
-                  (event: React.ChangeEvent<HTMLInputElement>) => {
-                    setYear(parseInt(event.target.value));
-                  }
-                  }
-                  pattern="^(18[0-9][0-9]|19[0-9][0-9]|20[01][0-9]|202[0-3])$"
-                  title="Song year can't be less than 1800 and more than 2023!"/>
+                  <input
+                    className="song-input-field"
+                    placeholder="Enter song name"
+                    required
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setName(event.target.value);
+                    }}
+                    pattern="^.+$"
+                    title="Song can't have no name!"
+                  />
                 </div>
               </div>
-              <div className="song-type-container">
-                <div className="song-label-container">
-                  <label className="song-label">Type:</label>
+              <div className="song-data-input-container">
+                <label className="song-label">Artist:</label>
+                <div className="song-input-container">
+                  <input
+                    className="song-input-field"
+                    placeholder="Enter song artist"
+                    required
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setArtist(event.target.value);
+                    }}
+                    pattern="^.+$"
+                    title="Artist can't have no name!"
+                  />
                 </div>
-                <div className="song-types">
-                  <button 
-                  className={`type-playlist ${ !isFreeSong ? "" : "active-playlist-type"}`}
-                  type="button" 
-                  onClick={() => setFreeSong(true)}>
-                    Free
-                  </button>
-                  <button 
-                  className={`type-playlist ${ isFreeSong ? "" : "active-playlist-type"}`}
-                  type="button"
-                  onClick={() => setFreeSong(false)}>
-                    Paid
-                  </button>
               </div>
-            </div>
+              <div className="song-year-upload-container">
+                <div className="song-data-input-container song-year-input-container">
+                  <label className="song-label">Release year:</label>
+                  <div className="song-input-container">
+                    <input
+                      className="song-input-year"
+                      placeholder="Enter song year"
+                      required
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setYear(parseInt(event.target.value));
+                      }}
+                      pattern="^(18[0-9][0-9]|19[0-9][0-9]|20[01][0-9]|202[0-3])$"
+                      title="Song year can't be less than 1800 and more than 2023!"
+                    />
+                  </div>
+                </div>
+                <div className="song-type-container">
+                  <div className="song-label-container">
+                    <label className="song-label">Type:</label>
+                  </div>
+                  <div className="song-types">
+                    <button
+                      className={`type-playlist ${
+                        !isFreeSong ? "" : "active-playlist-type"
+                      }`}
+                      type="button"
+                      onClick={() => setFreeSong(true)}
+                    >
+                      Free
+                    </button>
+                    <button
+                      className={`type-playlist ${
+                        isFreeSong ? "" : "active-playlist-type"
+                      }`}
+                      type="button"
+                      onClick={() => setFreeSong(false)}
+                    >
+                      Paid
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="add-song-button-container">
-          <button className="add-song-button" type="submit">
-            Add
-          </button>
-        </div>
+          <div className="add-song-button-container">
+            <button className="add-song-button" type="submit">
+              Add
+            </button>
+          </div>
         </form>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default AddSongSection;
