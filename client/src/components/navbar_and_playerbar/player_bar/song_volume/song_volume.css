@@ -7,11 +7,10 @@
   justify-items: end;
 }
 
-.volume-slider {
+ .volume-slider {
   width: 85%;
-  height: 50%;
+  height: 15%;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
-}
-
+} 
 
