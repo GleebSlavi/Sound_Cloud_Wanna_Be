@@ -1,9 +1,8 @@
 
 .field-container {
-  display: grid;
   grid-template-rows: 1fr 1fr;
   justify-content: center;
-  align-items: center;
+  justify-items: start;
   height: 60px;
   padding-top: 15px;
   padding-bottom: 15px;

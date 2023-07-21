@@ -52,8 +52,8 @@ const ProfileInfo = () => {
   };
 
   return (
-    <div className="profile-container">
-      <div className="profile-picture-container">
+    <div className="container profile-container">
+      <div className="container profile-picture-container">
         <img
           className="profile-picture"
           src={!imageUrl ? default_picture : imageUrl}
@@ -74,7 +74,7 @@ const ProfileInfo = () => {
           onChange={handleFileSelect}
         />
       </div>
-      <div className="user-profile-info-container">
+      <div className="container user-profile-info-container">
         <h2 className="user-username-header">{username}</h2>
         <ButtonBar />
       </div>

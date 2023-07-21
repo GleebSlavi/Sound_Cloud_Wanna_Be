@@ -43,7 +43,7 @@ const Navbar = () => {
         >
           Streams
         </button>
-        <div className="search-bar-container">
+        <div className="container search-bar-container">
           <input
             className="search-bar welcome-input"
             type="text"

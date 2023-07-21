@@ -1,10 +1,9 @@
-import './section.css'
+import "./section.css";
 import ProfileInfo from "./profile_info/ProfileInfo";
-import PlaylistBox from '../playlist/playlist_box/PlaylistBox';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Playlist } from '../../interfaces/Playlists';
-
+import PlaylistBox from "../playlist/playlist_box/PlaylistBox";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Playlist } from "../../interfaces/Playlists";
 
 const ProfileSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
@@ -13,11 +12,11 @@ const ProfileSection = () => {
     const fetchItems = async () => {
       try {
         const responsePlaylists = await axios.get(
-          `http://localhost:8080/api/playlists/user/${localStorage.getItem("id")}`
-        )
+          `http://localhost:8080/api/playlists/user/${localStorage.getItem(
+            "id"
+          )}`
+        );
         setItems(responsePlaylists.data);
-        
-        
       } catch (error) {
         console.log(error);
       }
@@ -27,18 +26,23 @@ const ProfileSection = () => {
   }, [setItems]);
 
   return (
-    <section className="profile-section">
+    <section className="section profile-section">
       <ProfileInfo />
-      <div className='playlists-header-container'>
-          <h3 className='playlists-header'>Your Playlists</h3>
+      <div className="container playlists-header-container">
+        <h3 className="playlists-header">Your Playlists</h3>
       </div>
-      <div className="profile-playlists-container">
+      <div className="container profile-playlists-container">
         {items.map((item) => (
-          <PlaylistBox id={item.id} name={item.name} creator="you" imageUrl={item.imageUrl} />
+          <PlaylistBox
+            id={item.id}
+            name={item.name}
+            creator="you"
+            imageUrl={item.imageUrl}
+          />
         ))}
       </div>
     </section>
   );
-}
+};
 
 export default ProfileSection;

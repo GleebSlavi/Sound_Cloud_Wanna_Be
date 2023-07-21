@@ -1,17 +1,6 @@
 
 .song-data-container {
-  width: 100%;
-  height: 100%;
-  display: grid;
   grid-template-columns: 0.4fr 2fr;
-}
-
-.picture-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
 }
 
 .picture {
@@ -22,12 +11,7 @@
 }
 
 .song-info-container {
-  display: grid;
   grid-template-rows: 1fr 1fr;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
 }
 
 .player-bar-song-text {
@@ -39,16 +23,10 @@
 }
 
 .song-name-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
   align-items: end;
 }
 
 .song-artist-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
   align-items: start;
 }
 

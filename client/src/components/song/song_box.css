@@ -1,12 +1,7 @@
 .song-box {
-  display: grid;
   grid-template-columns: 0.3fr 2.5fr 1fr 0.5fr 1fr 0.5fr;
-  width: 100%;
-  height: 100%;
   cursor: pointer;
   background-color: rgb(70, 0, 70);
-  align-items: center;
-  justify-items: center;
   border-radius: 10px;
   transition: width 0.15s, height 0.15s, border-radius 0.15s, transform 0.15s;
 }
@@ -25,11 +20,6 @@
 }
 
 .song-box-picture-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
   padding-left: 10%;
   position: relative;
 }
@@ -43,19 +33,10 @@
 }
 
 .song-box-song-data-container {
-  display: grid;
   grid-template-rows: 1fr 1fr;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
 }
 
 .song-box-song-name-container, .song-box-song-artist-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  align-items: center;
   justify-items: start;
   padding-left: 5%;
 }
@@ -74,19 +55,6 @@
   user-select: none;
   margin: 0;
 }
-
-.song-box-song-uploader-container, 
-.song-box-song-upload-date-container,
-.song-box-settings-bar-container,
-.song-box-song-duration-container,
-.song-box-burger-menu-container {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
-}
-
 .song-box-song-name {
   font-size: 1.07rem;
 }

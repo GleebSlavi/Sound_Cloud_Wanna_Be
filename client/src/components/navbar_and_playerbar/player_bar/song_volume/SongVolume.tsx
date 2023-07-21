@@ -1,7 +1,7 @@
-import './song_volume.css'
+import "./song_volume.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeUp, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
+import { faVolumeUp, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 const SongVolume = () => {
   const [isVolumeMuted, setVolumeMuted] = useState(false);
@@ -10,7 +10,7 @@ const SongVolume = () => {
   const [isDragged, setIsDragged] = useState(false);
 
   const handleVolumeMute = (): void => {
-    setVolumeMuted(!isVolumeMuted)
+    setVolumeMuted(!isVolumeMuted);
     if (!isVolumeMuted) {
       setPreviousSliderValue(sliderValue);
       setSliderValue(0);
@@ -24,11 +24,13 @@ const SongVolume = () => {
       }
     }
   };
-  
-  const handleVolumeSlider = (event: React.ChangeEvent<HTMLInputElement>): void => {
+
+  const handleVolumeSlider = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const value = parseInt(event.target.value, 10);
     setSliderValue(value);
-  
+
     if (value === 0 && !isVolumeMuted) {
       setVolumeMuted(true);
       setIsDragged(true);
@@ -36,25 +38,35 @@ const SongVolume = () => {
       setVolumeMuted(false);
     }
   };
-  
 
   return (
-    <div className="song-volume-container">
-      <div className="mute-button-container">
-        <button className="song-controller-button click" type="button"
-        onClick={handleVolumeMute}>
-          <FontAwesomeIcon icon={ (isVolumeMuted && sliderValue === 0) ? 
-            faVolumeMute : faVolumeUp } />
+    <div className="container song-volume-container">
+      <div className="container mute-button-container">
+        <button
+          className="song-controller-button click"
+          type="button"
+          onClick={handleVolumeMute}
+        >
+          <FontAwesomeIcon
+            icon={
+              isVolumeMuted && sliderValue === 0 ? faVolumeMute : faVolumeUp
+            }
+          />
         </button>
       </div>
-      <div className="slide-container">
-        <input className="volume-slider" type="range" min="0" 
-        max="100" step="1" value={sliderValue} 
-        onChange={handleVolumeSlider}/>
+      <div className="container">
+        <input
+          className="volume-slider"
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          value={sliderValue}
+          onChange={handleVolumeSlider}
+        />
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default SongVolume;

@@ -113,15 +113,15 @@ const AddSongSection = () => {
   };
 
   return (
-    <section className="add-song-section">
+    <section className="section">
       <div className="add-song-field">
-        <div className="add-song-header-container">
+        <div className="container add-song-header-container">
           <h2 className="add-song-header">Add Song</h2>
         </div>
-        <form className="add-song-form" onSubmit={handleAddSong}>
-          <div className="add-song-data-container">
-            <div className="song-picture-upload-container">
-              <div className="song-picture-container">
+        <form className="container add-song-form" onSubmit={handleAddSong}>
+          <div className="container add-song-data-container">
+            <div className="container song-picture-upload-container">
+              <div className="container song-picture-container">
                 <img
                   className="song-picture"
                   src={!imageUrl ? default_song_picture : imageUrl}
@@ -140,8 +140,8 @@ const AddSongSection = () => {
                   onChange={handleFileSelectImg}
                 />
               </div>
-              <div className="upload-container">
-                <div className="upload-button-container">
+              <div className="container upload-container">
+                <div className="container upload-button-container">
                   <button
                     className="upload-button"
                     type="button"
@@ -164,7 +164,7 @@ const AddSongSection = () => {
                     onLoadedMetadata={handleMetadataLoaded}
                   />
                 </div>
-                <div className="uploaded-song-icon-container">
+                <div className="container uploaded-song-icon-container">
                   <FontAwesomeIcon
                     className="uploaded-song-icon"
                     icon={!file ? faX : faCheck}
@@ -173,10 +173,10 @@ const AddSongSection = () => {
                 </div>
               </div>
             </div>
-            <div className="add-song-info-container">
-              <div className="song-data-input-container">
+            <div className="container add-song-info-container">
+              <div className="container song-data-input-container">
                 <label className="song-label">Name:</label>
-                <div className="song-input-container">
+                <div className="container song-input-container">
                   <input
                     className="song-input-field"
                     placeholder="Enter song name"
@@ -189,9 +189,9 @@ const AddSongSection = () => {
                   />
                 </div>
               </div>
-              <div className="song-data-input-container">
+              <div className="container song-data-input-container">
                 <label className="song-label">Artist:</label>
-                <div className="song-input-container">
+                <div className="container song-input-container">
                   <input
                     className="song-input-field"
                     placeholder="Enter song artist"
@@ -204,10 +204,10 @@ const AddSongSection = () => {
                   />
                 </div>
               </div>
-              <div className="song-year-upload-container">
-                <div className="song-data-input-container song-year-input-container">
+              <div className="container song-year-upload-container">
+                <div className="container song-data-input-container song-year-input-container">
                   <label className="song-label">Release year:</label>
-                  <div className="song-input-container">
+                  <div className="container song-input-container">
                     <input
                       className="song-input-year"
                       placeholder="Enter song year"
@@ -222,11 +222,11 @@ const AddSongSection = () => {
                     />
                   </div>
                 </div>
-                <div className="song-type-container">
+                <div className="container song-type-container">
                   <div className="song-label-container">
                     <label className="song-label">Type:</label>
                   </div>
-                  <div className="song-types">
+                  <div className="container song-types">
                     <button
                       className={`type-playlist ${
                         !isFreeSong ? "" : "active-playlist-type"
@@ -250,7 +250,7 @@ const AddSongSection = () => {
               </div>
             </div>
           </div>
-          <div className="add-song-button-container">
+          <div className="container">
             <button className="add-song-button" type="submit">
               Add
             </button>

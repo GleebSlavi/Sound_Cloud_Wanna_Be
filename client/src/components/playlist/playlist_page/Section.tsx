@@ -92,10 +92,10 @@ const PlaylistPageSection = () => {
   };
 
   return (
-    <section className="playlist-page-section">
-      <div className="playlist-page-info-container">
-        <div className="playlist-info-left-container">
-          <div className="playlist-page-picture-container">
+    <section className="section playlist-page-section">
+      <div className="container playlist-page-info-container">
+        <div className="container playlist-info-left-container">
+          <div className="container">
             <img
               className="playlist-page-picture"
               src={!imageUrl ? default_playlist_picture : imageUrl}
@@ -116,7 +116,7 @@ const PlaylistPageSection = () => {
               onChange={handleFileSelectImg}
             />
           </div>
-          <div className="playlist-page-type-container">
+          <div className="container">
             <span className="playlist-page-type">
               {playlist.type.charAt(0).toUpperCase() +
                 playlist.type.slice(1).toLowerCase()}{" "}
@@ -124,17 +124,17 @@ const PlaylistPageSection = () => {
             </span>
           </div>
         </div>
-        <div className="playlist-info-right-container">
-          <div className="playlist-page-name-container">
+        <div className="container playlist-info-right-container">
+          <div className="container playlist-page-name-container">
             <span className="playlist-page-name">{playlist.name}</span>
           </div>
-          <div className="playlist-page-description-container">
+          <div className="container playlist-page-description-container">
             <span className="playlist-page-description">
               {playlist.description}
             </span>
           </div>
-          <div className="playlist-page-data-container">
-            <div className="playlist-page-creator-container">
+          <div className="container playlist-page-data-container">
+            <div className="container playlist-page-creator-container">
               <span className="playlist-page-creator">
                 by:{" "}
                 {playlist.userId !== localStorage.getItem("id")
@@ -145,7 +145,7 @@ const PlaylistPageSection = () => {
           </div>
         </div>
       </div>
-      <div className="playlist-songs-container">
+      <div className="container playlist-songs-container">
         {items.map((item) => (
           <SongBox
             key={item.id}

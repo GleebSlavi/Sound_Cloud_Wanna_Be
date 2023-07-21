@@ -1,22 +1,11 @@
 
 .profile-section {
-  display: grid;
   grid-template-rows: 2fr 0.8fr 4fr;
-  position: absolute;
-  justify-items: center;
-  width: 100%;
-  top: 9.7%;
-  bottom: 8%;
   margin-bottom: 1%;
-  background-color: transparent;
-  overflow-y: auto;
 }
 
 .playlists-header-container {
-  display: grid;
-  height: 100%;
   width: 95%;
-  align-items: center;
   justify-items: start;
   border-top: solid white;
   padding-top: 0.5%;
@@ -36,13 +25,11 @@
 
 
 .profile-playlists-container {
-  display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: 45%;
   gap: 1.5%;
   width: 85%;
   height: 100vh;
-  justify-items: center;
   padding-top: 1%;
 }
 

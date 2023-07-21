@@ -1,11 +1,7 @@
 
 .profile-buttons-container {
-  display: grid;
   grid-template-columns: 1fr 1fr 1fr 0.5fr;
-  align-items: center;
   justify-items: start;
-  width: 100%;
-  height: 100%;
   margin-left: 2.5%;
 }
 

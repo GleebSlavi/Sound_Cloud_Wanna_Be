@@ -9,7 +9,7 @@ const ButtonBar = () => {
   };
 
   return (
-    <div className="profile-buttons-container">
+    <div className="container profile-buttons-container">
       <button
         className="profile-button"
         type="button"

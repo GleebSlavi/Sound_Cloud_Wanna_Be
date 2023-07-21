@@ -1,29 +1,10 @@
 
 .song-controller-container {
-  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  justify-items: center;
-  width: 100%;
-  height: 100%;
 }
 
 .controller-container {
-  display: grid;
   grid-template-columns: 1fr 0.5fr 1fr;
-  align-items: center;
-  justify-items: center;
-  width: 100%;
-  height: 100%
-}
-
-.forward-container,
-.backward-container,
-.start-stop-container {
-  display: grid;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 }
 
 .forward-container {
@@ -34,16 +15,8 @@
   justify-items: end;
 }
 
-.start-stop-container {
-  justify-items: center;
-}
-
 .shuffle-songs-container {
-  display: grid;
-  align-items: center;
   justify-items: end;
-  width: 100%;
-  height: 100%;
 }
 
 .song-controller-button {
@@ -70,12 +43,8 @@
   color: white;
 }
 
-.stream-controller {
-  display: grid;
-  align-items: center;
+.stream-container {
   justify-items: start;
-  width: 100%;
-  height: 100%;
 }
 
 .active {

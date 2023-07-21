@@ -12,16 +12,19 @@ const HomeSection = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${localStorage.getItem("id")}/playlists`
+          `http://localhost:8080/api/users/${localStorage.getItem(
+            "id"
+          )}/playlists`
         );
 
         const newItems: Playlist[] = response.data;
         setItems(newItems);
 
         const userIds = newItems.map((item) => item.userId);
-        const usernames = await Promise.all(userIds.map((userId: string) => getUsername(userId)));
+        const usernames = await Promise.all(
+          userIds.map((userId: string) => getUsername(userId))
+        );
         setUsernames(usernames);
-        
       } catch (error) {
         console.log(error);
       }
@@ -35,8 +38,9 @@ const HomeSection = () => {
       const response = await axios.get(
         `http://localhost:8080/api/users/${userId}`
       );
-      return (userId === localStorage.getItem("id") ? "you" : response.data.username);
-      
+      return userId === localStorage.getItem("id")
+        ? "you"
+        : response.data.username;
     } catch (error) {
       console.log(error);
       return "";
@@ -44,13 +48,18 @@ const HomeSection = () => {
   };
 
   return (
-    <section className="home-section">
-      <div className="home-header-container">
+    <section className="section home-section">
+      <div className="container home-header-container">
         <h2 className="home-header">Favorite Playlists</h2>
       </div>
-      <div className="home-playlists-container">
-      {items.map((item, index) => (
-          <PlaylistBox id={item.id} name={item.name} creator={usernames[index]} imageUrl={item.imageUrl} />
+      <div className="container home-playlists-container">
+        {items.map((item, index) => (
+          <PlaylistBox
+            id={item.id}
+            name={item.name}
+            creator={usernames[index]}
+            imageUrl={item.imageUrl}
+          />
         ))}
       </div>
     </section>
