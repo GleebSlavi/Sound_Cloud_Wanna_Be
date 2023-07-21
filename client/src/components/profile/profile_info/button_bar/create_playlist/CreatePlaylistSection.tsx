@@ -65,15 +65,15 @@ const CreatePlaylistSection = () => {
 
   return (
     <section className="section">
-      <div className="create-playlist-field">
-        <div className="container create-playlist-header-container">
-          <h2 className="create-playlist-header">Create Playlist</h2>
+      <div className="button-bar-field">
+        <div className="container button-bar-header-container">
+          <h2 className="button-bar-header">Create Playlist</h2>
         </div>
         <form
-          className="container playlist-form"
+          className="container button-bar-form"
           onSubmit={handleCreatePlaylist}
         >
-          <div className="container playlist-data-container">
+          <div className="container playlist-data-container button-bar-data-container">
             <div className="container">
               <img
                 className="playlist-picture"
@@ -135,7 +135,7 @@ const CreatePlaylistSection = () => {
           </div>
 
           <div className="container">
-            <button className="create-playlist-button" type="submit">
+            <button className="button-bar-button" type="submit">
               Create
             </button>
           </div>

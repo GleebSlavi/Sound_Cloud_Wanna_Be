@@ -75,12 +75,12 @@ const ChangePasswordSection = () => {
 
   return (
     <section className="section" onSubmit={handleChangePassword}>
-      <div className="change-password-field">
-        <div className="container change-password-header-container">
-          <h2 className="change-password-header">Change Password</h2>
+      <div className="button-bar-field">
+        <div className="container button-bar-header-container">
+          <h2 className="button-bar-header">Change Password</h2>
         </div>
-        <form className="container change-password-form">
-          <div className="container change-password-field-container">
+        <form className="container button-bar-form">
+          <div className="container change-password-field-container button-bar-data-container">
             <Field
               label="Old password"
               value={oldPassword}
@@ -104,7 +104,7 @@ const ChangePasswordSection = () => {
             />
           </div>
           <div className="container">
-            <button className="change-password-button" type="submit">
+            <button className="button-bar-button" type="submit">
               Change
             </button>
           </div>

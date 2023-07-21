@@ -114,12 +114,12 @@ const AddSongSection = () => {
 
   return (
     <section className="section">
-      <div className="add-song-field">
-        <div className="container add-song-header-container">
-          <h2 className="add-song-header">Add Song</h2>
+      <div className="button-bar-field">
+        <div className="container button-bar-header-container">
+          <h2 className="button-bar-header">Add Song</h2>
         </div>
-        <form className="container add-song-form" onSubmit={handleAddSong}>
-          <div className="container add-song-data-container">
+        <form className="container button-bar-form" onSubmit={handleAddSong}>
+          <div className="container add-song-data-container button-bar-data-container">
             <div className="container song-picture-upload-container">
               <div className="container song-picture-container">
                 <img
@@ -251,7 +251,7 @@ const AddSongSection = () => {
             </div>
           </div>
           <div className="container">
-            <button className="add-song-button" type="submit">
+            <button className="button-bar-button" type="submit">
               Add
             </button>
           </div>
