@@ -42,11 +42,10 @@
 }
 
 .playlist-picture {
-  background-color: rgb(70, 0, 70);
   width: 60%;
   height: 60%;
-  border-radius: 10px;
 }
+
 
 .playlist-label {
   color: white;

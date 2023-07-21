@@ -26,7 +26,6 @@
   width: 65%;
   height: 70%;
   border-radius: 10px;
-  transition: filter 0.15s;
   cursor: pointer;
   transition: filter 0.15s;
 }

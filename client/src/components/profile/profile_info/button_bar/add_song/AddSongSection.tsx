@@ -35,9 +35,7 @@ const AddSongSection = () => {
     }
   };
 
-  const handleFileSelectImg = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileSelectImg = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files && event.target.files[0];
     if (selectedFile) {
       setImage(selectedFile);
@@ -121,16 +119,16 @@ const AddSongSection = () => {
         <form className="container button-bar-form" onSubmit={handleAddSong}>
           <div className="container add-song-data-container button-bar-data-container">
             <div className="container song-picture-upload-container">
-              <div className="container song-picture-container">
+              <div className="container add-picture-container">
                 <img
-                  className="song-picture"
+                  className="add-picture song-picture"
                   src={!imageUrl ? default_song_picture : imageUrl}
                   onClick={() => fileInputRefImg.current?.click()}
                   onMouseEnter={() => setHovering(true)}
                   onMouseLeave={() => setHovering(false)}
                 />
                 {hovering && (
-                  <span className="change-image-text-song">Add photo</span>
+                  <span className="picture-text-pop-up">Add photo</span>
                 )}
                 <input
                   type="file"

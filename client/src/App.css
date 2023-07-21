@@ -97,3 +97,38 @@
   font-size: 0.9375rem;
   border-radius: 16px;
 }
+
+.add-picture {
+  background-color: rgb(70, 0, 70);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.add-picture:hover {
+  filter: brightness(70%);
+}
+
+.picture-text-pop-up {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: 'Press Start 2P';
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.add-picture-container {
+  position: relative;
+  border-radius: 100%;
+  transition: opacity 0.15s;
+}
+
+.add-picture-container:hover .picture-text-pop-up{
+  opacity: 1;
+}

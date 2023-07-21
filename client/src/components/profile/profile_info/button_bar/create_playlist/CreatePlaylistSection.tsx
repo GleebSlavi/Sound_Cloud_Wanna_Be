@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./create_playlist_section.css";
 import default_playlist_picture from "../../../../../pictures/playlist_default_picture.png";
 import axios from "axios";
@@ -8,8 +8,13 @@ const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [hovering, setHovering] = useState(false);
+
   const navigate = useNavigate();
+
+  const fileInputRefImg = useRef<HTMLInputElement>(null);
 
   const handleNotFoundPlaylist = async () => {
     const playlistData = {
@@ -17,7 +22,7 @@ const CreatePlaylistSection = () => {
       name: name,
       description: description,
       type: isPrivateType ? "PRIVATE" : "PUBLIC",
-      imageUrl: imageUrl,
+      imageUrl: imageUrl ? imageUrl : null,
     };
 
     await axios
@@ -63,6 +68,18 @@ const CreatePlaylistSection = () => {
     }
   };
 
+  const handleFileSelectImg = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files && event.target.files[0];
+    if (selectedFile) {
+      setImage(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
   return (
     <section className="section">
       <div className="button-bar-field">
@@ -74,10 +91,23 @@ const CreatePlaylistSection = () => {
           onSubmit={handleCreatePlaylist}
         >
           <div className="container playlist-data-container button-bar-data-container">
-            <div className="container">
+            <div className="container add-picture-container">
               <img
-                className="playlist-picture"
-                src={default_playlist_picture}
+                className="add-picture playlist-picture"
+                src={!imageUrl ? default_playlist_picture : imageUrl}
+                onClick={() => fileInputRefImg.current?.click()}
+                onMouseEnter={() => setHovering(true)}
+                onMouseLeave={() => setHovering(false)}
+              />
+              {hovering && (
+                <span className="picture-text-pop-up">Add photo</span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRefImg}
+                style={{ display: "none" }}
+                onChange={handleFileSelectImg}
               />
             </div>
             <div className="container playlist-info-container">
