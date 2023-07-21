@@ -72,6 +72,6 @@
   filter: brightness(70%);
 }
 
-.profile-picture-container:hover .change-image-text {
+.profile-picture-container:hover, .change-image-text {
   opacity: 1;
 }

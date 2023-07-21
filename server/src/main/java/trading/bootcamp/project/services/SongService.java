@@ -6,7 +6,9 @@ import trading.bootcamp.project.api.rest.inputs.SongInput;
 import trading.bootcamp.project.exceptions.InvalidSongNameException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
 import trading.bootcamp.project.repositories.ElasticsearchSongRepository;
+import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.SongRepository;
+import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.UUID;
 public class SongService {
 
     private final SongRepository songRepository;
+
+    private final PlaylistRepository playlistRepository;
 
     private final ElasticsearchSongRepository elasticsearchSongRepository;
 
@@ -42,17 +46,19 @@ public class SongService {
     }
 
     public SongEntity addSong(SongInput songInput) {
-        if (songInput.getName().strip().length() < 1) {
-            throw new InvalidSongNameException("Song name can't be less than 1 symbol");
+        if (songInput.getName().strip().length() < 1 || songInput.getArtist().strip().length() < 1) {
+            throw new InvalidSongNameException("Song name and artist can't be less than 1 character");
         }
 
         SongEntity song = Mappers.fromSongInput(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
-            song.artist(), song.releaseYear(), song.type(), song.uploadDate(),
+            song.artist(), song.releaseYear(), song.duration(), song.type(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the song");
         }
-        elasticsearchSongRepository.insertSong(song);
+
+        Optional<PlaylistEntity> allSongsPlaylist = playlistRepository.getAllSongsPlaylist(song.userId());
+        allSongsPlaylist.ifPresent(playlistEntity -> songRepository.addSongToPlaylist(playlistEntity.id(), song.id()));
 
         return song;
     }

@@ -9,6 +9,7 @@ import trading.bootcamp.project.exceptions.InvalidPlaylistNameException;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +68,7 @@ public class PlaylistService {
         return playlist.get();
     }
 
-    public List<UUID> getSongsInPlaylistIDs(UUID playlistId) {
+    public List<SongEntity> getSongsInPlaylistIDs(UUID playlistId) {
         return repository.getSongsInPlaylistIDs(playlistId);
     }
 }

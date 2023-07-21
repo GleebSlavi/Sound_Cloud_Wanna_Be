@@ -8,6 +8,7 @@ import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
 import trading.bootcamp.project.exceptions.InvalidFieldException;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import trading.bootcamp.project.services.PlaylistService;
 
 import java.util.List;
@@ -59,8 +60,8 @@ public class PlaylistController {
         return service.deletePlaylist(id);
     }
 
-    @GetMapping("songs/{playlistId}")
-    public List<UUID> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
+    @GetMapping("{playlistId}/songs")
+    public List<SongEntity> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
         return service.getSongsInPlaylistIDs(playlistId);
     }
 }

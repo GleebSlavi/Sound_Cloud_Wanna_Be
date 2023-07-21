@@ -1,0 +1,137 @@
+.song-box {
+  display: grid;
+  grid-template-columns: 0.3fr 2.5fr 1fr 0.5fr 1fr 0.5fr;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  align-items: center;
+  justify-items: center;
+  border-radius: 10px;
+  transition: width 0.15s, height 0.15s, border-radius 0.15s, transform 0.15s;
+}
+
+.song-box:hover {
+  width: 101%;
+  height: 101%;
+  border-radius: 11px;
+}
+
+.song-box:active {
+  transform: translate(1px, 1px);
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.song-box-picture-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+  padding-left: 10%;
+  position: relative;
+}
+
+.song-box-picture { 
+  width: 70%;
+  height: 75%;
+  background-color: white;
+  border-radius: 10px;
+  transition: filter 0.15s;
+}
+
+.song-box-song-data-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+}
+
+.song-box-song-name-container, .song-box-song-artist-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: start;
+  padding-left: 5%;
+}
+
+.song-box-song-name-container {
+  align-items: end;
+  padding-bottom: 1%;
+}
+
+.song-box-song-name, .song-box-song-artist,
+.song-box-uploader, .song-box-upload-date,
+.song-box-duration {
+  width: 90%;
+  color: white;
+  font-family: 'Press Start 2P';
+  user-select: none;
+  margin: 0;
+}
+
+.song-box-song-uploader-container, 
+.song-box-song-upload-date-container,
+.song-box-settings-bar-container,
+.song-box-song-duration-container,
+.song-box-burger-menu-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+}
+
+.song-box-song-name {
+  font-size: 1.07rem;
+}
+
+.song-box-song-artist {
+  font-size: 0.70rem;
+}
+
+.song-box-duration,
+.song-box-uploader {
+  font-size: 0.9375rem;
+}
+
+.song-box-upload-date {
+  font-size: 0.875rem;
+}
+
+.burger-menu-button {
+  font-size: 1.875rem;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.song-hover {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  color: white;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+  font-size: 1.25rem;
+  transition: opacity 0.15s;
+}
+
+.song-box:hover .song-box-picture {
+  filter: brightness(70%);
+}
+
+.song-box-picture-container:hover,
+.song-hover {
+  opacity: 1;
+}
+

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
+import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import trading.bootcamp.project.repositories.mappers.PlaylistRowMapper;
+import trading.bootcamp.project.repositories.mappers.SongRowMapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,6 +52,14 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
+    public Optional<PlaylistEntity> getAllSongsPlaylist(UUID userId) {
+        return jdbcTemplate.query(Queries.GET_ALL_SONGS_PLAYLIST,
+                        new PlaylistRowMapper(), userId.toString())
+                .stream()
+                .findFirst();
+    }
+
+    @Override
     public int createPlaylist(UUID id, UUID userId, String name, String description, boolean isAllSongs, LocalDate createDate, PlaylistType type, String imageUrl) {
         return jdbcTemplate.update(Queries.INSERT_PLAYLIST,
                 id.toString(), userId.toString(), name, description, isAllSongs,
@@ -62,9 +72,9 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
-    public List<UUID> getSongsInPlaylistIDs(UUID playlistId) {
+    public List<SongEntity> getSongsInPlaylistIDs(UUID playlistId) {
         return jdbcTemplate.query(Queries.GET_SONGS_IN_PLAYLIST_IDS,
-            (resultSet, rowNum) -> UUID.fromString(resultSet.getString("song_id")), playlistId.toString());
+            new SongRowMapper(), playlistId.toString());
     }
 
     private static class Queries {
@@ -74,6 +84,11 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 FROM playlist
                 WHERE %s
                 """;
+
+        public final static String GET_ALL_SONGS_PLAYLIST = String.format(SELECT_PLAYLIST_QUERY, """
+                user_id = ? AND
+                is_all_songs = 1;
+                """);
 
         public final static String GET_PLAYLIST_BY_NAME_AND_USER_ID = String.format(SELECT_PLAYLIST_QUERY, """
                 name = ? AND
@@ -110,8 +125,9 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 """;
 
         public final static String GET_SONGS_IN_PLAYLIST_IDS = """
-                SELECT song_id
-                FROM playlist_song
+                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                FROM playlist_song ps
+                JOIN song s ON ps.song_id = s.id
                 WHERE playlist_id = ?;
                 """;
     }

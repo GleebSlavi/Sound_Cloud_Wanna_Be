@@ -1,8 +1,10 @@
 package trading.bootcamp.project.api.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
+import trading.bootcamp.project.exceptions.InvalidFieldException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import trading.bootcamp.project.services.SongService;
@@ -43,8 +45,14 @@ public class SongController {
     }
 
     @PostMapping
-    public SongEntity createPlaylist(@RequestBody SongInput song) {
-        return service.addSong(song);
+    public ResponseEntity<SongEntity> addSong(@RequestBody SongInput song) {
+        try {
+            return ResponseEntity.ok(service.addSong(song));
+        } catch (InvalidFieldException ex) {
+            return ResponseEntity.badRequest().build();
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @DeleteMapping("{id}")

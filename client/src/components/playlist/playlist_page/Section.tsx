@@ -1,9 +1,12 @@
 import { useLocation } from "react-router-dom";
 import "./section.css"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Playlist } from "../../../interfaces/Playlists";
+import { Song } from "../../../interfaces/Song";
 import axios from "axios";
 import default_playlist_picture from "../../../pictures/playlist_default_picture.png"
+import SongBox from "../../song/SongBox";
+import { playlistsEndpoint, usersEndpoint } from "../../../reusable";
 
 const PlaylistPageSection = () => {
   const location = useLocation();
@@ -18,28 +21,54 @@ const PlaylistPageSection = () => {
     imageUrl: null
   });
   const [username, setUsername] = useState("");
+  const [items, setItems] = useState<Song[]>([]);
+  const [hovering, setHovering] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  const fileInputRefImg = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
       try {
         const uuid = location.pathname.split("/playlist/")[1];
+
         const responsePlaylist = await axios.get(
-          `http://localhost:8080/api/playlists/id/${uuid}`);
-        
+          `${playlistsEndpoint}/id/${uuid}`);
         setPlaylist(responsePlaylist.data);
 
         const responseUser = await axios.get(
-          `http://localhost:8080/api/users/${responsePlaylist.data.userId}`);
-        
+          `${usersEndpoint}/${responsePlaylist.data.userId}`);
         setUsername(responseUser.data.username);
+        
+        const responseSongs = await axios.get(
+          `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
+        )
+        setItems(responseSongs.data);
         
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [location])
+  }, [location, setPlaylist, setUsername, setItems]);
 
-  console.log(playlist.imageUrl);
+  const getUser = async (userId: string): Promise<string> => {
+    try {
+      const response = await axios.get(
+        `${usersEndpoint}/${userId}`
+      );
+      return response.data.username;
+    } catch (error) {
+      console.log(error);
+      return "";
+    }
+  }
+
+  const secondsToMMSS = (durationInSeconds: number): string => {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = Math.floor(durationInSeconds % 60);
+    const formattedMinutes = minutes < 10 ? `${minutes}` : `0${minutes}`;
+    return `${formattedMinutes}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <section className="playlist-page-section">
@@ -49,7 +78,18 @@ const PlaylistPageSection = () => {
             <img className="playlist-page-picture" src={
               !playlist.imageUrl ? 
               default_playlist_picture :
-              playlist.imageUrl }/>
+              playlist.imageUrl }
+              onClick={() => fileInputRefImg.current?.click()}
+              onMouseEnter={() => setHovering(true)}
+              onMouseLeave={() => setHovering(false)}
+              />
+            {hovering && <span className="change-image-text-playlist">{!imageUrl ? "Add photo" : "Change photo"}</span>}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRefImg}
+              style={{ display: 'none' }}
+              onChange={handleFileSelectImg} />
           </div>
           <div className="playlist-page-type-container">
             <span className="playlist-page-type">
@@ -75,7 +115,12 @@ const PlaylistPageSection = () => {
         </div>
       </div>
       <div className="playlist-songs-container">
-
+        {items.map((item) => (
+          <SongBox key={item.id} name={item.name} artist={item.artist} 
+          uploader={"you"}
+          duration={secondsToMMSS(item.duration)} uploadDate={item.uploadDate} 
+          imageUrl={item.imageUrl}/>
+      ))}
       </div>
     </section>
   );

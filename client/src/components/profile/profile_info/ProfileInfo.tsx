@@ -3,13 +3,13 @@ import ButtonBar from "./button_bar/ButtonBar";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from '../../../pictures/default_profile_picture.png'
-import { s3 } from "../../../s3/s3";
+import { s3 } from "../../../s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { nanoid } from 'nanoid';
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [hovering, setHovering] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

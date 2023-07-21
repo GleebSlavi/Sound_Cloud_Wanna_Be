@@ -33,10 +33,10 @@ public class SongRepositoryImpl implements SongRepository {
     }
 
     @Override
-    public int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear,
+    public int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear, Double duration,
                           SongType type, LocalDate uploadDate, String imageUrl, String couldUrl) {
         return jdbcTemplate.update(Queries.INSERT_SONG, id.toString(), userId.toString(),
-            name, artist, releaseYear, type.name(), uploadDate.toString(), imageUrl, couldUrl);
+            name, artist, releaseYear, duration, type.name(), uploadDate.toString(), imageUrl, couldUrl);
     }
 
     @Override
@@ -44,9 +44,25 @@ public class SongRepositoryImpl implements SongRepository {
         return jdbcTemplate.update(Queries.DELETE_SONG, id.toString());
     }
 
+    @Override
+    public int addSongToPlaylist(UUID playlistId, UUID songId) {
+        return jdbcTemplate.update(Queries.ADD_SONG_TO_PLAYLIST, playlistId.toString(), songId.toString());
+    }
+
     private static class Queries {
+
+        private final static String SELECT_SONG_QUERY = """
+                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                FROM song
+                WHERE %s
+                """;
+
+        public final static String ADD_SONG_TO_PLAYLIST = """
+                INSERT INTO playlist_song(playlist_id, song_id)
+                VALUES(?, ?);
+                """;
         public final static String LIST_SONGS_BY_USER = """
-                SELECT id, user_id, name, artist, release_year, genre, upload_date, image_url, cloud_url
+                SELECT id, user_id, name, artist, release_year, type, upload_date, image_url, cloud_url
                 FROM song
                 WHERE user_id = ?
                 LIMIT 100;
@@ -59,9 +75,8 @@ public class SongRepositoryImpl implements SongRepository {
                 """;
 
         public final static String INSERT_SONG = """
-                INSERT INTO song(id, user_id, name, artist, release_year, genre, upload_date, image_url, cloud_url)
-                FROM song
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO song(id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_SONG = """

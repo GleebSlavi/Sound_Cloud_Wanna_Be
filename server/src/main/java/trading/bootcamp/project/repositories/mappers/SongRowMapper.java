@@ -17,6 +17,7 @@ public class SongRowMapper implements RowMapper<SongEntity> {
             resultSet.getString("name"),
             resultSet.getString("artist"),
             resultSet.getInt("release_year"),
+                resultSet.getDouble("duration"),
             SongType.valueOf(resultSet.getString("type")),
             resultSet.getDate("upload_date").toLocalDate(),
             resultSet.getString("image_url"),

@@ -14,8 +14,10 @@ public interface SongRepository {
 
     Optional<SongEntity> getSongById(UUID id);
 
-    int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear,
+    int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear, Double duration,
                    SongType type, LocalDate uploadDate, String imageUrl, String couldUrl);
 
     int deleteSong(UUID id);
+
+    int addSongToPlaylist(UUID playlistId, UUID songId);
 }

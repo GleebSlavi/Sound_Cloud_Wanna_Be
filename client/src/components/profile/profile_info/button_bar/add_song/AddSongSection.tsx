@@ -1,11 +1,12 @@
 import "./add_song_section.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faL, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 import default_song_picture from '../../../../../pictures/default_song_picture.png'
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { nanoid } from "nanoid";
-import {s3} from "../../../../../s3/s3";
+import {uploadFileToS3} from "../../../../../s3";
+import axios from "axios";
+import { songsEndpoint } from "../../../../../reusable";
+import { useNavigate } from "react-router-dom";
 
 const AddSongSection = () => {
   const [isFreeSong, setFreeSong] = useState(true);
@@ -13,28 +14,36 @@ const AddSongSection = () => {
   const [image, setImage] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [artist, setArtist] = useState("");
-  const [year, setYear] = useState(2023);
+  const [year, setYear] = useState(0);
   const [file, setFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState<string>("");
   const [hovering, setHovering] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [audioSrc, setAudioSrc] = useState('');
 
   const fileInputRefSong = useRef<HTMLInputElement>(null);
   const fileInputRefImg = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const navigate = useNavigate();
 
   const handleFileSelectSong = (event: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = event.target.files && event.target.files[0];
-      console.log("nz");
       if (selectedFile) {
-        console.log(selectedFile.name);
         setFile(selectedFile);
+        setAudioSrc(URL.createObjectURL(selectedFile));
       }
   }
 
-  const handleFileSelectImg = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelectImg = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files && event.target.files[0];
-    console.log("nz");
     if (selectedFile) {
-      console.log(selectedFile.name);
       setImage(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
     }
 }
 
@@ -44,10 +53,54 @@ const AddSongSection = () => {
     }
   };
 
+  const handleMetadataLoaded = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  }
+
   const handleAddSong = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
+    if (file) {
+      await uploadFileToS3(file, process.env.REACT_APP_AWS_SONGS_BUCKET, setFileUrl);
 
+      if (image) {
+        await uploadFileToS3(image, process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET, setImageUrl);
+      }
+
+      const songData = {
+        userId: localStorage.getItem("id"),
+        name: name,
+        artist: artist,
+        releaseYear: year,
+        duration: duration,
+        type: isFreeSong ? "FREE" : "PAID",
+        imageUrl: imageUrl ? imageUrl : null,
+        cloudUrl: fileUrl
+      }
+
+      try {
+        await axios.post(
+          `${songsEndpoint}`,
+          songData
+        )
+        alert(`Successfuly uploaded ${name} by ${artist}`);
+        navigate("/profile");
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          if (error.response.status === 400) {
+            alert("Song name and artist can't be less than 1 character!");
+          } else if (error.response.status === 500){
+            alert("There is a problem with the server! Try again later!");
+          } else {
+            alert(`An error occured: ${error.response.data.message}`);
+          }
+        }
+      }
+      return;
+    }
+    alert("You need to upload an .mp3 file!");
   }
 
   return (
@@ -56,11 +109,11 @@ const AddSongSection = () => {
         <div className="add-song-header-container">
           <h2 className="add-song-header">Add Song</h2>
         </div>
-        <form className="add-song-form">
+        <form className="add-song-form" onSubmit={handleAddSong}>
         <div className="add-song-data-container">
           <div className="song-picture-upload-container">
             <div className="song-picture-container">
-              <img className="song-picture" 
+              <img className="song-picture"
                 src={!imageUrl ? default_song_picture : imageUrl}
                 onClick={() => fileInputRefImg.current?.click()}
                 onMouseEnter={() => setHovering(true)}
@@ -85,6 +138,8 @@ const AddSongSection = () => {
                 accept=".mp3"
                 onChange={handleFileSelectSong}
                 />
+                <audio ref={audioRef} controls={false} preload="metadata" 
+                src={audioSrc} onLoadedMetadata={handleMetadataLoaded}/>
               </div>
               <div className="uploaded-song-icon-container">
                 <FontAwesomeIcon className="uploaded-song-icon" icon={!file ? faX : faCheck}
@@ -165,7 +220,7 @@ const AddSongSection = () => {
           </div>
         </div>
         <div className="add-song-button-container">
-          <button className="add-song-button" type="submit" onClick={handleAddSong}>
+          <button className="add-song-button" type="submit">
             Add
           </button>
         </div>

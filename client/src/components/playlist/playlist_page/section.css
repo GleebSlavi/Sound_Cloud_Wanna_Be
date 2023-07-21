@@ -1,6 +1,6 @@
 .playlist-page-section {
   display: grid;
-  grid-template-rows: 2fr 4fr;
+  grid-template-rows: 2fr 0.5fr 4fr;
   position: absolute;
   justify-items: center;
   width: 100%;
@@ -146,4 +146,14 @@
   font-family: 'Press Start 2P';
   color: white;
   font-size: 0.875rem;
+}
+
+.playlist-songs-container {
+  display: grid;
+  grid-auto-rows: 7%;
+  gap: 2%;
+  width: 90%;
+  height: 100vh;
+  justify-items: center;
+  padding-top: 2%;
 }

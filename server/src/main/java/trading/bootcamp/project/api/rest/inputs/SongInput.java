@@ -17,6 +17,8 @@ public class SongInput {
 
     private final Integer releaseYear;
 
+    private final Double duration;
+
     private final SongType type;
 
     private final String imageUrl;
@@ -28,6 +30,7 @@ public class SongInput {
                      @JsonProperty("name") String name,
                      @JsonProperty("artist") String artist,
                      @JsonProperty("releaseYear") Integer releaseYear,
+                     @JsonProperty("duration") Double duration,
                      @JsonProperty("type") String type,
                      @JsonProperty("imageUrl") String imageUrl,
                      @JsonProperty("cloudUrl") String cloudUrl) {
@@ -35,6 +38,7 @@ public class SongInput {
         this.name = name;
         this.artist = artist;
         this.releaseYear = releaseYear;
+        this.duration = duration;
         this.type = SongType.valueOf(type);
         this.imageUrl = imageUrl;
         this.cloudUrl = cloudUrl;

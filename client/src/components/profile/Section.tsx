@@ -15,9 +15,7 @@ const ProfileSection = () => {
         const responsePlaylists = await axios.get(
           `http://localhost:8080/api/playlists/user/${localStorage.getItem("id")}`
         )
-
-        const newItems: Playlist[] = responsePlaylists.data;
-        setItems(newItems);
+        setItems(responsePlaylists.data);
         
         
       } catch (error) {
@@ -36,7 +34,7 @@ const ProfileSection = () => {
       </div>
       <div className="profile-playlists-container">
         {items.map((item) => (
-          <PlaylistBox id={item.id} name={item.name} creator="" imageUrl={item.imageUrl} />
+          <PlaylistBox id={item.id} name={item.name} creator="you" imageUrl={item.imageUrl} />
         ))}
       </div>
     </section>

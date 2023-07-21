@@ -23,6 +23,6 @@ public class Mappers {
 
     public static SongEntity fromSongInput(SongInput song) {
         return new SongEntity(UUID.randomUUID(), song.getUserid(), song.getName(), song.getArtist(),
-            song.getReleaseYear(), song.getType(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
+            song.getReleaseYear(), song.getDuration(), song.getType(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
     }
 }

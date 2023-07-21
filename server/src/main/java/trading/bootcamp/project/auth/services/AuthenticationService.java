@@ -78,7 +78,6 @@ public class AuthenticationService {
             throw new IllegalStateException("Couldn't add the favorite playlist");
         }
 
-
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

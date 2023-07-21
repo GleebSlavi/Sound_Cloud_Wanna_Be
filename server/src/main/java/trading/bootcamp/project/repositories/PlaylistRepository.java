@@ -2,6 +2,7 @@ package trading.bootcamp.project.repositories;
 
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
+import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,9 +19,11 @@ public interface PlaylistRepository {
 
     Optional<PlaylistEntity> getPlaylistByNameAndUserId(UUID userId, String playlistName);
 
+    Optional<PlaylistEntity> getAllSongsPlaylist(UUID userId);
+
     int createPlaylist(UUID id, UUID userId, String name, String description, boolean isAllSongs, LocalDate createDate, PlaylistType type, String imageUrl);
 
     int deletePlaylist(UUID id);
 
-    List<UUID> getSongsInPlaylistIDs(UUID playlistId);
+    List<SongEntity> getSongsInPlaylistIDs(UUID playlistId);
 }
