@@ -55,14 +55,14 @@ const ProfileInfo = () => {
     <div className="container profile-container">
       <div className="container profile-picture-container">
         <img
-          className="profile-picture"
+          className="add-picture profile-picture"
           src={!imageUrl ? default_picture : imageUrl}
           onClick={() => fileInputRef.current?.click()}
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         />
         {hovering && (
-          <span className="change-image-text">
+          <span className="picture-text-pop-up">
             {!imageUrl ? "Add photo" : "Change photo"}
           </span>
         )}

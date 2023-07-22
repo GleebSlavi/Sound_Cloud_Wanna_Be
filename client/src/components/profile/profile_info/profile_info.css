@@ -4,22 +4,45 @@
   width: 95%;
 }
 
-.profile-picture-container {
+/* .profile-picture-container {
   position: relative;
-  transition: opacity 0.15s;
   overflow: hidden;
-  border-radius: 100%;
+   border-radius: 100%;
+  width: 220px;
+  height: 220px;
   transition: opacity 0.15s;
 }
 
 .profile-picture {
-  background-color: rgb(70, 0, 70);
-  width: calc(80% - 2px);
-  height: calc(85% - 2px);
-  border-radius: 100%;
-  cursor: pointer;
+  width: 85%;
+  height: 85%;
+  border-radius: 120px;
   object-fit: cover;
-  transition: filter 0.15s;
+} */
+
+.profile-picture-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 85%;
+}
+
+
+.profile-picture-container::before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+/* Image inside the container */
+.profile-picture {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 85%;
+  height: 85%; 
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .user-profile-info-container {
@@ -41,24 +64,21 @@
   margin-left: 3%;
 }
 
-.change-image-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-family: 'Press Start 2P';
-  font-size: 1.25rem;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: opacity 0.15s;
-}
 
-.profile-picture:hover {
-  filter: brightness(70%);
-}
-
-.profile-picture-container:hover, .change-image-text {
+.profile-picture-container:hover, .picture-text-pop-up {
   opacity: 1;
+}
+
+@media (max-width: 1000px) {
+  .profile-picture-container {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 700px) {
+  .profile-picture-container {
+    width: 180px;
+    height: 180px;
+  }
 }
