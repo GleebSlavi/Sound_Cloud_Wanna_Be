@@ -7,6 +7,7 @@ import { uploadFileToS3 } from "../../../../../s3";
 import axios from "axios";
 import { songsEndpoint } from "../../../../../reusable";
 import { useNavigate } from "react-router-dom";
+import ImageUpload from "../../../../image_upload/ImageUpload";
 
 const AddSongSection = () => {
   const [isFreeSong, setFreeSong] = useState(true);
@@ -17,12 +18,10 @@ const AddSongSection = () => {
   const [year, setYear] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
-  const [hovering, setHovering] = useState(false);
   const [duration, setDuration] = useState(0);
   const [audioSrc, setAudioSrc] = useState("");
 
   const fileInputRefSong = useRef<HTMLInputElement>(null);
-  const fileInputRefImg = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const navigate = useNavigate();
@@ -32,18 +31,6 @@ const AddSongSection = () => {
     if (selectedFile) {
       setFile(selectedFile);
       setAudioSrc(URL.createObjectURL(selectedFile));
-    }
-  };
-
-  const handleFileSelectImg = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files && event.target.files[0];
-    if (selectedFile) {
-      setImage(selectedFile);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -86,7 +73,7 @@ const AddSongSection = () => {
         releaseYear: year,
         duration: duration,
         type: isFreeSong ? "FREE" : "PAID",
-        imageUrl: imageUrl ? imageUrl : null,
+        imageUrl: image ? imageUrl : null,
         cloudUrl: fileUrl,
       };
 
@@ -119,25 +106,13 @@ const AddSongSection = () => {
         <form className="container button-bar-form" onSubmit={handleAddSong}>
           <div className="container add-song-data-container button-bar-data-container">
             <div className="container song-picture-upload-container">
-              <div className="container add-picture-container">
-                <img
-                  className="add-picture song-picture"
-                  src={!imageUrl ? default_song_picture : imageUrl}
-                  onClick={() => fileInputRefImg.current?.click()}
-                  onMouseEnter={() => setHovering(true)}
-                  onMouseLeave={() => setHovering(false)}
-                />
-                {hovering && (
-                  <span className="picture-text-pop-up">Add photo</span>
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRefImg}
-                  style={{ display: "none" }}
-                  onChange={handleFileSelectImg}
-                />
-              </div>
+              <ImageUpload
+                imgStyleClass="song-picture"
+                defaultPicture={default_song_picture}
+                imageUrl={imageUrl}
+                setImage={setImage}
+                setImageUrl={setImageUrl}
+              />
               <div className="container upload-container">
                 <div className="container upload-button-container">
                   <button

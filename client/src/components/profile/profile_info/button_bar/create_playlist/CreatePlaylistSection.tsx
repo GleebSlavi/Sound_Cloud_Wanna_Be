@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import "./create_playlist_section.css";
 import default_playlist_picture from "../../../../../pictures/playlist_default_picture.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ImageUpload from "../../../../image_upload/ImageUpload";
+import { uploadFileToS3 } from "../../../../../s3";
 
 const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);
@@ -10,19 +12,25 @@ const CreatePlaylistSection = () => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [hovering, setHovering] = useState(false);
 
   const navigate = useNavigate();
 
-  const fileInputRefImg = useRef<HTMLInputElement>(null);
-
   const handleNotFoundPlaylist = async () => {
+    if (image) {
+      await uploadFileToS3(
+        image,
+        process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET,
+        setImageUrl,
+        null
+      );
+    }
+
     const playlistData = {
       userId: localStorage.getItem("id"),
       name: name,
       description: description,
       type: isPrivateType ? "PRIVATE" : "PUBLIC",
-      imageUrl: imageUrl ? imageUrl : null,
+      imageUrl: image ? imageUrl : null,
     };
 
     await axios
@@ -48,7 +56,7 @@ const CreatePlaylistSection = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.get(
+      await axios.get(
         `http://localhost:8080/api/playlists/users/${localStorage.getItem(
           "id"
         )}/${name}`
@@ -68,18 +76,6 @@ const CreatePlaylistSection = () => {
     }
   };
 
-  const handleFileSelectImg = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files && event.target.files[0];
-    if (selectedFile) {
-      setImage(selectedFile);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
-
   return (
     <section className="section">
       <div className="button-bar-field">
@@ -91,25 +87,13 @@ const CreatePlaylistSection = () => {
           onSubmit={handleCreatePlaylist}
         >
           <div className="container playlist-data-container button-bar-data-container">
-            <div className="container add-picture-container">
-              <img
-                className="add-picture playlist-picture"
-                src={!imageUrl ? default_playlist_picture : imageUrl}
-                onClick={() => fileInputRefImg.current?.click()}
-                onMouseEnter={() => setHovering(true)}
-                onMouseLeave={() => setHovering(false)}
-              />
-              {hovering && (
-                <span className="picture-text-pop-up">Add photo</span>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRefImg}
-                style={{ display: "none" }}
-                onChange={handleFileSelectImg}
-              />
-            </div>
+            <ImageUpload
+              imgStyleClass="playlist-picture"
+              defaultPicture={default_playlist_picture}
+              imageUrl={imageUrl}
+              setImage={setImage}
+              setImageUrl={setImageUrl}
+            />
             <div className="container playlist-info-container">
               <div className="container playlist-name-container">
                 <label className="playlist-label">Name:</label>
