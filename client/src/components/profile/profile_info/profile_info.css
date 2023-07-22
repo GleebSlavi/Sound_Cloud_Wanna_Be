@@ -24,7 +24,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 50%;
-  width: 85%;
+  width: 90%;
 }
 
 
@@ -34,7 +34,6 @@
   padding-top: 100%;
 }
 
-/* Image inside the container */
 .profile-picture {
   position: absolute;
   top: 5%;
@@ -64,21 +63,11 @@
   margin-left: 3%;
 }
 
+.picture-text-pop-up {
+  left: 48%;
+  font-size: 0.875rem;
+}
 
 .profile-picture-container:hover, .picture-text-pop-up {
   opacity: 1;
-}
-
-@media (max-width: 1000px) {
-  .profile-picture-container {
-    width: 200px;
-    height: 200px;
-  }
-}
-
-@media (max-width: 700px) {
-  .profile-picture-container {
-    width: 180px;
-    height: 180px;
-  }
 }
