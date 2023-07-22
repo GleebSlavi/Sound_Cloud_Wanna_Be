@@ -88,11 +88,15 @@ const CreatePlaylistSection = () => {
         >
           <div className="container playlist-data-container button-bar-data-container">
             <ImageUpload
-              imgStyleClass="playlist-picture"
+              containerStyleClass=" add-picture-container"
+              imgStyleClass="add-picture playlist-picture"
               defaultPicture={default_playlist_picture}
               imageUrl={imageUrl}
               setImage={setImage}
               setImageUrl={setImageUrl}
+              callSecondFunction={false}
+              image={null}
+              bucket=""
             />
             <div className="container playlist-info-container">
               <div className="container playlist-name-container">

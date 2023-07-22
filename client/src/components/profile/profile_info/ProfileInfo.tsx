@@ -3,15 +3,12 @@ import ButtonBar from "./button_bar/ButtonBar";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
-import { s3 } from "../../../s3";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { nanoid } from "nanoid";
+import ImageUpload from "../../image_upload/ImageUpload";
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [hovering, setHovering] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -28,52 +25,19 @@ const ProfileInfo = () => {
     })();
   }, [setUsername, setImageUrl]);
 
-  const handleFileSelect = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    try {
-      const file = event.target.files && event.target.files[0];
-      if (file) {
-        const key = nanoid(32);
-        const command = new PutObjectCommand({
-          Bucket: process.env.REACT_APP_AWS_PROFILE_PICTURES_BUCKET,
-          Key: key,
-          Body: file,
-        });
-
-        const response = await s3.send(command);
-        setImageUrl(
-          `https://${process.env.REACT_APP_AWS_PROFILE_PICTURES_BUCKET}.s3.${process.env.REACT_APP_AWS_BUCKET_REGION}.amazonaws.com/${key}`
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="container profile-container">
-      <div className="container profile-picture-container">
-        <img
-          className="add-picture profile-picture"
-          src={!imageUrl ? default_picture : imageUrl}
-          onClick={() => fileInputRef.current?.click()}
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
-        />
-        {hovering && (
-          <span className="picture-text-pop-up">
-            {!imageUrl ? "Add photo" : "Change photo"}
-          </span>
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileSelect}
-        />
-      </div>
+      <ImageUpload
+        containerStyleClass=" profile-picture-container"
+        imgStyleClass="add-picture profile-picture"
+        defaultPicture={default_picture}
+        imageUrl={imageUrl}
+        setImage={setImage}
+        setImageUrl={setImageUrl}
+        callSecondFunction={true}
+        image={image}
+        bucket={process.env.REACT_APP_AWS_PROFILE_PICTURES_BUCKET!}
+      />
       <div className="container user-profile-info-container">
         <h2 className="user-username-header">{username}</h2>
         <ButtonBar />

@@ -107,11 +107,15 @@ const AddSongSection = () => {
           <div className="container add-song-data-container button-bar-data-container">
             <div className="container song-picture-upload-container">
               <ImageUpload
-                imgStyleClass="song-picture"
+                containerStyleClass=" add-picture-container"
+                imgStyleClass="add-picture song-picture"
                 defaultPicture={default_song_picture}
                 imageUrl={imageUrl}
                 setImage={setImage}
                 setImageUrl={setImageUrl}
+                callSecondFunction={false}
+                image={null}
+                bucket=""
               />
               <div className="container upload-container">
                 <div className="container upload-button-container">

@@ -7,7 +7,6 @@ import axios from "axios";
 import default_playlist_picture from "../../../pictures/playlist_default_picture.png";
 import SongBox from "../../song/SongBox";
 import { playlistsEndpoint, usersEndpoint } from "../../../reusable";
-import { uploadFileToS3 } from "../../../s3";
 
 const PlaylistPageSection = () => {
   const location = useLocation();
@@ -23,10 +22,7 @@ const PlaylistPageSection = () => {
   });
   const [username, setUsername] = useState("");
   const [items, setItems] = useState<Song[]>([]);
-  const [hovering, setHovering] = useState(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-  const fileInputRefImg = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -37,7 +33,7 @@ const PlaylistPageSection = () => {
           `${playlistsEndpoint}/id/${uuid}`
         );
         setPlaylist(responsePlaylist.data);
-        setImageUrl(playlist.imageUrl);
+        setImageUrl(playlist.imageUrl ? playlist.imageUrl : "");
 
         const responseUser = await axios.get(
           `${usersEndpoint}/${responsePlaylist.data.userId}`
@@ -64,26 +60,6 @@ const PlaylistPageSection = () => {
     }
   };
 
-  const handleFileSelectImg = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      await uploadFileToS3(
-        file,
-        process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET,
-        setImageUrl,
-        imageUrl ? imageUrl.split("/").slice(-1)[0] : null
-      );
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const secondsToMMSS = (durationInSeconds: number): string => {
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = Math.floor(durationInSeconds % 60);
@@ -99,21 +75,6 @@ const PlaylistPageSection = () => {
             <img
               className="playlist-page-picture"
               src={!imageUrl ? default_playlist_picture : imageUrl}
-              onClick={() => fileInputRefImg.current?.click()}
-              onMouseEnter={() => setHovering(true)}
-              onMouseLeave={() => setHovering(false)}
-            />
-            {hovering && (
-              <span className="change-image-text-playlist">
-                {!imageUrl ? "Add photo" : "Change photo"}
-              </span>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRefImg}
-              style={{ display: "none" }}
-              onChange={handleFileSelectImg}
             />
           </div>
           <div className="container">
