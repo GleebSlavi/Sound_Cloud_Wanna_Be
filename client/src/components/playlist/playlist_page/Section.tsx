@@ -45,13 +45,6 @@ const PlaylistPageSection = () => {
     })();
   }, [location, setPlaylist, setItems]);
 
-  const secondsToMMSS = (durationInSeconds: number): string => {
-    const minutes = Math.floor(durationInSeconds / 60);
-    const seconds = Math.floor(durationInSeconds % 60);
-    const formattedMinutes = minutes < 10 ? `${minutes}` : `0${minutes}`;
-    return `${formattedMinutes}:${seconds.toString().padStart(2, "0")}`;
-  };
-
   return (
     <section className="section playlist-page-section">
       <div className="container playlist-page-info-container">
@@ -100,7 +93,7 @@ const PlaylistPageSection = () => {
             uploader={
               item.userId === localStorage.getItem("id") ? "you" : item.uploader
             }
-            duration={secondsToMMSS(item.duration)}
+            duration={item.duration}
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}
           />

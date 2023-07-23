@@ -8,7 +8,7 @@ interface Props {
   name: string;
   artist: string;
   uploader: string;
-  duration: string;
+  duration: number;
   uploadDate: string;
   imageUrl: string | null;
 }
@@ -22,6 +22,14 @@ const SongBox = ({
   imageUrl,
 }: Props) => {
   const [hovering, setHovering] = useState(false);
+
+  const fromSecondsToMMSS = (totalSeconds: number): string => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    const stringMinutes = minutes < 10 ? `${minutes}` : `0${minutes}`;
+    return `${stringMinutes}:${seconds}`;
+  };
 
   return (
     <div
@@ -48,7 +56,7 @@ const SongBox = ({
         <span className="song-box-uploader">{uploader}</span>
       </div>
       <div className="container song-box-song-duration-container">
-        <span className="song-box-duration">{duration}</span>
+        <span className="song-box-duration">{fromSecondsToMMSS(duration)}</span>
       </div>
       <div className="container song-box-song-upload-date-container">
         <span className="song-box-upload-date">{uploadDate}</span>
