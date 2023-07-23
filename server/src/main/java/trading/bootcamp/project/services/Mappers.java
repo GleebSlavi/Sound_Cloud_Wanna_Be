@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class Mappers {
 
-    //public static UserEntity fromUserInput(UserInput user) {
-      //  return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getPassword(), LocalDate.now(), user.getImageUrl());
-   // }
+    public static UserEntity fromUserInput(UserInput user) {
+        return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getNewPassword(), LocalDate.now(), null);
+   }
 
     public static PlaylistEntity fromPlaylistInput(PlaylistInput playlist) {
         return new PlaylistEntity(UUID.randomUUID(), playlist.getUserId(), playlist.getName(),

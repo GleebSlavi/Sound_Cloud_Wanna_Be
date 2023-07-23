@@ -35,11 +35,8 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         try {
             return ResponseEntity.ok(service.authenticate(request));
-        } catch (BadCredentialsException ex) {
+        } catch (BadCredentialsException | NoSuchUserException ex) {
             return ResponseEntity.badRequest().build();
-        }
-        catch (NoSuchUserException ex) {
-            return ResponseEntity.notFound().build();
         }
     }
 }

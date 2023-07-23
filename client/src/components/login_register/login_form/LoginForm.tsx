@@ -12,16 +12,13 @@ const Login = () => {
 
   const handleErrors = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 404) {
-        alert("Invalid user! Try again!")
-      } else if (error.response.status === 400) {
+      if (error.response.status === 400) {
         alert("Invalid login data! Please try again!");
-      }
-      else {
+      } else {
         alert(`An error occured: ${error.response.data.message}`);
       }
     }
-  }
+  };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
