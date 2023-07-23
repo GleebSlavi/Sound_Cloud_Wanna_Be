@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
 import trading.bootcamp.project.exceptions.InvalidFieldException;
-import trading.bootcamp.project.exceptions.InvalidPlaylistNameException;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.PlaylistRepository;
+import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.services.outputs.PlaylistOutput;
+import trading.bootcamp.project.services.outputs.SongOutput;
+import trading.bootcamp.project.api.rest.OutputMappers;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,27 +21,27 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PlaylistService {
 
-    private final PlaylistRepository repository;
+    private final PlaylistRepository playlistRepository;
 
-    public List<PlaylistEntity> getPlaylistsByUser(UUID userId) {
-        return repository.listPlaylistsByUser(userId);
+    private final UserRepository userRepository;
+
+    public List<PlaylistOutput> getPlaylistsByUser(UUID userId) {
+        return playlistRepository.listPlaylistsByUser(userId)
+            .stream()
+            .map(playlist -> OutputMappers.fromPlaylistEntity(userRepository, playlist))
+            .toList();
     }
 
-    public PlaylistEntity getPlaylistById(UUID id) throws NoSuchPlaylistException {
-        Optional<PlaylistEntity> playlist = repository.getPlaylistById(id);
+    public PlaylistOutput getPlaylistById(UUID id) throws NoSuchPlaylistException {
+        Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistById(id);
         if (playlist.isEmpty()) {
             throw new NoSuchPlaylistException(String.format("Playlist with id %s not found", id.toString()));
         }
-        return playlist.get();
+        return OutputMappers.fromPlaylistEntity(userRepository, playlist.get());
     }
 
     public PlaylistEntity getPlaylistByNameAndUserId(UUID userId, String playlistName) {
-        Optional<PlaylistEntity> playlist = repository.getPlaylistByNameAndUserId(userId, playlistName);
-        return playlist.orElse(null);
-    }
-
-    public PlaylistEntity getPlaylistByName(String name) {
-        Optional<PlaylistEntity> playlist = repository.getPlaylistByName(name);
+        Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistByNameAndUserId(userId, playlistName);
         return playlist.orElse(null);
     }
 
@@ -49,7 +51,7 @@ public class PlaylistService {
         }
 
         PlaylistEntity playlist = Mappers.fromPlaylistInput(playlistInput);
-        if (repository.createPlaylist(playlist.id(), playlist.userId(), playlist.name(),
+        if (playlistRepository.createPlaylist(playlist.id(), playlist.userId(), playlist.name(),
                 playlist.description(), false, playlist.createDate(), playlist.type(), playlist.imageUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the playlist");
         }
@@ -57,18 +59,21 @@ public class PlaylistService {
     }
 
     public PlaylistEntity deletePlaylist(UUID id) throws NoSuchPlaylistException {
-        Optional<PlaylistEntity> playlist = repository.getPlaylistById(id);
+        Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistById(id);
         if (playlist.isEmpty()) {
             throw new NoSuchPlaylistException(String.format("Playlist with id %s not found", id.toString()));
         }
 
-        if (repository.deletePlaylist(id) != 1) {
+        if (playlistRepository.deletePlaylist(id) != 1) {
             throw new IllegalStateException("Couldn't delete the playlist");
         }
         return playlist.get();
     }
 
-    public List<SongEntity> getSongsInPlaylistIDs(UUID playlistId) {
-        return repository.getSongsInPlaylistIDs(playlistId);
+    public List<SongOutput> getSongsInPlaylist(UUID playlistId) {
+        return playlistRepository.getSongsInPlaylist(playlistId)
+            .stream()
+            .map(song -> OutputMappers.fromSongEntity(userRepository, song))
+            .toList();
     }
 }

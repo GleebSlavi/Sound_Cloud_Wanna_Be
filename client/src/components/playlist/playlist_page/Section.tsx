@@ -19,8 +19,8 @@ const PlaylistPageSection = () => {
     createDate: "",
     type: "",
     imageUrl: null,
+    creator: "",
   });
-  const [username, setUsername] = useState("");
   const [items, setItems] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
 
@@ -35,11 +35,6 @@ const PlaylistPageSection = () => {
         setPlaylist(responsePlaylist.data);
         setImageUrl(playlist.imageUrl ? playlist.imageUrl : "");
 
-        const responseUser = await axios.get(
-          `${usersEndpoint}/${responsePlaylist.data.userId}`
-        );
-        setUsername(responseUser.data.username);
-
         const responseSongs = await axios.get(
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
         );
@@ -48,17 +43,7 @@ const PlaylistPageSection = () => {
         console.log(error);
       }
     })();
-  }, [location, setPlaylist, setUsername, setItems]);
-
-  const getUser = async (userId: string): Promise<string> => {
-    try {
-      const response = await axios.get(`${usersEndpoint}/${userId}`);
-      return response.data.username;
-    } catch (error) {
-      console.log(error);
-      return "";
-    }
-  };
+  }, [location, setPlaylist, setItems]);
 
   const secondsToMMSS = (durationInSeconds: number): string => {
     const minutes = Math.floor(durationInSeconds / 60);
@@ -99,7 +84,7 @@ const PlaylistPageSection = () => {
               <span className="playlist-page-creator">
                 by:{" "}
                 {playlist.userId !== localStorage.getItem("id")
-                  ? username
+                  ? playlist.creator
                   : "you"}
               </span>
             </div>
@@ -112,7 +97,9 @@ const PlaylistPageSection = () => {
             key={item.id}
             name={item.name}
             artist={item.artist}
-            uploader={"you"}
+            uploader={
+              item.userId === localStorage.getItem("id") ? "you" : item.uploader
+            }
             duration={secondsToMMSS(item.duration)}
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}

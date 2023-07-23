@@ -8,4 +8,5 @@ export interface Playlist {
   createDate: string;
   type: string;
   imageUrl: string | null;
+  creator: string;
 }

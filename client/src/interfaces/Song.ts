@@ -10,4 +10,5 @@ export interface Song {
   uploadDate: string;
   imageUrl: string | null;
   cloudUrl: string;
+  uploader: string;
 }

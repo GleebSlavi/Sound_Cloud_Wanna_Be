@@ -1,8 +1,10 @@
 package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import trading.bootcamp.project.api.rest.OutputMappers;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.auth.services.AuthenticationService;
 import trading.bootcamp.project.exceptions.*;
@@ -11,6 +13,8 @@ import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.services.outputs.PlaylistOutput;
+import trading.bootcamp.project.services.outputs.UserOutput;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,16 +34,19 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserEntity> getUsers() {
-        return userRepository.listUsers();
+    public List<UserOutput> getUsers() {
+        return userRepository.listUsers()
+            .stream()
+            .map(OutputMappers::fromUserEntity)
+            .toList();
     }
 
-    public UserEntity getUserById(UUID id) throws NoSuchUserException {
+    public UserOutput getUserById(UUID id) throws NoSuchUserException {
         Optional<UserEntity> user = userRepository.getUserById(id);
         if (user.isEmpty()) {
             throw new NoSuchUserException(String.format("User with id %s not found", id.toString()));
         }
-        return user.get();
+        return OutputMappers.fromUserEntity(user.get());
     }
 
     public UserEntity getUserByUsername(String username) throws NoSuchUserException {
@@ -133,7 +140,10 @@ public class UserService {
     }
 
 
-    public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId) {
-        return userRepository.getUserFavouritePlaylists(userId);
+    public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId) {
+        return userRepository.getUserFavouritePlaylists(userId)
+            .stream()
+            .map(playlist -> OutputMappers.fromPlaylistEntity(userRepository, playlist))
+            .toList();
     }
 }

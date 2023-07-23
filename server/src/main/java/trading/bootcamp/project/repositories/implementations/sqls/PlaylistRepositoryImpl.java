@@ -72,7 +72,7 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
-    public List<SongEntity> getSongsInPlaylistIDs(UUID playlistId) {
+    public List<SongEntity> getSongsInPlaylist(UUID playlistId) {
         return jdbcTemplate.query(Queries.GET_SONGS_IN_PLAYLIST_IDS,
             new SongRowMapper(), playlistId.toString());
     }

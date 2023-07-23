@@ -25,5 +25,5 @@ public interface PlaylistRepository {
 
     int deletePlaylist(UUID id);
 
-    List<SongEntity> getSongsInPlaylistIDs(UUID playlistId);
+    List<SongEntity> getSongsInPlaylist(UUID playlistId);
 }

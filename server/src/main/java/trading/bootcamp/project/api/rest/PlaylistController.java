@@ -10,6 +10,8 @@ import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
 import trading.bootcamp.project.services.PlaylistService;
+import trading.bootcamp.project.services.outputs.PlaylistOutput;
+import trading.bootcamp.project.services.outputs.SongOutput;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,17 +32,12 @@ public class PlaylistController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<PlaylistEntity> getAllPlaylistsByUser(@PathVariable("userId") UUID userId) {
+    public List<PlaylistOutput> getAllPlaylistsByUser(@PathVariable("userId") UUID userId) {
         return service.getPlaylistsByUser(userId);
     }
 
-    @GetMapping("name/{name}")
-    public PlaylistEntity getByName(@PathVariable("name") String name) {
-        return service.getPlaylistByName(name);
-    }
-
-    @GetMapping("/id/{id}")
-    public PlaylistEntity getById(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
+    @GetMapping("/{id}")
+    public PlaylistOutput getById(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
         return service.getPlaylistById(id);
     }
 
@@ -61,7 +58,7 @@ public class PlaylistController {
     }
 
     @GetMapping("{playlistId}/songs")
-    public List<SongEntity> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
-        return service.getSongsInPlaylistIDs(playlistId);
+    public List<SongOutput> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
+        return service.getSongsInPlaylist(playlistId);
     }
 }
