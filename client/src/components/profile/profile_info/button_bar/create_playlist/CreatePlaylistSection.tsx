@@ -19,7 +19,7 @@ const CreatePlaylistSection = () => {
     if (image) {
       await uploadFileToS3(
         image,
-        process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET,
+        process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET,
         setImageUrl,
         null
       );
