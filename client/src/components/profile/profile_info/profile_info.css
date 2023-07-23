@@ -4,22 +4,6 @@
   width: 95%;
 }
 
-/* .profile-picture-container {
-  position: relative;
-  overflow: hidden;
-   border-radius: 100%;
-  width: 220px;
-  height: 220px;
-  transition: opacity 0.15s;
-}
-
-.profile-picture {
-  width: 85%;
-  height: 85%;
-  border-radius: 120px;
-  object-fit: cover;
-} */
-
 .profile-picture-container {
   position: relative;
   overflow: hidden;
@@ -61,11 +45,6 @@
   margin-top: 2%;
   margin-bottom: 0;
   margin-left: 3%;
-}
-
-.picture-text-pop-up {
-  left: 48%;
-  font-size: 0.875rem;
 }
 
 .profile-picture-container:hover, .picture-text-pop-up {

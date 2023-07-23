@@ -86,17 +86,13 @@ const CreatePlaylistSection = () => {
           className="container button-bar-form"
           onSubmit={handleCreatePlaylist}
         >
-          <div className="container playlist-data-container button-bar-data-container">
+          <div className="container button-bar-data-container">
             <ImageUpload
-              containerStyleClass=" add-picture-container"
-              imgStyleClass="add-picture playlist-picture"
+              imgStyleClass=" playlist-picture"
               defaultPicture={default_playlist_picture}
               imageUrl={imageUrl}
               setImage={setImage}
               setImageUrl={setImageUrl}
-              callSecondFunction={false}
-              image={null}
-              bucket=""
             />
             <div className="container playlist-info-container">
               <div className="container playlist-name-container">

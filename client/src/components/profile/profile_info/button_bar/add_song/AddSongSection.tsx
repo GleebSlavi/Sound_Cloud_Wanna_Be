@@ -104,18 +104,14 @@ const AddSongSection = () => {
           <h2 className="button-bar-header">Add Song</h2>
         </div>
         <form className="container button-bar-form" onSubmit={handleAddSong}>
-          <div className="container add-song-data-container button-bar-data-container">
+          <div className="container button-bar-data-container">
             <div className="container song-picture-upload-container">
               <ImageUpload
-                containerStyleClass=" add-picture-container"
-                imgStyleClass="add-picture song-picture"
+                imgStyleClass=" song-picture"
                 defaultPicture={default_song_picture}
                 imageUrl={imageUrl}
                 setImage={setImage}
                 setImageUrl={setImageUrl}
-                callSecondFunction={false}
-                image={null}
-                bucket=""
               />
               <div className="container upload-container">
                 <div className="container upload-button-container">

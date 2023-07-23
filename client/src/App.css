@@ -63,6 +63,7 @@
   width: 90%;
   border: 4px solid white;
   border-radius: 2px;
+  grid-template-columns: 1fr 2fr;
 }
 
 .button-bar-form {

@@ -9,9 +9,17 @@ interface Props {
   title: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isRequired: boolean;
 }
 
-const Field = ({ label, pattern, title, value, onChange }: Props) => {
+const Field = ({
+  label,
+  pattern,
+  title,
+  value,
+  onChange,
+  isRequired,
+}: Props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const getType = (): string => {
@@ -31,7 +39,7 @@ const Field = ({ label, pattern, title, value, onChange }: Props) => {
           value={value}
           pattern={pattern}
           title={title}
-          required
+          required={isRequired}
         />
         <button
           className="change-password-eye-button"

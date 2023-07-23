@@ -13,9 +13,9 @@ const ButtonBar = () => {
       <button
         className="profile-button"
         type="button"
-        onClick={handleOnClickButtons("/change_password")}
+        onClick={handleOnClickButtons("/edit_profile")}
       >
-        Change password
+        Edit Profile
       </button>
       <button
         className="profile-button"
