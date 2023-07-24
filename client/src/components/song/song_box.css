@@ -25,7 +25,8 @@
 }
 
 .song-box-picture { 
-  width: 70%;
+  position: absolute;
+  width: 60%;
   height: 75%;
   background-color: white;
   border-radius: 10px;
@@ -83,7 +84,7 @@
 .song-hover {
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
   color: white;

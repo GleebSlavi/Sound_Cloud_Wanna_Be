@@ -9,7 +9,7 @@ import SongBox from "../../song/SongBox";
 import { playlistsEndpoint} from "../../../ts_files/reusable";
 import { usePlayerContext } from "../../../provider/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faShuffle } from "@fortawesome/free-solid-svg-icons";
 
 const PlaylistPageSection = () => {
   const location = useLocation();
@@ -101,15 +101,25 @@ const PlaylistPageSection = () => {
         </div>
       </div>
       <div className="container playlist-songs-info-control-container">
-        <div className="container">
-            <button type="button" className="playlist-songs-play-button">
+        <div className="container playlist-songs-play-button-container">
+            <button type="button" className="song-controller-button playlist-songs-play-button">
               <FontAwesomeIcon icon={faPlay} />
             </button>
         </div>
-        <div className="container"></div>
-        <div className="container"></div>
-        <div className="container"></div>
-        <div className="container"></div>
+        <div className="container playlist-songs-shuffle-button-container">
+          <button type="button" className="song-controller-button playlist-songs-shuffle-button">
+            <FontAwesomeIcon icon={faShuffle} />
+          </button>
+        </div>
+        <div className="container playlist-songs-uploader">
+          <span className="playlist-songs-info">Uploader</span>
+        </div>
+        <div className="container playlist-songs-uploader">
+          <span className="playlist-songs-info playlist-songs-duration-text">Duration</span>
+        </div>
+        <div className="container playlist-songs-upload-date">
+          <span className="playlist-songs-info playlist-songs-upload-date-text">Upload date</span>
+        </div>
       </div>
       <div className="container playlist-songs-container">
         {items.map((item) => (

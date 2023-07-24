@@ -1,5 +1,5 @@
 .playlist-page-section {
-  grid-template-rows: 2fr 0.5fr 4fr;
+  grid-template-rows: 2fr 1fr 3fr;
 }
 
 .playlist-page-info-container {
@@ -84,11 +84,52 @@
   grid-auto-rows: 7%;
   gap: 2%;
   width: 90%;
-  height: 100vh;
-  padding-top: 2%;
+  height: 90vh;
 }
 
 .playlist-songs-info-control-container {
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.3fr 2.1fr 0.5fr 1fr 0.7fr 0.7fr;
   width: 90%;
+  height: 10vh;
+}
+
+.playlist-songs-play-button-container {
+  position: relative;
+}
+
+.playlist-songs-shuffle-button-container {
+  position: relative;
+  justify-items: start;
+}
+
+.playlist-songs-shuffle-button {
+  padding-left: 5%;
+}
+
+.playlist-songs-play-button {
+  padding-top: 2%;
+  font-size: 2rem;
+}
+
+
+.playlist-songs-info {
+  color: white;
+  font-family: 'Press Start 2P';
+  user-select: none;
+}
+
+.playlist-songs-uploader {
+  justify-items: end;
+}
+
+.playlist-songs-upload-date {
+  justify-items: start;
+}
+
+.playlist-songs-duration-text {
+  padding-right: 11%;
+}
+
+.playlist-songs-upload-date-text {
+  padding-left: 5%;
 }
