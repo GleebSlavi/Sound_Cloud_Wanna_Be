@@ -4,7 +4,7 @@ import default_playlist_picture from "../../../../../pictures/playlist_default_p
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
-import { uploadFileToS3 } from "../../../../../s3";
+import { uploadFileToS3 } from "../../../../../ts_files/s3";
 
 const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);
@@ -16,11 +16,11 @@ const CreatePlaylistSection = () => {
   const navigate = useNavigate();
 
   const handleNotFoundPlaylist = async () => {
+    let imgS3Url;
     if (image) {
-      await uploadFileToS3(
+      imgS3Url = await uploadFileToS3(
         image,
         process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET,
-        setImageUrl,
         null
       );
     }
@@ -30,7 +30,7 @@ const CreatePlaylistSection = () => {
       name: name,
       description: description,
       type: isPrivateType ? "PRIVATE" : "PUBLIC",
-      imageUrl: image ? imageUrl : null,
+      imageUrl: image ? imgS3Url : null,
     };
 
     await axios

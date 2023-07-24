@@ -1,8 +1,9 @@
 import "./song_box.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import default_song_picture from "../../pictures/default_song_picture.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { usePlayerContext } from "../../provider/PlayerProvider";
 
 interface Props {
   name: string;
@@ -11,6 +12,8 @@ interface Props {
   duration: number;
   uploadDate: string;
   imageUrl: string | null;
+  isCurrentSong: boolean;
+  handlePlay: () => void;
 }
 
 const SongBox = ({
@@ -20,12 +23,16 @@ const SongBox = ({
   duration,
   uploadDate,
   imageUrl,
+  isCurrentSong,
+  handlePlay
 }: Props) => {
   const [hovering, setHovering] = useState(false);
 
+  const { isPlaying } = usePlayerContext();
+
   const fromSecondsToMMSS = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
+    const seconds = Math.floor(totalSeconds % 60);
 
     const stringMinutes = minutes < 10 ? `${minutes}` : `0${minutes}`;
     return `${stringMinutes}:${seconds}`;
@@ -36,13 +43,14 @@ const SongBox = ({
       className="container song-box"
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
+      onClick={handlePlay}
     >
       <div className="container song-box-picture-container">
         <img
           className="song-box-picture"
           src={imageUrl ? imageUrl : default_song_picture}
         />
-        {hovering && <FontAwesomeIcon className="song-hover" icon={faPlay} />}
+        {hovering && <FontAwesomeIcon className="song-hover" icon={isPlaying && isCurrentSong ? faPause : faPlay} />}
       </div>
       <div className="container song-box-song-data-container">
         <div className="container song-box-song-name-container">

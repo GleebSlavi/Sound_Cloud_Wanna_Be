@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faL, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 import default_song_picture from "../../../../../pictures/default_song_picture.png";
-import { uploadFileToS3 } from "../../../../../s3";
+import { uploadFileToS3 } from "../../../../../ts_files/s3";
 import axios from "axios";
-import { songsEndpoint } from "../../../../../reusable";
+import { songsEndpoint } from "../../../../../ts_files/reusable";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 
@@ -17,7 +17,6 @@ const AddSongSection = () => {
   const [artist, setArtist] = useState("");
   const [year, setYear] = useState(0);
   const [file, setFile] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string>("");
   const [duration, setDuration] = useState(0);
   const [audioSrc, setAudioSrc] = useState("");
 
@@ -50,18 +49,17 @@ const AddSongSection = () => {
     event.preventDefault();
 
     if (file) {
-      await uploadFileToS3(
+      let songS3Url = await uploadFileToS3(
         file,
         process.env.REACT_APP_AWS_SONGS_BUCKET,
-        setFileUrl,
         null
       );
 
+      let imgS3Url;
       if (image) {
-        await uploadFileToS3(
+        imgS3Url = await uploadFileToS3(
           image,
           process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET,
-          setImageUrl,
           null
         );
       }
@@ -73,8 +71,8 @@ const AddSongSection = () => {
         releaseYear: year,
         duration: duration,
         type: isFreeSong ? "FREE" : "PAID",
-        imageUrl: image ? imageUrl : null,
-        cloudUrl: fileUrl,
+        imageUrl: image ? imgS3Url : null,
+        cloudUrl: songS3Url,
       };
 
       try {

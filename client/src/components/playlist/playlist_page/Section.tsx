@@ -1,12 +1,15 @@
 import { useLocation } from "react-router-dom";
 import "./section.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Playlist } from "../../../interfaces/Playlists";
 import { Song } from "../../../interfaces/Song";
 import axios from "axios";
 import default_playlist_picture from "../../../pictures/playlist_default_picture.png";
 import SongBox from "../../song/SongBox";
-import { playlistsEndpoint, usersEndpoint } from "../../../reusable";
+import { playlistsEndpoint} from "../../../ts_files/reusable";
+import { usePlayerContext } from "../../../provider/PlayerProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 
 const PlaylistPageSection = () => {
   const location = useLocation();
@@ -23,6 +26,9 @@ const PlaylistPageSection = () => {
   });
   const [items, setItems] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
+  
+  const { setCurrentSong, currentSong, setIsPlaying, isPlaying } = usePlayerContext();
+
 
   useEffect(() => {
     (async () => {
@@ -44,6 +50,16 @@ const PlaylistPageSection = () => {
       }
     })();
   }, [location, setPlaylist, setItems]);
+
+  const handleSongPlay = (item: Song) => {
+    if (currentSong && currentSong.id === item.id) {
+      setIsPlaying(!isPlaying);
+    }
+    else {
+      setCurrentSong(item);
+      setIsPlaying(true);
+    }
+  }
 
   return (
     <section className="section playlist-page-section">
@@ -84,6 +100,17 @@ const PlaylistPageSection = () => {
           </div>
         </div>
       </div>
+      <div className="container playlist-songs-info-control-container">
+        <div className="container">
+            <button type="button" className="playlist-songs-play-button">
+              <FontAwesomeIcon icon={faPlay} />
+            </button>
+        </div>
+        <div className="container"></div>
+        <div className="container"></div>
+        <div className="container"></div>
+        <div className="container"></div>
+      </div>
       <div className="container playlist-songs-container">
         {items.map((item) => (
           <SongBox
@@ -96,6 +123,8 @@ const PlaylistPageSection = () => {
             duration={item.duration}
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}
+            isCurrentSong={item.id === currentSong?.id}
+            handlePlay={() => handleSongPlay(item)}
           />
         ))}
       </div>

@@ -29,11 +29,9 @@
 }
 
 .user-profile-info-container {
-  display: grid;
   grid-template-rows: 0.8fr 0.5fr;
-  width: 100%;
-  align-items: center;
   margin-left: 0;
+  justify-items: start;
 }
 
 .user-username-header {

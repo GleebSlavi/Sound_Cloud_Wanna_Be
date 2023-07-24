@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import default_profile_picture from "../../../../../pictures/default_profile_picture.png";
-import { uploadFileToS3 } from "../../../../../s3";
+import { uploadFileToS3 } from "../../../../../ts_files/s3";
 
 const EditProfileSection = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -38,11 +38,11 @@ const EditProfileSection = () => {
     event.preventDefault();
 
     try {
+      let imgS3Url;
       if (image) {
-        await uploadFileToS3(
+        imgS3Url = await uploadFileToS3(
           image,
           process.env.REACT_APP_AWS_PROFILE_PICTURES_BUCKET,
-          setImageUrl,
           null
         );
       }

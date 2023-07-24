@@ -18,7 +18,7 @@ export const getKeyFromS3Uri = (uri: string): string | null => {
 }
 
 export const uploadFileToS3 = async (file: File, bucket: string | undefined, 
-  setUrl: React.Dispatch<React.SetStateAction<string>>, existingKey: string | null) => {
+  existingKey: string | null): Promise<string> => {
   try{
     const key = existingKey || nanoid(32);
     const command = new PutObjectCommand({
@@ -27,12 +27,10 @@ export const uploadFileToS3 = async (file: File, bucket: string | undefined,
       Body: file
     });
 
-    console.log(existingKey)
-
     await s3.send(command);
-    setUrl(`https://${bucket}.s3.${process.env.REACT_APP_AWS_BUCKET_REGION}.amazonaws.com/${key}`);
+    return `https://${bucket}.s3.${process.env.REACT_APP_AWS_BUCKET_REGION}.amazonaws.com/${key}`;
   } catch (error) {
-    console.log(error);
     alert("Couldn't upload the file! Please try again!");
+    return "";
   }
 }

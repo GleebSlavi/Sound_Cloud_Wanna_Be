@@ -6,8 +6,8 @@
 .picture {
   width: 70%;
   height: 70%;
-  background-color: rgb(70, 0, 70);
   border-radius: 10px;
+  background-color: transparent;
 }
 
 .song-info-container {
@@ -24,10 +24,12 @@
 
 .song-name-container {
   align-items: end;
+  justify-items: start;
 }
 
 .song-artist-container {
   align-items: start;
+  justify-items: start;
 }
 
 .player-bar-song-name {

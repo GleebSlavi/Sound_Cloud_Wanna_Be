@@ -9,11 +9,13 @@ import {
   faPause,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
+import { usePlayerContext } from "../../../../provider/PlayerProvider";
 
 const SongController = () => {
-  const [isPlayButton, setPlayButton] = useState(true);
   const [isShuffleActive, setShuffleActive] = useState(false);
   const [isStreamActive, setStreamActive] = useState(false);
+
+  const { isPlaying, setIsPlaying } = usePlayerContext()
 
   return (
     <div className="container song-controller-container">
@@ -40,9 +42,9 @@ const SongController = () => {
           <button
             className="song-controller-button click"
             type="button"
-            onClick={() => setPlayButton(!isPlayButton)}
+            onClick={() => setIsPlaying(!isPlaying)}
           >
-            <FontAwesomeIcon icon={isPlayButton ? faPlay : faPause} />
+            <FontAwesomeIcon icon={!isPlaying ? faPlay : faPause} />
           </button>
         </div>
         <div className="container forward-container">

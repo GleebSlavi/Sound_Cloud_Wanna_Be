@@ -87,3 +87,8 @@
   height: 100vh;
   padding-top: 2%;
 }
+
+.playlist-songs-info-control-container {
+  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+  width: 90%;
+}
