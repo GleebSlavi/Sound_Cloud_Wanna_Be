@@ -15,7 +15,13 @@ const SongController = () => {
   const [isShuffleActive, setShuffleActive] = useState(false);
   const [isStreamActive, setStreamActive] = useState(false);
 
-  const { isPlaying, setIsPlaying } = usePlayerContext()
+  const { isPlaying, setIsPlaying, currentPlaylistIndex,
+   setSong, setNextSong } = usePlayerContext()
+
+  const handlePreviousSong = () => {
+    const previousIndex = currentPlaylistIndex - 1;
+    setSong(previousIndex, previousIndex >= 0);
+  }
 
   return (
     <div className="container song-controller-container">
@@ -34,7 +40,7 @@ const SongController = () => {
           <button className="song-controller-button click" type="button">
             <FontAwesomeIcon
               icon={faBackward}
-              style={{ fontFamily: "Press Start 2P" }}
+              onClick={handlePreviousSong}
             />
           </button>
         </div>
@@ -49,7 +55,9 @@ const SongController = () => {
         </div>
         <div className="container forward-container">
           <button className="song-controller-button click" type="button">
-            <FontAwesomeIcon icon={faForward} />
+            <FontAwesomeIcon 
+            icon={faForward}
+            onClick={setNextSong} />
           </button>
         </div>
       </div>

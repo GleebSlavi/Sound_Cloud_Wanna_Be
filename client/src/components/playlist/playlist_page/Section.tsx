@@ -13,7 +13,7 @@ import { faPlay, faPause, faShuffle } from "@fortawesome/free-solid-svg-icons";
 
 const PlaylistPageSection = () => {
   const location = useLocation();
-  const [playlist, setPlaylist] = useState<Playlist>({
+  const [playlistData, setPlaylistData] = useState<Playlist>({
     id: "",
     userId: "",
     name: "",
@@ -27,8 +27,10 @@ const PlaylistPageSection = () => {
   const [items, setItems] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
   
-  const { setCurrentSong, currentSong, setIsPlaying, isPlaying } = usePlayerContext();
+  const { currentPlaylist, currentPlaylistIndex, setIsPlaying, 
+    isPlaying, setCurrentPlaylist, setSong } = usePlayerContext();
 
+  const currentSong = currentPlaylist[currentPlaylistIndex];
 
   useEffect(() => {
     (async () => {
@@ -38,26 +40,26 @@ const PlaylistPageSection = () => {
         const responsePlaylist = await axios.get(
           `${playlistsEndpoint}/id/${uuid}`
         );
-        setPlaylist(responsePlaylist.data);
-        setImageUrl(playlist.imageUrl ? playlist.imageUrl : "");
+        setPlaylistData(responsePlaylist.data);
+        setImageUrl(playlistData.imageUrl ? playlistData.imageUrl : "");
 
         const responseSongs = await axios.get(
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
         );
         setItems(responseSongs.data);
+        setCurrentPlaylist(responseSongs.data);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [location, setPlaylist, setItems]);
+  }, [location, setPlaylistData, setItems]);
 
-  const handleSongPlay = (item: Song) => {
+  const handleSongPlay = (item: Song, index: number) => {
     if (currentSong && currentSong.id === item.id) {
       setIsPlaying(!isPlaying);
     }
     else {
-      setCurrentSong(item);
-      setIsPlaying(true);
+      setSong(index, true);
     }
   }
 
@@ -73,27 +75,27 @@ const PlaylistPageSection = () => {
           </div>
           <div className="container">
             <span className="playlist-page-type">
-              {playlist.type.charAt(0).toUpperCase() +
-                playlist.type.slice(1).toLowerCase()}{" "}
+              {playlistData.type.charAt(0).toUpperCase() +
+                playlistData.type.slice(1).toLowerCase()}{" "}
               Playlist
             </span>
           </div>
         </div>
         <div className="container playlist-info-right-container">
           <div className="container playlist-page-name-container">
-            <span className="playlist-page-name">{playlist.name}</span>
+            <span className="playlist-page-name">{playlistData.name}</span>
           </div>
           <div className="container playlist-page-description-container">
             <span className="playlist-page-description">
-              {playlist.description}
+              {playlistData.description}
             </span>
           </div>
           <div className="container playlist-page-data-container">
             <div className="container playlist-page-creator-container">
               <span className="playlist-page-creator">
                 by:{" "}
-                {playlist.userId !== localStorage.getItem("id")
-                  ? playlist.creator
+                {playlistData.userId !== localStorage.getItem("id")
+                  ? playlistData.creator
                   : "you"}
               </span>
             </div>
@@ -122,7 +124,7 @@ const PlaylistPageSection = () => {
         </div>
       </div>
       <div className="container playlist-songs-container">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <SongBox
             key={item.id}
             name={item.name}
@@ -134,7 +136,7 @@ const PlaylistPageSection = () => {
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}
             isCurrentSong={item.id === currentSong?.id}
-            handlePlay={() => handleSongPlay(item)}
+            handlePlay={() => handleSongPlay(item, index)}
           />
         ))}
       </div>

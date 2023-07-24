@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import default_song_picture from "../../../../pictures/default_song_picture.png"
 
 const SongData = () => {
-  const { currentSong } = usePlayerContext();
+  const { currentPlaylist, currentPlaylistIndex } = usePlayerContext();
+
+  const currentSong = currentPlaylist[currentPlaylistIndex];
 
   return (
     <div className="container song-data-container">

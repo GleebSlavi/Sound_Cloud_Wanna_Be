@@ -1,15 +1,21 @@
-import { ReactNode, createContext, useContext, useState, useRef } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import { Song } from "../interfaces/Song";
 import { PlayerContextData } from "../interfaces/PlayerContextData";
 
 
 const PlayerContext = createContext<PlayerContextData>({
-  currentSong: null,
-  setCurrentSong: () => {},
+  // // currentSong: null,
+  // // setCurrentSong: () => {},
   isPlaying: false,
   setIsPlaying: () => {},
   currentTime: 0,
-  setCurrentTime: () => {}
+  setCurrentTime: () => {},
+  currentPlaylist: [],
+  setCurrentPlaylist: () => {},
+  currentPlaylistIndex: 0,
+  setCurrentPlaylistIndex: () => {},
+  setSong: () => {},
+  setNextSong: () => {}
 });
 
 export const usePlayerContext = () => {
@@ -21,12 +27,37 @@ interface Props {
 }
 
 const PlayerProvider = ({ children }: Props) => {
-  const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  // // const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>([]);
+  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
+
+  const setSong = (index: number, condition: boolean) => {
+      if (condition) {
+        setCurrentPlaylistIndex(index);
+        setCurrentTime(0);
+        setIsPlaying(true);
+      } else {
+        setCurrentPlaylistIndex(0);
+        setIsPlaying(false);
+      }
+  }
+
+  const setNextSong = () => {
+    const nextIndex = currentPlaylistIndex + 1;
+    setSong(nextIndex, nextIndex < currentPlaylist.length);
+  }
 
   return (
-    <PlayerContext.Provider value={{currentSong, setCurrentSong, isPlaying, setIsPlaying, currentTime, setCurrentTime }}>
+    <PlayerContext.Provider value={{
+      // currentSong, setCurrentSong, 
+      isPlaying, setIsPlaying, 
+      currentTime, setCurrentTime,
+      currentPlaylist, setCurrentPlaylist,
+      currentPlaylistIndex, setCurrentPlaylistIndex,
+      setSong, setNextSong
+    }}>
       {children}
     </PlayerContext.Provider>
   )
