@@ -88,27 +88,56 @@ const PlaylistPageSection = () => {
     }
   }
 
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     if (currentPlaylist.id === playlistData.id) {
+  //       if (isShuffled) {
+  //         setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, currentPlaylist, currentPlaylistIndex)})
+  //         setSong(0, true, true);
+  //       } else {
+  //         setCurrentPlaylist({id: currentPlaylist.id, songs: items});
+  //         setSong((items.findIndex((song) => song.id === currentSongId)), true, true);
+  //       }
+  //     } else {
+  //       if (isShuffled) {
+  //         setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, originalPlaylist, currentPlaylistIndex)})
+  //         setSong(0, true, true);
+  //       } else {
+  //         setCurrentPlaylist({id: originalPlaylist.id, songs: originalPlaylist.songs});
+  //         setSong((originalPlaylist.songs.findIndex((song) => song.id === currentSongId)), true, true);
+  //       }
+  //     }
+  // }
+  // }, [isShuffled])
+
   useEffect(() => {
     if (isPlaying) {
-      if (currentPlaylist.id === playlistData.id) {
-        if (isShuffled) {
-          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, currentPlaylist, currentPlaylistIndex)})
-          setSong(0, true, true);
-        } else {
-          setCurrentPlaylist({id: currentPlaylist.id, songs: items});
-          setSong((items.findIndex((song) => song.id === currentSongId)), true, true);
-        }
+      if (isShuffled) {
+        const updatedSongs = shuffleSongs(true, currentPlaylist.id === playlistData.id ? currentPlaylist : originalPlaylist, currentPlaylistIndex);
+        setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
+        setSong(0, true, true);
       } else {
-        if (isShuffled) {
-          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, originalPlaylist, currentPlaylistIndex)})
-          setSong(0, true, true);
-        } else {
-          setCurrentPlaylist({id: originalPlaylist.id, songs: originalPlaylist.songs});
-          setSong((originalPlaylist.songs.findIndex((song) => song.id === currentSongId)), true, true);
-        }
+        const updatedSongs = currentPlaylist.id === playlistData.id ? items : originalPlaylist.songs;
+        const indexToSet = updatedSongs.findIndex((song) => song.id === currentSongId);
+        setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
+        setSong(indexToSet, true, true);
       }
-  }
-  }, [isShuffled])
+    }
+  })
+
+  // Optimized variant
+  // useEffect(() => {
+  //   if (isPlaying && isShuffled) {
+  //     const updatedSongs = shuffleSongs(true, currentPlaylist.id === playlistData.id ? currentPlaylist : originalPlaylist, currentPlaylistIndex);
+  //     setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
+  //     setSong(0, true, true);
+  //   } else if (isPlaying && !isShuffled) {
+  //     const updatedSongs = currentPlaylist.id === playlistData.id ? items : originalPlaylist.songs;
+  //     const indexToSet = updatedSongs.findIndex((song) => song.id === currentSongId);
+  //     setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
+  //     setSong(indexToSet, true, true);
+  //   }
+  // }, [isPlaying, isShuffled, currentPlaylist, currentPlaylistIndex, playlistData.id, items, originalPlaylist, currentSongId]);
 
   useEffect(() => {
     setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id)
