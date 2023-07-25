@@ -5,21 +5,28 @@
 .playlist-page-info-container {
   grid-template-columns: 1fr 5fr;
   width: 95%;
+  height: 25vh;
   border-bottom: solid white;
 }
 
 .playlist-info-left-container {
-  grid-template-rows: 4.5fr 1fr;
+  grid-template-rows: 5fr 1fr;
 }
 
 .playlist-info-right-container {
-  grid-template-rows: 3fr 1.5fr 1fr;
+  grid-template-rows: 3.5fr 1.5fr 1fr;
+}
+
+.playlist-page-picture-container {
+  position: relative;
 }
 
 .playlist-page-picture {
+  position: absolute;
   background-color: rgb(70, 0, 70);
-  width: 70%;
+  width: 65%;
   height: 80%;
+  object-fit: cover;
   border-radius: 10px;
 }
 

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import "./section.css";
 import { useEffect, useState } from "react";
 import { Playlist } from "../../../interfaces/Playlists";
@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faShuffle } from "@fortawesome/free-solid-svg-icons";
 
 const PlaylistPageSection = () => {
-  const location = useLocation();
   const [playlistData, setPlaylistData] = useState<Playlist>({
     id: "",
     userId: "",
@@ -35,16 +34,16 @@ const PlaylistPageSection = () => {
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
   const playlist = {id: playlistData.id, songs: items};
 
+  const { uuid } = useParams();
+
   useEffect(() => {
     (async () => {
       try {
-        const uuid = location.pathname.split("/playlist/")[1];
-
         const responsePlaylist = await axios.get(
           `${playlistsEndpoint}/${uuid}`
         );
         setPlaylistData(responsePlaylist.data);
-        setImageUrl(playlistData.imageUrl ? playlistData.imageUrl : "");
+        setImageUrl(responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : "");
 
         const responseSongs = await axios.get(
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
@@ -54,7 +53,7 @@ const PlaylistPageSection = () => {
         console.log(error);
       }
     })();
-  }, [location, setPlaylistData, setItems]);
+  }, [uuid, setPlaylistData, setItems]);
 
   const handleSongPlay = (item: Song, index: number) => {
     if (currentPlaylist.id !== playlistData.id) {
@@ -84,7 +83,7 @@ const PlaylistPageSection = () => {
         }
       }
     } else {
-      if (isPlaying) {
+      if (isPlaying && playlistData.id === currentPlaylist.id) {
         setCurrentPlaylist({id: currentPlaylist.id, songs: items});
         setSong((items.findIndex((song) => song.id == currentSongId)), true, true);
       }
@@ -104,12 +103,11 @@ const PlaylistPageSection = () => {
     }
   }
 
-
   return (
     <section className="section playlist-page-section">
       <div className="container playlist-page-info-container">
         <div className="container playlist-info-left-container">
-          <div className="container">
+          <div className="container playlist-page-picture-container">
             <img
               className="playlist-page-picture"
               src={!imageUrl ? default_playlist_picture : imageUrl}
