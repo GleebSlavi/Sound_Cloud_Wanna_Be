@@ -10,7 +10,7 @@ const PlayerContext = createContext<PlayerContextData>({
   setIsPlaying: () => {},
   currentTime: 0,
   setCurrentTime: () => {},
-  currentPlaylist: [],
+  currentPlaylist: {id: "", songs: []},
   setCurrentPlaylist: () => {},
   currentPlaylistIndex: 0,
   setCurrentPlaylistIndex: () => {},
@@ -30,7 +30,7 @@ const PlayerProvider = ({ children }: Props) => {
   // // const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>([]);
+  const [currentPlaylist, setCurrentPlaylist] = useState<{id: string, songs: Song[]}>({id: "", songs: []});
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
 
   const setSong = (index: number, condition: boolean) => {
@@ -46,7 +46,7 @@ const PlayerProvider = ({ children }: Props) => {
 
   const setNextSong = () => {
     const nextIndex = currentPlaylistIndex + 1;
-    setSong(nextIndex, nextIndex < currentPlaylist.length);
+    setSong(nextIndex, nextIndex < currentPlaylist.songs.length);
   }
 
   return (

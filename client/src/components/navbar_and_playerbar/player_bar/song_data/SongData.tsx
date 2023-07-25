@@ -6,7 +6,7 @@ import default_song_picture from "../../../../pictures/default_song_picture.png"
 const SongData = () => {
   const { currentPlaylist, currentPlaylistIndex } = usePlayerContext();
 
-  const currentSong = currentPlaylist[currentPlaylistIndex];
+  const currentSong = currentPlaylist.songs[currentPlaylistIndex];
 
   return (
     <div className="container song-data-container">

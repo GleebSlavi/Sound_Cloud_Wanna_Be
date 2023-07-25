@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Playlist } from "../../../interfaces/Playlists";
 import { Song } from "../../../interfaces/Song";
 import axios from "axios";
-import default_playlist_picture from "../../../pictures/playlist_default_picture.png";
+import default_playlist_picture from "../../../pictures/playlist_default_picture.png"
 import SongBox from "../../song/SongBox";
 import { playlistsEndpoint} from "../../../ts_files/reusable";
 import { usePlayerContext } from "../../../provider/PlayerProvider";
@@ -27,10 +27,10 @@ const PlaylistPageSection = () => {
   const [items, setItems] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
   
-  const { currentPlaylist, currentPlaylistIndex, setIsPlaying, 
+  const { currentPlaylist, currentPlaylistIndex, setCurrentPlaylistIndex, setIsPlaying, 
     isPlaying, setCurrentPlaylist, setSong } = usePlayerContext();
 
-  const currentSong = currentPlaylist[currentPlaylistIndex];
+  const currentSong = currentPlaylist.songs[currentPlaylistIndex];
 
   useEffect(() => {
     (async () => {
@@ -38,7 +38,7 @@ const PlaylistPageSection = () => {
         const uuid = location.pathname.split("/playlist/")[1];
 
         const responsePlaylist = await axios.get(
-          `${playlistsEndpoint}/id/${uuid}`
+          `${playlistsEndpoint}/${uuid}`
         );
         setPlaylistData(responsePlaylist.data);
         setImageUrl(playlistData.imageUrl ? playlistData.imageUrl : "");
@@ -47,7 +47,6 @@ const PlaylistPageSection = () => {
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
         );
         setItems(responseSongs.data);
-        setCurrentPlaylist(responseSongs.data);
       } catch (error) {
         console.log(error);
       }
@@ -55,11 +54,24 @@ const PlaylistPageSection = () => {
   }, [location, setPlaylistData, setItems]);
 
   const handleSongPlay = (item: Song, index: number) => {
+    if (currentPlaylist.id !== playlistData.id) {
+      setCurrentPlaylist({id: playlistData.id, songs: items});
+    }
+
     if (currentSong && currentSong.id === item.id) {
       setIsPlaying(!isPlaying);
     }
     else {
       setSong(index, true);
+    }
+  }
+
+  const handlePlaylistPlay = () => {
+    if (currentPlaylist.id !== playlistData.id) {
+      setCurrentPlaylist({id: playlistData.id, songs: items})
+      setSong(0, true);
+    } else {
+      setIsPlaying(!isPlaying);
     }
   }
 
@@ -104,8 +116,9 @@ const PlaylistPageSection = () => {
       </div>
       <div className="container playlist-songs-info-control-container">
         <div className="container playlist-songs-play-button-container">
-            <button type="button" className="song-controller-button playlist-songs-play-button">
-              <FontAwesomeIcon icon={faPlay} />
+            <button type="button" className="song-controller-button playlist-songs-play-button"
+            onClick={handlePlaylistPlay}>
+              <FontAwesomeIcon icon={currentPlaylist.id === playlistData.id && isPlaying ? faPause : faPlay} />
             </button>
         </div>
         <div className="container playlist-songs-shuffle-button-container">

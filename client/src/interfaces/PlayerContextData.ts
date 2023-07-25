@@ -1,5 +1,10 @@
 import { Song } from "./Song";
 
+type Playlist = {
+  id: string;
+  songs: Song[]
+}
+
 export interface PlayerContextData {
   // currentSong: Song | null;
   // setCurrentSong: (value: Song | null) => void;
@@ -7,8 +12,8 @@ export interface PlayerContextData {
   setIsPlaying: (value: boolean) => void;
   currentTime: number;
   setCurrentTime: (value: number) => void;
-  currentPlaylist: Song[];
-  setCurrentPlaylist: (value: Song[]) => void;
+  currentPlaylist: Playlist;
+  setCurrentPlaylist: (value: Playlist) => void;
   currentPlaylistIndex: number;
   setCurrentPlaylistIndex: (value: number) => void;
   setSong: (value: number, condition: boolean) => void;

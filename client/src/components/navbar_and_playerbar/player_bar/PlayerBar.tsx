@@ -12,7 +12,7 @@ const PlayerBar = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    const currentSong = currentPlaylist[currentPlaylistIndex];
+    const currentSong = currentPlaylist.songs[currentPlaylistIndex];
     if (/*currentSong*/ currentSong && audioRef.current) {
       audioRef.current.src = currentSong.cloudUrl;
       if (!isPlaying) {
