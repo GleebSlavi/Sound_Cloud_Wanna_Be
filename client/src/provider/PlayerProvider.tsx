@@ -4,8 +4,6 @@ import { PlayerContextData } from "../interfaces/PlayerContextData";
 
 
 const PlayerContext = createContext<PlayerContextData>({
-  // // currentSong: null,
-  // // setCurrentSong: () => {},
   isPlaying: false,
   setIsPlaying: () => {},
   currentTime: 0,
@@ -18,7 +16,9 @@ const PlayerContext = createContext<PlayerContextData>({
   setNextSong: () => {},
   shuffleSongs: () => {return []},
   currentSongId: "",
-  setCurrentSongId: () => {}
+  setCurrentSongId: () => {},
+  isShuffled: false,
+  setIsShuffled: () => {}
 });
 
 export const usePlayerContext = () => {
@@ -30,12 +30,12 @@ interface Props {
 }
 
 const PlayerProvider = ({ children }: Props) => {
-  // // const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentPlaylist, setCurrentPlaylist] = useState<{id: string, songs: Song[]}>({id: "", songs: []});
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
   const [currentSongId, setCurrentSongId] = useState("");
+  const [isShuffled, setIsShuffled] = useState(false);
 
   const setSong = (index: number, condition: boolean, conditionShuffle: boolean) => {
       if (condition) {
@@ -80,7 +80,7 @@ const PlayerProvider = ({ children }: Props) => {
       currentPlaylist, setCurrentPlaylist,
       currentPlaylistIndex, setCurrentPlaylistIndex,
       setSong, setNextSong, shuffleSongs, currentSongId,
-      setCurrentSongId
+      setCurrentSongId, isShuffled, setIsShuffled
     }}>
       {children}
     </PlayerContext.Provider>

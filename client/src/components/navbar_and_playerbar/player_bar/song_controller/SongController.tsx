@@ -13,11 +13,10 @@ import {
 import { usePlayerContext } from "../../../../provider/PlayerProvider";
 
 const SongController = () => {
-  const [isShuffleActive, setShuffleActive] = useState(false);
   const [isStreamActive, setStreamActive] = useState(false);
 
   const { isPlaying, setIsPlaying, currentPlaylistIndex,
-   setSong, setNextSong, currentPlaylist } = usePlayerContext()
+   setSong, setNextSong, isShuffled, setIsShuffled } = usePlayerContext()
 
   const handlePreviousSong = () => {
     const previousIndex = currentPlaylistIndex - 1;
@@ -29,9 +28,9 @@ const SongController = () => {
       <div className="container shuffle-songs-container">
         <button
           className={`song-controller-button shuffle-button 
-        ${isShuffleActive ? "active" : ""}`}
+        ${isShuffled ? "active" : ""}`}
           type="button"
-          onClick={() => setShuffleActive(!isShuffleActive)}
+          onClick={() => setIsShuffled(!isShuffled)}
         >
           <FontAwesomeIcon icon={faShuffle} />
         </button>

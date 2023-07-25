@@ -6,8 +6,6 @@ type Playlist = {
 }
 
 export interface PlayerContextData {
-  // currentSong: Song | null;
-  // setCurrentSong: (value: Song | null) => void;
   isPlaying: boolean;
   setIsPlaying: (value: boolean) => void;
   currentTime: number;
@@ -21,4 +19,6 @@ export interface PlayerContextData {
   shuffleSongs: (condition: boolean, songs: Playlist, index: number) => Song[];
   setCurrentSongId: (value: string) => void;
   currentSongId: string;
+  isShuffled: boolean;
+  setIsShuffled: (value: boolean) => void;
 }
