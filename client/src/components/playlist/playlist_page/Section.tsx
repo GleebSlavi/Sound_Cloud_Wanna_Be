@@ -11,6 +11,7 @@ import { usePlayerContext } from "../../../provider/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faShuffle } from "@fortawesome/free-solid-svg-icons";
 
+
 const PlaylistPageSection = () => {
   const [playlistData, setPlaylistData] = useState<Playlist>({
     id: "",
@@ -55,30 +56,29 @@ const PlaylistPageSection = () => {
     })();
   }, [uuid, setPlaylistData, setItems]);
 
-  const handleSongPlay = (item: Song, index: number) => {
+  const playSong = (index: number) => {
+    if (isShuffled) {
+      setCurrentPlaylist({
+          id: !isPlaying ? playlistData.id : currentPlaylist.id, 
+          songs: shuffleSongs(
+            !isPlaying ? true : false,
+            !isPlaying ? playlist : currentPlaylist,
+            index)});
+      setSong(0, true, false);
+    } else {
+      setSong(index, true, currentPlaylist.id !== playlistData.id ? true : false);
+    }
+  }
+
+  const handleSongPlay = (index: number) => {
+    let newPlaylist = false;
     if (currentPlaylist.id !== playlistData.id) {
-      if (!isPlaying) {
-        let playlistSongs = isShuffled 
-        ? shuffleSongs(true, playlist, index)
-        : items;
-      
-        setCurrentPlaylist({id: playlistData.id, songs: playlistSongs});
-      }
+        setCurrentPlaylist({id: playlistData.id, songs: items});
+        newPlaylist = true;
     }
 
-    if (!isPlaying) {
-      if (isShuffled) {
-        setCurrentPlaylist({
-            id: !isPlaying ? playlistData.id : currentPlaylist.id, 
-            songs: shuffleSongs(
-              !isPlaying ? true : false,
-              !isPlaying ? playlist : currentPlaylist,
-              index)});
-        setSong(0, true, false);
-        console.log("here");
-      } else {
-        setSong(index, true, currentPlaylist.id !== playlistData.id ? true : false);
-      }
+    if (!isPlaying || currentPlaylistIndex !== index || newPlaylist) {
+      playSong(index);
     } else {
       setIsPlaying(false);
     }
@@ -103,7 +103,7 @@ const PlaylistPageSection = () => {
     //   }
     // }
 
-    
+
   }, [isShuffled])
 
   useEffect(() => {
@@ -112,20 +112,21 @@ const PlaylistPageSection = () => {
 
   const handlePlaylistPlay = () => {
     if (currentPlaylist.id !== playlistData.id) {
-      setCurrentPlaylist({id: playlistData.id, songs: isShuffled ? shuffled : items})
-      setSong(0, true, false);
+      setCurrentPlaylist({id: playlistData.id, songs: items});
+      playSong(0);
     } else {
       setIsPlaying(!isPlaying);
     }
   }
 
-  const handleShuffleButton = () => {
-    if (isShuffled && playlistData.id === currentPlaylist?.id) {
-      setIsShuffled(!isShuffled);
-    } else {
-      setIsShuffled(true);
-    }
-  }
+  // const handleShuffleButton = () => {
+  //   if (isShuffled && playlistData.id === currentPlaylist?.id) {
+  //     setIsShuffled(!isShuffled);
+  //   } else {
+  //     setIsShuffled(true);
+  //   }
+  // }
+
 
   return (
     <section className="section playlist-page-section">
@@ -176,7 +177,7 @@ const PlaylistPageSection = () => {
         <div className="container playlist-songs-shuffle-button-container">
           <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
           ${isShuffled ? "active" : ""}`} onClick={() => setIsShuffled(!isShuffled)}>
-            <FontAwesomeIcon icon={faShuffle} onClick={handleShuffleButton}/>
+            <FontAwesomeIcon icon={faShuffle} onClick={() => setIsShuffled(!isShuffled)}/>
           </button>
         </div>
         <div className="container playlist-songs-uploader">
@@ -192,7 +193,7 @@ const PlaylistPageSection = () => {
       <div className="container playlist-songs-container">
         {items.map((item, index) => (
           <SongBox
-            key={item.id}
+            key={item.id + index}
             name={item.name}
             artist={item.artist}
             uploader={
@@ -202,7 +203,7 @@ const PlaylistPageSection = () => {
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}
             isCurrentSong={item.id === currentSong?.id}
-            handlePlay={() => handleSongPlay(item, index)}
+            handlePlay={() => handleSongPlay(index)}
           />
         ))}
       </div>
