@@ -25,12 +25,11 @@ const PlaylistPageSection = () => {
     creator: "",
   });
   const [items, setItems] = useState<Song[]>([]);
-  const [isThisShuffled, setIsThisShuffled] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");
   
   const { currentPlaylist, currentPlaylistIndex, setIsPlaying, isPlaying, 
     setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId,
-    isShuffled, setIsShuffled } = usePlayerContext();
+    isShuffled, setOriginalPlaylist, originalPlaylist } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
   const playlist = {id: playlistData.id, songs: items};
@@ -50,10 +49,9 @@ const PlaylistPageSection = () => {
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
         );
         setItems(responseSongs.data);
-
-        if (currentPlaylist.id === responsePlaylist.data.id) {
-          setIsThisShuffled(isShuffled);
-        }
+        // // if (currentPlaylist.id === responsePlaylist.data.id) {
+        // //   setIsThisShuffled(isShuffled);
+        // // }
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +59,8 @@ const PlaylistPageSection = () => {
   }, [uuid, setPlaylistData, setItems]);
 
   const playSong = (index: number) => {
-    if (isShuffled && isThisShuffled) {
+    setOriginalPlaylist(playlist);
+    if (isShuffled /*&& isThisShuffled*/) {
       setCurrentPlaylist({
           id: !isPlaying ? playlistData.id : currentPlaylist.id, 
           songs: shuffleSongs(
@@ -75,6 +74,7 @@ const PlaylistPageSection = () => {
   }
 
   const handleSongPlay = (index: number) => {
+    setOriginalPlaylist(playlist);
     let newPlaylist = false;
     if (currentPlaylist.id !== playlistData.id) {
         setCurrentPlaylist({id: playlistData.id, songs: items});
@@ -92,7 +92,6 @@ const PlaylistPageSection = () => {
     if (isPlaying) {
       if (currentPlaylist.id === playlistData.id) {
         if (isShuffled) {
-          setIsThisShuffled(isShuffled);
           setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, currentPlaylist, currentPlaylistIndex)})
           setSong(0, true, true);
         } else {
@@ -100,7 +99,13 @@ const PlaylistPageSection = () => {
           setSong((items.findIndex((song) => song.id === currentSongId)), true, true);
         }
       } else {
-        
+        if (isShuffled) {
+          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, originalPlaylist, currentPlaylistIndex)})
+          setSong(0, true, true);
+        } else {
+          setCurrentPlaylist({id: originalPlaylist.id, songs: originalPlaylist.songs});
+          setSong((originalPlaylist.songs.findIndex((song) => song.id === currentSongId)), true, true);
+        }
       }
   }
   }, [isShuffled])
@@ -118,12 +123,12 @@ const PlaylistPageSection = () => {
     }
   }
 
-  const handleSetShuffle = () => {
-    setIsThisShuffled(!isThisShuffled);
-    if (currentPlaylist.id === playlistData.id) {
-      setIsShuffled(!isThisShuffled);
-    }
-  }
+  // const handleSetShuffle = () => {
+  //   setIsThisShuffled(!isThisShuffled);
+  //   if (currentPlaylist.id === playlistData.id) {
+  //     setIsShuffled(!isThisShuffled);
+  //   }
+  // }
 
 
   return (
@@ -172,11 +177,11 @@ const PlaylistPageSection = () => {
               <FontAwesomeIcon icon={currentPlaylist.id === playlistData.id && isPlaying ? faPause : faPlay} />
             </button>
         </div>
-        <div className="container playlist-songs-shuffle-button-container">
-          <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
+        <div className="container filler-container">
+          {/* <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
           ${((currentPlaylist.id === playlistData.id && isShuffled) || isThisShuffled) ? "active" : ""}`} onClick={() => handleSetShuffle()}>
             <FontAwesomeIcon icon={faShuffle}/>
-          </button>
+          </button> */}
         </div>
         <div className="container playlist-songs-uploader">
           <span className="playlist-songs-info">Uploader</span>
