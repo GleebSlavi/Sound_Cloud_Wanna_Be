@@ -85,25 +85,15 @@ const PlaylistPageSection = () => {
   }
 
   useEffect(() => {
-    // if (isShuffled) {
-    //   if (currentPlaylist.id !== playlistData.id && !isPlaying) {
-    //     setShuffled(shuffleSongs(false, playlist, 0));
-    //   } else {
-    //     if (isPlaying) {
-    //       setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, playlist, currentPlaylistIndex)});
-    //       setSong(0, true, true);
-    //     } 
-    //   }
-    // } else {
-    //   if (isPlaying) {
-    //     if (playlistData.id === currentPlaylist.id) {
-    //       setCurrentPlaylist({id: currentPlaylist.id, songs: items});
-    //       setSong((items.findIndex((song) => song.id == currentSongId)), true, true);
-    //     } 
-    //   }
-    // }
-
-
+    if (isPlaying) {
+      if (isShuffled) {
+        setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, currentPlaylist, currentPlaylistIndex)})
+        setSong(0, true, true);
+      } else {
+        setCurrentPlaylist({id: currentPlaylist.id, songs: items});
+        setSong((items.findIndex((song) => song.id === currentSongId)), true, true);
+      }
+    }
   }, [isShuffled])
 
   useEffect(() => {
@@ -118,14 +108,6 @@ const PlaylistPageSection = () => {
       setIsPlaying(!isPlaying);
     }
   }
-
-  // const handleShuffleButton = () => {
-  //   if (isShuffled && playlistData.id === currentPlaylist?.id) {
-  //     setIsShuffled(!isShuffled);
-  //   } else {
-  //     setIsShuffled(true);
-  //   }
-  // }
 
 
   return (
@@ -177,7 +159,7 @@ const PlaylistPageSection = () => {
         <div className="container playlist-songs-shuffle-button-container">
           <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
           ${isShuffled ? "active" : ""}`} onClick={() => setIsShuffled(!isShuffled)}>
-            <FontAwesomeIcon icon={faShuffle} onClick={() => setIsShuffled(!isShuffled)}/>
+            <FontAwesomeIcon icon={faShuffle}/>
           </button>
         </div>
         <div className="container playlist-songs-uploader">
