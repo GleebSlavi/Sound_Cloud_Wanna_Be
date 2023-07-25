@@ -1,10 +1,9 @@
 import "./song_data.css";
 import { usePlayerContext } from "../../../../provider/PlayerProvider";
-import { useEffect } from "react";
 import default_song_picture from "../../../../pictures/default_song_picture.png"
 
 const SongData = () => {
-  const { currentPlaylist, currentPlaylistIndex } = usePlayerContext();
+  const { currentPlaylist, currentPlaylistIndex, isPlaying } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
 

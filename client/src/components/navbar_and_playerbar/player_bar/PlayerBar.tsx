@@ -6,14 +6,14 @@ import { usePlayerContext } from "../../../provider/PlayerProvider";
 import { useEffect, useRef, useState } from "react";
 
 const PlayerBar = () => {
-  const { /*currentSong,*/ currentPlaylist, currentPlaylistIndex, 
+  const { currentPlaylist, currentPlaylistIndex, 
   isPlaying, currentTime, setCurrentTime, setNextSong } = usePlayerContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     const currentSong = currentPlaylist.songs[currentPlaylistIndex];
-    if (/*currentSong*/ currentSong && audioRef.current) {
+    if (currentSong && audioRef.current) {
       audioRef.current.src = currentSong.cloudUrl;
       if (!isPlaying) {
         audioRef.current.pause();

@@ -29,10 +29,11 @@ const PlaylistPageSection = () => {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [isShuffled, setIsShuffled] = useState(false);
   
-  const { currentPlaylist, currentPlaylistIndex, setCurrentPlaylistIndex, setIsPlaying, 
-    isPlaying, setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId } = usePlayerContext();
+  const { currentPlaylist, currentPlaylistIndex, setIsPlaying, isPlaying, 
+    setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
+  const playlist = {id: playlistData.id, songs: items};
 
   useEffect(() => {
     (async () => {
@@ -58,7 +59,7 @@ const PlaylistPageSection = () => {
   const handleSongPlay = (item: Song, index: number) => {
     if (currentPlaylist.id !== playlistData.id) {
       let playlistSongs = isShuffled 
-        ? shuffleSongs(true, items, index)
+        ? shuffleSongs(true, playlist, index)
         : items;
       
       setCurrentPlaylist({id: playlistData.id, songs: playlistSongs});
@@ -68,19 +69,17 @@ const PlaylistPageSection = () => {
       setIsPlaying(!isPlaying);
     } 
     else {
-      setSong(index, true, false);
+      !isShuffled ? setSong(index, true, false) : setSong(0, true, false);
     }
   }
 
-  const handleShuffle = () => {
-    setIsShuffled(!isShuffled);
-
-    if (!isShuffled) {
+  useEffect(() => {
+    if (isShuffled) {
       if (currentPlaylist.id !== playlistData.id) {
-        setShuffled(shuffleSongs(false, items, 0));
+        setShuffled(shuffleSongs(false, playlist, 0));
       } else {
         if (isPlaying) {
-          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, items, currentPlaylistIndex)});
+          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, playlist, currentPlaylistIndex)});
           setSong(0, true, true);
         }
       }
@@ -90,7 +89,7 @@ const PlaylistPageSection = () => {
         setSong((items.findIndex((song) => song.id == currentSongId)), true, true);
       }
     }
-  }
+  }, [isShuffled])
 
   useEffect(() => {
     setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id)
@@ -154,7 +153,7 @@ const PlaylistPageSection = () => {
         </div>
         <div className="container playlist-songs-shuffle-button-container">
           <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
-          ${isShuffled ? "active" : ""}`} onClick={handleShuffle}>
+          ${isShuffled ? "active" : ""}`} onClick={/*handleShuffle*/ () => setIsShuffled(!isShuffled)}>
             <FontAwesomeIcon icon={faShuffle} />
           </button>
         </div>
