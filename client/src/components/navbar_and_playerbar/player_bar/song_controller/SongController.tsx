@@ -8,6 +8,7 @@ import {
   faTv,
   faPause,
   faPlay,
+  faL,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePlayerContext } from "../../../../provider/PlayerProvider";
 
@@ -16,11 +17,11 @@ const SongController = () => {
   const [isStreamActive, setStreamActive] = useState(false);
 
   const { isPlaying, setIsPlaying, currentPlaylistIndex,
-   setSong, setNextSong } = usePlayerContext()
+   setSong, setNextSong, currentPlaylist } = usePlayerContext()
 
   const handlePreviousSong = () => {
     const previousIndex = currentPlaylistIndex - 1;
-    setSong(previousIndex, previousIndex >= 0);
+    setSong(previousIndex, previousIndex >= 0, false);
   }
 
   return (

@@ -30,7 +30,7 @@ const PlaylistPageSection = () => {
   const [isShuffled, setIsShuffled] = useState(false);
   
   const { currentPlaylist, currentPlaylistIndex, setCurrentPlaylistIndex, setIsPlaying, 
-    isPlaying, setCurrentPlaylist, setSong, shuffleSongs } = usePlayerContext();
+    isPlaying, setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
 
@@ -68,7 +68,7 @@ const PlaylistPageSection = () => {
       setIsPlaying(!isPlaying);
     } 
     else {
-      setSong(index, true);
+      setSong(index, true, false);
     }
   }
 
@@ -79,15 +79,27 @@ const PlaylistPageSection = () => {
       if (currentPlaylist.id !== playlistData.id) {
         setShuffled(shuffleSongs(false, items, 0));
       } else {
-        setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, items, currentPlaylistIndex)});
+        if (isPlaying) {
+          setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, items, currentPlaylistIndex)});
+          setSong(0, true, true);
+        }
+      }
+    } else {
+      if (isPlaying) {
+        setCurrentPlaylist({id: currentPlaylist.id, songs: items});
+        setSong((items.findIndex((song) => song.id == currentSongId)), true, true);
       }
     }
   }
 
+  useEffect(() => {
+    setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id)
+  }, [currentPlaylistIndex, currentPlaylist, setCurrentSongId])
+
   const handlePlaylistPlay = () => {
     if (currentPlaylist.id !== playlistData.id) {
       setCurrentPlaylist({id: playlistData.id, songs: isShuffled ? shuffled : items})
-      setSong(0, true);
+      setSong(0, true, false);
     } else {
       setIsPlaying(!isPlaying);
     }

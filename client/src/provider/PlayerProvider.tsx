@@ -16,7 +16,9 @@ const PlayerContext = createContext<PlayerContextData>({
   setCurrentPlaylistIndex: () => {},
   setSong: () => {},
   setNextSong: () => {},
-  shuffleSongs: () => {return []}
+  shuffleSongs: () => {return []},
+  currentSongId: "",
+  setCurrentSongId: () => {}
 });
 
 export const usePlayerContext = () => {
@@ -33,11 +35,14 @@ const PlayerProvider = ({ children }: Props) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [currentPlaylist, setCurrentPlaylist] = useState<{id: string, songs: Song[]}>({id: "", songs: []});
   const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState<number>(0);
+  const [currentSongId, setCurrentSongId] = useState("");
 
-  const setSong = (index: number, condition: boolean) => {
+  const setSong = (index: number, condition: boolean, conditionShuffle: boolean) => {
       if (condition) {
         setCurrentPlaylistIndex(index);
-        setCurrentTime(0);
+        if (!conditionShuffle) {
+          setCurrentTime(0);
+        }
         setIsPlaying(true);
       } else {
         setCurrentPlaylistIndex(0);
@@ -47,7 +52,7 @@ const PlayerProvider = ({ children }: Props) => {
 
   const setNextSong = () => {
     const nextIndex = currentPlaylistIndex + 1;
-    setSong(nextIndex, nextIndex < currentPlaylist.songs.length);
+    setSong(nextIndex, nextIndex < currentPlaylist.songs.length, false);
   }
 
   const shuffleSongs = (playFromCurrentPlaylist: boolean, songs: Song[], index: number): Song[] => {
@@ -55,16 +60,20 @@ const PlayerProvider = ({ children }: Props) => {
       ? songs.filter(song => song.id !== currentPlaylist.songs[index].id)
       : songs.slice();
 
-      console.log(playFromCurrentPlaylist);
-
     for (let i = songsToShuffle.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [songsToShuffle[i], songsToShuffle[j]] = [songsToShuffle[j], songsToShuffle[i]];
     }
 
-    return playFromCurrentPlaylist 
-    ? [currentPlaylist.songs[index], ...songsToShuffle]
-    : songsToShuffle;
+    if (playFromCurrentPlaylist) {
+      songsToShuffle.unshift(currentPlaylist.songs[index]);
+    }
+
+    console.log(index);
+    console.log(currentPlaylist.songs[index]);
+    console.log(songsToShuffle[0]);
+
+    return songsToShuffle;
   }
 
   return (
@@ -74,7 +83,8 @@ const PlayerProvider = ({ children }: Props) => {
       currentTime, setCurrentTime,
       currentPlaylist, setCurrentPlaylist,
       currentPlaylistIndex, setCurrentPlaylistIndex,
-      setSong, setNextSong, shuffleSongs
+      setSong, setNextSong, shuffleSongs, currentSongId,
+      setCurrentSongId
     }}>
       {children}
     </PlayerContext.Provider>
