@@ -25,10 +25,12 @@ const PlaylistPageSection = () => {
     creator: "",
   });
   const [items, setItems] = useState<Song[]>([]);
+  const [shuffled, setShuffled] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [isShuffled, setIsShuffled] = useState(false);
   
   const { currentPlaylist, currentPlaylistIndex, setCurrentPlaylistIndex, setIsPlaying, 
-    isPlaying, setCurrentPlaylist, setSong } = usePlayerContext();
+    isPlaying, setCurrentPlaylist, setSong, shuffleSongs } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
 
@@ -55,25 +57,42 @@ const PlaylistPageSection = () => {
 
   const handleSongPlay = (item: Song, index: number) => {
     if (currentPlaylist.id !== playlistData.id) {
-      setCurrentPlaylist({id: playlistData.id, songs: items});
+      let playlistSongs = isShuffled 
+        ? shuffleSongs(true, items, index)
+        : items;
+      
+      setCurrentPlaylist({id: playlistData.id, songs: playlistSongs});
     }
 
     if (currentSong && currentSong.id === item.id) {
       setIsPlaying(!isPlaying);
-    }
+    } 
     else {
       setSong(index, true);
     }
   }
 
+  const handleShuffle = () => {
+    setIsShuffled(!isShuffled);
+
+    if (!isShuffled) {
+      if (currentPlaylist.id !== playlistData.id) {
+        setShuffled(shuffleSongs(false, items, 0));
+      } else {
+        setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, items, currentPlaylistIndex)});
+      }
+    }
+  }
+
   const handlePlaylistPlay = () => {
     if (currentPlaylist.id !== playlistData.id) {
-      setCurrentPlaylist({id: playlistData.id, songs: items})
+      setCurrentPlaylist({id: playlistData.id, songs: isShuffled ? shuffled : items})
       setSong(0, true);
     } else {
       setIsPlaying(!isPlaying);
     }
   }
+
 
   return (
     <section className="section playlist-page-section">
@@ -116,13 +135,14 @@ const PlaylistPageSection = () => {
       </div>
       <div className="container playlist-songs-info-control-container">
         <div className="container playlist-songs-play-button-container">
-            <button type="button" className="song-controller-button playlist-songs-play-button"
+            <button type="button" className="song-controller-button playlist-songs-play-button click"
             onClick={handlePlaylistPlay}>
               <FontAwesomeIcon icon={currentPlaylist.id === playlistData.id && isPlaying ? faPause : faPlay} />
             </button>
         </div>
         <div className="container playlist-songs-shuffle-button-container">
-          <button type="button" className="song-controller-button playlist-songs-shuffle-button">
+          <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
+          ${isShuffled ? "active" : ""}`} onClick={handleShuffle}>
             <FontAwesomeIcon icon={faShuffle} />
           </button>
         </div>

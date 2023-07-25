@@ -15,7 +15,8 @@ const PlayerContext = createContext<PlayerContextData>({
   currentPlaylistIndex: 0,
   setCurrentPlaylistIndex: () => {},
   setSong: () => {},
-  setNextSong: () => {}
+  setNextSong: () => {},
+  shuffleSongs: () => {return []}
 });
 
 export const usePlayerContext = () => {
@@ -49,6 +50,23 @@ const PlayerProvider = ({ children }: Props) => {
     setSong(nextIndex, nextIndex < currentPlaylist.songs.length);
   }
 
+  const shuffleSongs = (playFromCurrentPlaylist: boolean, songs: Song[], index: number): Song[] => {
+    const songsToShuffle = playFromCurrentPlaylist
+      ? songs.filter(song => song.id !== currentPlaylist.songs[index].id)
+      : songs.slice();
+
+      console.log(playFromCurrentPlaylist);
+
+    for (let i = songsToShuffle.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [songsToShuffle[i], songsToShuffle[j]] = [songsToShuffle[j], songsToShuffle[i]];
+    }
+
+    return playFromCurrentPlaylist 
+    ? [currentPlaylist.songs[index], ...songsToShuffle]
+    : songsToShuffle;
+  }
+
   return (
     <PlayerContext.Provider value={{
       // currentSong, setCurrentSong, 
@@ -56,7 +74,7 @@ const PlayerProvider = ({ children }: Props) => {
       currentTime, setCurrentTime,
       currentPlaylist, setCurrentPlaylist,
       currentPlaylistIndex, setCurrentPlaylistIndex,
-      setSong, setNextSong
+      setSong, setNextSong, shuffleSongs
     }}>
       {children}
     </PlayerContext.Provider>
