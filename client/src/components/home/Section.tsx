@@ -13,7 +13,12 @@ const HomeSection = () => {
         const response = await axios.get(
           `http://localhost:8080/api/users/${localStorage.getItem(
             "id"
-          )}/playlists`
+          )}/playlists`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
 
         setItems(response.data);

@@ -34,7 +34,12 @@ const CreatePlaylistSection = () => {
     };
 
     await axios
-      .post(`http://localhost:8080/api/playlists`, playlistData)
+      .post(`http://localhost:8080/api/playlists`, playlistData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
       .then((response) => {
         alert(`Successfully created playlist ${response.data.name}`);
         navigate("/profile");
@@ -59,7 +64,12 @@ const CreatePlaylistSection = () => {
       await axios.get(
         `http://localhost:8080/api/playlists/users/${localStorage.getItem(
           "id"
-        )}/${name}`
+        )}/${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
       );
 
       alert(

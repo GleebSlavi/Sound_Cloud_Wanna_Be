@@ -1,4 +1,4 @@
-package trading.bootcamp.project.api.rest;
+package trading.bootcamp.project.api.rest.mappers;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;

@@ -9,9 +9,10 @@ import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.services.mappers.InputMappers;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.SongOutput;
-import trading.bootcamp.project.api.rest.OutputMappers;
+import trading.bootcamp.project.api.rest.mappers.OutputMappers;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +41,9 @@ public class PlaylistService {
         return OutputMappers.fromPlaylistEntity(userRepository, playlist.get());
     }
 
-    public PlaylistEntity getPlaylistByNameAndUserId(UUID userId, String playlistName) {
+    public PlaylistOutput getPlaylistByNameAndUserId(UUID userId, String playlistName) {
         Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistByNameAndUserId(userId, playlistName);
-        return playlist.orElse(null);
+        return OutputMappers.fromPlaylistEntity(userRepository, playlist.get());
     }
 
     public PlaylistEntity addPlaylist(PlaylistInput playlistInput) {
@@ -50,7 +51,7 @@ public class PlaylistService {
             throw new InvalidFieldException("Playlist name can't be less than 1 symbol");
         }
 
-        PlaylistEntity playlist = Mappers.fromPlaylistInput(playlistInput);
+        PlaylistEntity playlist = InputMappers.fromPlaylistInput(playlistInput);
         if (playlistRepository.createPlaylist(playlist.id(), playlist.userId(), playlist.name(),
                 playlist.description(), false, playlist.createDate(), playlist.type(), playlist.imageUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the playlist");

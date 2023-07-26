@@ -12,7 +12,12 @@ const ProfileInfo = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${localStorage.getItem("id")}`
+          `http://localhost:8080/api/users/${localStorage.getItem("id")}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
 
         setUsername(response.data.username);

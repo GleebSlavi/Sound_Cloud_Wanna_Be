@@ -55,7 +55,12 @@ const EditProfileSection = () => {
 
       await axios.patch(
         `http://localhost:8080/api/users/${localStorage.getItem("id")}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
       );
 
       alert("Successfully updated profile");

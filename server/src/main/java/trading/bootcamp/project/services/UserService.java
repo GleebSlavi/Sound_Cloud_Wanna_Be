@@ -1,18 +1,16 @@
 package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import trading.bootcamp.project.api.rest.OutputMappers;
+import trading.bootcamp.project.api.rest.mappers.OutputMappers;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
-import trading.bootcamp.project.auth.services.AuthenticationService;
 import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.services.mappers.InputMappers;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.UserOutput;
 
@@ -106,7 +104,7 @@ public class UserService {
             throw new InvalidFieldException("Password must be 8 or more symbols");
         }
 
-        UserEntity user = Mappers.fromUserInput(userInput);
+        UserEntity user = InputMappers.fromUserInput(userInput);
         if (userRepository.createUser(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl()) != 1) {
             throw new IllegalStateException("Couldn't create all songs playlist");
         }

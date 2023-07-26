@@ -14,7 +14,12 @@ const ProfileSection = () => {
         const responsePlaylists = await axios.get(
           `http://localhost:8080/api/playlists/user/${localStorage.getItem(
             "id"
-          )}`
+          )}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
         setItems(responsePlaylists.data);
       } catch (error) {

@@ -10,6 +10,7 @@ import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.SongRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.services.mappers.InputMappers;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class SongService {
             throw new InvalidSongNameException("Song name and artist can't be less than 1 character");
         }
 
-        SongEntity song = Mappers.fromSongInput(songInput);
+        SongEntity song = InputMappers.fromSongInput(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
             song.artist(), song.releaseYear(), song.duration(), song.type(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {

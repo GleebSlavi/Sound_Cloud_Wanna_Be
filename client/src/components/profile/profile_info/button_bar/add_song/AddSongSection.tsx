@@ -76,7 +76,12 @@ const AddSongSection = () => {
       };
 
       try {
-        await axios.post(`${songsEndpoint}`, songData);
+        await axios.post(`${songsEndpoint}`, songData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
         alert(`Successfuly uploaded ${name} by ${artist}`);
         navigate("/profile");
       } catch (error) {

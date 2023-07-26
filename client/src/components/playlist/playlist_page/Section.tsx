@@ -40,13 +40,23 @@ const PlaylistPageSection = () => {
     (async () => {
       try {
         const responsePlaylist = await axios.get(
-          `${playlistsEndpoint}/${uuid}`
+          `${playlistsEndpoint}/${uuid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
         setPlaylistData(responsePlaylist.data);
         setImageUrl(responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : "");
 
         const responseSongs = await axios.get(
-          `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
+          `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
         );
         setItems(responseSongs.data);
       } catch (error) {

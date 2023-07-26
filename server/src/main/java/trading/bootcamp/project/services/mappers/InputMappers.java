@@ -1,4 +1,4 @@
-package trading.bootcamp.project.services;
+package trading.bootcamp.project.services.mappers;
 
 import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
@@ -10,7 +10,7 @@ import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Mappers {
+public class InputMappers {
 
     public static UserEntity fromUserInput(UserInput user) {
         return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getNewPassword(), LocalDate.now(), null);
