@@ -3,16 +3,19 @@ import ButtonBar from "./button_bar/ButtonBar";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
+import { useSearchContext } from "../../../providers/SearchProvider";
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
 
+  const { checkPath } = useSearchContext();
+
   useEffect(() => {
     (async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${localStorage.getItem("id")}`,
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -38,7 +41,10 @@ const ProfileInfo = () => {
       </div>
       <div className="container user-profile-info-container">
         <h2 className="user-username-header">{username}</h2>
-        <ButtonBar />
+        {checkPath() 
+          ? <ButtonBar />
+          : <div></div>
+        } 
       </div>
     </div>
   );

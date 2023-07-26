@@ -1,0 +1,9 @@
+
+.search-page-playlists{
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 45%;
+  width: 85%;
+  height: 93vh;
+  padding-top: 2%;
+  gap: 1.5%;
+}

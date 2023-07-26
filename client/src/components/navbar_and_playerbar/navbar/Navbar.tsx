@@ -1,11 +1,15 @@
 import "./navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSearchContext } from "../../../providers/SearchProvider";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { search, setSearch } = useSearchContext();
+  const { type } = useParams();
 
   const handleLogout = () => {
     localStorage.clear();
@@ -18,6 +22,16 @@ const Navbar = () => {
       navigate(path);
     }
   };
+
+  const handleSubmut = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!/^\/search\/(songs|playlists|users)\/.+$/.test(location.pathname)) {
+      navigate(`/search/songs/${search}`);
+    } else {
+      navigate(`search/${type}/${search}`);
+    }
+  }
 
   return (
     <header>
@@ -43,16 +57,24 @@ const Navbar = () => {
         >
           Streams
         </button>
-        <div className="container search-bar-container">
-          <input
-            className="search-bar welcome-input"
-            type="text"
-            name="search"
-            placeholder="What are you looking for?"
-          />
-          <button className="search-button" type="submit">
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
+        <div className="container">
+          <form className="container search-bar-container" onSubmit={handleSubmut}>
+            <input
+              className="search-bar welcome-input"
+              type="text"
+              name="search"
+              placeholder="What are you looking for?"
+              required
+              pattern="^.+$"
+              title="Please enter something to search!"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setSearch(event.target.value);
+              }}
+            />
+            <button className="search-button" type="submit">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </form>
         </div>
         <button className="nav-bar-button" type="button" onClick={handleLogout}>
           Log Out

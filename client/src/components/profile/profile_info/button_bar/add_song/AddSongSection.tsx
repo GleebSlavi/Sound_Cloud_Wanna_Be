@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faL, faX } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 import default_song_picture from "../../../../../pictures/default_song_picture.png";
-import { uploadFileToS3 } from "../../../../../ts_files/s3";
+import { uploadFileToS3 } from "../../../../../s3/s3";
 import axios from "axios";
-import { songsEndpoint } from "../../../../../ts_files/reusable";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 
@@ -76,7 +75,7 @@ const AddSongSection = () => {
       };
 
       try {
-        await axios.post(`${songsEndpoint}`, songData,
+        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT!}`, songData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

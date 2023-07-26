@@ -1,0 +1,17 @@
+
+.search-page-section {
+  grid-template-rows: 0.8fr 4fr;
+}
+
+.search-page-top-container {
+  grid-template-columns: auto 2fr auto;
+  width: 92%;
+  height: 12vh;
+  border-bottom: solid white;
+}
+
+.entities-container {
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 70%;
+  width: 70%;
+}

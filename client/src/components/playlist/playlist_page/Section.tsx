@@ -1,15 +1,14 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./section.css";
 import { useEffect, useState } from "react";
-import { Playlist } from "../../../interfaces/Playlists";
+import { Playlist } from "../../../interfaces/Playlist";
 import { Song } from "../../../interfaces/Song";
 import axios from "axios";
 import default_playlist_picture from "../../../pictures/playlist_default_picture.png"
 import SongBox from "../../song/SongBox";
-import { playlistsEndpoint} from "../../../ts_files/reusable";
-import { usePlayerContext } from "../../../provider/PlayerProvider";
+import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faShuffle } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 
 
 const PlaylistPageSection = () => {
@@ -40,7 +39,7 @@ const PlaylistPageSection = () => {
     (async () => {
       try {
         const responsePlaylist = await axios.get(
-          `${playlistsEndpoint}/${uuid}`,
+          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/${uuid}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -51,7 +50,7 @@ const PlaylistPageSection = () => {
         setImageUrl(responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : "");
 
         const responseSongs = await axios.get(
-          `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`,
+          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${responsePlaylist.data.id}/songs`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -4,7 +4,7 @@ import default_playlist_picture from "../../../../../pictures/playlist_default_p
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
-import { uploadFileToS3 } from "../../../../../ts_files/s3";
+import { uploadFileToS3 } from "../../../../../s3/s3";
 
 const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);

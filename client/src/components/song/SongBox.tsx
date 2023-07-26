@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import default_song_picture from "../../pictures/default_song_picture.png";
 import { useContext, useState } from "react";
-import { usePlayerContext } from "../../provider/PlayerProvider";
+import { usePlayerContext } from "../../providers/PlayerProvider";
 
 interface Props {
   name: string;

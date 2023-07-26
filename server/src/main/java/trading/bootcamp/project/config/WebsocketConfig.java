@@ -12,12 +12,12 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/stream").setAllowedOriginPatterns("http://localhost:3000").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/api/streams");
+        registry.setApplicationDestinationPrefixes("/ws/streams");
 //        registry.enableSimpleBroker("/streams");
     }
 

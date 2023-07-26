@@ -1,5 +1,5 @@
 import "./song_data.css";
-import { usePlayerContext } from "../../../../provider/PlayerProvider";
+import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import default_song_picture from "../../../../pictures/default_song_picture.png"
 
 const SongData = () => {

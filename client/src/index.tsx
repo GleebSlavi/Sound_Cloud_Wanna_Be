@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import PlayerProvider from './provider/PlayerProvider';
+import PlayerProvider from './providers/PlayerProvider';
+import SearchProvider from './providers/SearchProvider';
 
 
 const root = ReactDOM.createRoot(
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <PlayerProvider>
-        <App />
+        <SearchProvider>
+          <App />
+        </SearchProvider>
       </PlayerProvider>
     </BrowserRouter>
   </React.StrictMode>

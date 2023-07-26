@@ -8,9 +8,9 @@ import {
   faTv,
   faPause,
   faPlay,
-  faL,
 } from "@fortawesome/free-solid-svg-icons";
-import { usePlayerContext } from "../../../../provider/PlayerProvider";
+import { usePlayerContext } from "../../../../providers/PlayerProvider";
+import io from "socket.io-client";
 
 const SongController = () => {
   const [isStreamActive, setStreamActive] = useState(false);
@@ -21,6 +21,10 @@ const SongController = () => {
   const handlePreviousSong = () => {
     const previousIndex = currentPlaylistIndex - 1;
     setSong(previousIndex, previousIndex >= 0, false);
+  }
+
+  const handleStreamToggle = () => {
+    const socket = io()
   }
 
   return (

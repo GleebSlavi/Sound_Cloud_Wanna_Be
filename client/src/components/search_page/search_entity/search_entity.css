@@ -1,0 +1,29 @@
+
+
+.entity {
+  width: 65%;
+  height: 65%;
+  background-color: rgb(70, 0, 70);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: white;
+  font-family: 'Press Start 2P';
+  transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
+}
+
+.entity:hover {
+  width: 66%;
+  height: 66%;
+  font-size: 0.9375rem;
+  border-radius: 17px;
+}
+
+.entity:active  {
+  transform: translate(2px, 2px);
+  height: 65%;
+  width: 65%;
+  font-size: 0.9375rem;
+  border-radius:16px;
+}

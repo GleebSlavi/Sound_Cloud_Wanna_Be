@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import default_profile_picture from "../../../../../pictures/default_profile_picture.png";
-import { uploadFileToS3 } from "../../../../../ts_files/s3";
+import { uploadFileToS3 } from "../../../../../s3/s3";
 
 const EditProfileSection = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -50,7 +50,7 @@ const EditProfileSection = () => {
       const data = {
         oldPassword: oldPassword ? oldPassword : null,
         newPassword: newPassword ? newPassword : null,
-        imageUrl: image ? imageUrl : null,
+        imageUrl: image ? imgS3Url : null,
       };
 
       await axios.patch(

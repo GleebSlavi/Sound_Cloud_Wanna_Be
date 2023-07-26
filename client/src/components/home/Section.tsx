@@ -1,7 +1,7 @@
 import "./section.css";
 import PlaylistBox from "../playlist/playlist_box/PlaylistBox";
 import { useState, useEffect } from "react";
-import { Playlist } from "../../interfaces/Playlists";
+import { Playlist } from "../../interfaces/Playlist";
 import axios from "axios";
 
 const HomeSection = () => {
@@ -11,7 +11,7 @@ const HomeSection = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/users/${localStorage.getItem(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
             "id"
           )}/playlists`,
           {

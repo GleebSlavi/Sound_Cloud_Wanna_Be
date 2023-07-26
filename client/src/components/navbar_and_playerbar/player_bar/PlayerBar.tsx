@@ -2,7 +2,7 @@ import SongController from "./song_controller/SongController";
 import SongData from "./song_data/SongData";
 import SongVolume from "./song_volume/SongVolume";
 import "./player_bar.css";
-import { usePlayerContext } from "../../../provider/PlayerProvider";
+import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { useEffect, useRef, useState } from "react";
 
 const PlayerBar = () => {
