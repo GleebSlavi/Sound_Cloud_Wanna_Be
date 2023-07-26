@@ -49,9 +49,6 @@ const PlaylistPageSection = () => {
           `${playlistsEndpoint}/${responsePlaylist.data.id}/songs`
         );
         setItems(responseSongs.data);
-        // // if (currentPlaylist.id === responsePlaylist.data.id) {
-        // //   setIsThisShuffled(isShuffled);
-        // // }
       } catch (error) {
         console.log(error);
       }
@@ -60,7 +57,7 @@ const PlaylistPageSection = () => {
 
   const playSong = (index: number) => {
     setOriginalPlaylist(playlist);
-    if (isShuffled /*&& isThisShuffled*/) {
+    if (isShuffled) {
       setCurrentPlaylist({
           id: !isPlaying ? playlistData.id : currentPlaylist.id, 
           songs: shuffleSongs(
@@ -69,7 +66,7 @@ const PlaylistPageSection = () => {
             index)});
       setSong(0, true, false);
     } else {
-      setSong(index, true, currentPlaylist.id !== playlistData.id ? true : false);
+      setSong(index, true, currentPlaylist.id === playlistData.id ? true : false);
     }
   }
 
@@ -123,7 +120,7 @@ const PlaylistPageSection = () => {
         setSong(indexToSet, true, true);
       }
     }
-  })
+  }, [isShuffled])
 
   // Optimized variant
   // useEffect(() => {
@@ -151,14 +148,6 @@ const PlaylistPageSection = () => {
       setIsPlaying(!isPlaying);
     }
   }
-
-  // const handleSetShuffle = () => {
-  //   setIsThisShuffled(!isThisShuffled);
-  //   if (currentPlaylist.id === playlistData.id) {
-  //     setIsShuffled(!isThisShuffled);
-  //   }
-  // }
-
 
   return (
     <section className="section playlist-page-section">
@@ -207,10 +196,6 @@ const PlaylistPageSection = () => {
             </button>
         </div>
         <div className="container filler-container">
-          {/* <button type="button" className={`song-controller-button playlist-songs-shuffle-button 
-          ${((currentPlaylist.id === playlistData.id && isShuffled) || isThisShuffled) ? "active" : ""}`} onClick={() => handleSetShuffle()}>
-            <FontAwesomeIcon icon={faShuffle}/>
-          </button> */}
         </div>
         <div className="container playlist-songs-uploader">
           <span className="playlist-songs-info">Uploader</span>
@@ -225,7 +210,7 @@ const PlaylistPageSection = () => {
       <div className="container playlist-songs-container">
         {items.map((item, index) => (
           <SongBox
-            key={item.id + index}
+            key={item.id}
             name={item.name}
             artist={item.artist}
             uploader={
@@ -234,7 +219,7 @@ const PlaylistPageSection = () => {
             duration={item.duration}
             uploadDate={item.uploadDate}
             imageUrl={item.imageUrl}
-            isCurrentSong={item.id === currentSong?.id}
+            isCurrentSong={`${playlistData.id}_${item.id}` === `${currentPlaylist.id}_${currentSong?.id}`}
             handlePlay={() => handleSongPlay(index)}
           />
         ))}

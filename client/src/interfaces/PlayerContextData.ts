@@ -23,4 +23,7 @@ export interface PlayerContextData {
   setIsShuffled: (value: boolean) => void;
   originalPlaylist: Playlist;
   setOriginalPlaylist: (value: Playlist) => void;
+  isNewPlaylist: boolean;
+  setIsNewPlaylist: (value: boolean) => void;
+
 }
