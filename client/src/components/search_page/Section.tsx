@@ -20,7 +20,7 @@ const SearchPageSection = () => {
       resultsComponent = <PlaylistResults search={search} />;
       break;
     case 'users':
-      resultsComponent = <UserResults search={search} />;
+      resultsComponent = <UserResults />;
       break;
     default:
       resultsComponent = <SongResults search={search} />;

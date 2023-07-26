@@ -31,6 +31,11 @@ public class UserController {
         return service.getUserById(id);
     }
 
+    @GetMapping("/search/{username}")
+    public List<UserOutput> searchForUsers(@PathVariable("username") String username) {
+        return service.searchForUsers(username);
+    }
+
     @PatchMapping("{id}")
     public ResponseEntity<Void> updateUser(@PathVariable("id") UUID id, @RequestBody UserInput user) {
         try {

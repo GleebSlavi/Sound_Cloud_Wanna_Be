@@ -59,7 +59,7 @@ const AppRoutes = () => {
         <Route path="/" element={<NavbarAndPlayerBarMain />}>
           <Route index element={<HomeSection />} />
           <Route path="/streams" element={<StreamsSection />} />
-          <Route path="search/:type/*" element={<SearchPageSection />} />
+          <Route path="search/:type/:search" element={<SearchPageSection />} />
           <Route path="/profile">
             <Route index element={<ProfileSection />} />
             <Route path=":uuid" element={<ProfileSection />} />

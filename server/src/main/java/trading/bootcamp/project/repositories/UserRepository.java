@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface UserRepository {
     List<UserEntity> listUsers();
 
+    List<UserEntity> searchForUsers(String username);
+
     Optional<UserEntity> getUserById(UUID id);
 
     Optional<UserEntity> getUserByEmail(String email);

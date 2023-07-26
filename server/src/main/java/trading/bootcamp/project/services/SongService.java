@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
 import trading.bootcamp.project.exceptions.InvalidSongNameException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
-import trading.bootcamp.project.repositories.ElasticsearchSongRepository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.SongRepository;
 import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
@@ -24,18 +23,8 @@ public class SongService {
 
     private final PlaylistRepository playlistRepository;
 
-    private final ElasticsearchSongRepository elasticsearchSongRepository;
-
     public List<SongEntity> getSongsByUser(UUID userId) {
         return songRepository.listSongsByUser(userId);
-    }
-
-    public List<SongEntity> getSongsByTerm(String term, String field) {
-        return elasticsearchSongRepository.searchSongsByTerm(field, term)
-            .stream()
-            .map(songRepository::getSongById)
-            .flatMap(Optional::stream)
-            .toList();
     }
 
     public SongEntity getSongById(UUID id) throws NoSuchSongException {
@@ -73,7 +62,6 @@ public class SongService {
         if (songRepository.deleteSong(id) != 1) {
             throw new IllegalStateException("Couldn't delete the song");
         }
-        elasticsearchSongRepository.deleteSong(id);
 
         return song.get();
     }

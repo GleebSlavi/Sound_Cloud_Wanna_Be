@@ -1,6 +1,7 @@
 package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.mappers.OutputMappers;
@@ -37,6 +38,13 @@ public class UserService {
             .stream()
             .map(OutputMappers::fromUserEntity)
             .toList();
+    }
+
+    public List<UserOutput> searchForUsers(String username) {
+        return userRepository.searchForUsers(username)
+                .stream()
+                .map(OutputMappers::fromUserEntity)
+                .toList();
     }
 
     public UserOutput getUserById(UUID id) throws NoSuchUserException {

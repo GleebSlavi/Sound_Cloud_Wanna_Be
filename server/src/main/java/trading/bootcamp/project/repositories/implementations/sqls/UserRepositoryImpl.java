@@ -26,6 +26,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public List<UserEntity> searchForUsers(String username) {
+        return jdbcTemplate.query(Queries.SEARCH_FOR_USERS, new UserRowMapper(), username);
+    }
+
+    @Override
     public Optional<UserEntity> getUserById(UUID id) {
         return jdbcTemplate.query(Queries.GET_USER_BY_ID, new UserRowMapper(), id.toString())
                 .stream()
@@ -96,6 +101,12 @@ public class UserRepositoryImpl implements UserRepository {
                 SELECT id, username, email, password, create_date, image_url
                 FROM user
                 LIMIT 100;
+                """;
+
+        public final static String SEARCH_FOR_USERS = """
+                SELECT id, username, email, password, create_date, image_url
+                FROM user
+                WHERE username LIKE '%?%';
                 """;
 
         public final static String GET_USER_BY_ID = String.format(GET_USER_BY, "id");
