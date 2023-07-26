@@ -1,0 +1,55 @@
+
+
+.user-box {
+  display: grid;
+  grid-template-rows: 2.5fr 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 90%;
+  height: 80%;
+  border: 3px solid white;
+  background-color: rgb(70, 0, 70);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
+}
+
+.user-box:hover {
+  width: 91%;
+  height: 81%;
+  border-radius: 16px;
+}
+
+.user-box:active {
+  transform: translate(1px, 1px);
+  width: 90%;
+  height: 80%;
+  border-radius: 15px;
+}
+
+.user-box-picture-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 90%;
+}
+
+.user-picture {
+  position: absolute;
+  top: 10%;
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-box-username-container{
+  align-items: start;
+}
+
+.user-box-username {
+  font-family: 'Press Start 2P';
+  color: white;
+  font-size: 1.4375rem;
+  text-align: center;
+}

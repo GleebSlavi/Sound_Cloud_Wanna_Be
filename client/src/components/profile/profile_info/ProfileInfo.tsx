@@ -4,10 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
 import { useSearchContext } from "../../../providers/SearchProvider";
+import { useParams } from "react-router-dom";
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
+
+  const { uuid } = useParams();
 
   const { checkPath } = useSearchContext();
 
@@ -15,10 +18,12 @@ const ProfileInfo = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${
+            checkPath() ? localStorage.getItem("id") : uuid
+          }`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );

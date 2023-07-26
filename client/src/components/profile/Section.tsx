@@ -2,7 +2,7 @@ import "./section.css";
 import ProfileInfo from "./profile_info/ProfileInfo";
 import PlaylistBox from "../playlist/playlist_box/PlaylistBox";
 import { useEffect, useState,  } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { Playlist } from "../../interfaces/Playlist";
 import { useSearchContext } from "../../providers/SearchProvider";
@@ -12,15 +12,17 @@ const ProfileSection = () => {
 
   const location = useLocation();
 
+  const { uuid } = useParams();
+
   const { checkPath } = useSearchContext();
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const responsePlaylists = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/user/${localStorage.getItem(
-            "id"
-          )}`,
+          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/user/${
+            checkPath() ? localStorage.getItem("id") : uuid
+          }`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -44,7 +46,7 @@ const ProfileSection = () => {
       <div className="container playlists-header-container">
         <h3 className="playlists-header">{checkPath() 
         ? "Your Playlists" 
-        : `${items[0].creator}'s Playlists`}</h3>
+        : `${items[0]?.creator}'s Playlists`}</h3>
       </div>
       <div className="container profile-playlists-container">
         {items.map((item) => (

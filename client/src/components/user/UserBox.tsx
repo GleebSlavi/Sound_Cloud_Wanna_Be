@@ -1,3 +1,4 @@
+import "./user_box.css"
 import { useNavigate } from "react-router-dom";
 import default_picture from "../../pictures/default_profile_picture.png"
 
@@ -17,11 +18,11 @@ const UserBox = ({ id, username, imageUrl }: Props) => {
     onClick={() => {
       navigate(id === localStorage.getItem("id") ? "/profile" : `/profile/${id}`);
     }}>
-      <div className="container">
+      <div className="container user-box-picture-container">
         <img className="user-picture"
         src={imageUrl ? imageUrl : default_picture} />
       </div>
-      <div className="container">
+      <div className="container user-box-username-container">
         <span className="user-box-username">{username}</span>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useSearchContext } from "../../providers/SearchProvider";
 import SearchEntity from "./search_entity/SearchEntity";
 import PlaylistResults from "./search_results/playlists/PlaylistResults";
 import SongResults from "./search_results/songs/SongResults";
+import UserResults from "./search_results/users/UserResults";
 import "./section.css"
 
 
@@ -18,9 +19,9 @@ const SearchPageSection = () => {
     case 'playlists':
       resultsComponent = <PlaylistResults search={search} />;
       break;
-    // case 'users':
-    //   resultsComponent = <UserResults search={search} />;
-    //   break;
+    case 'users':
+      resultsComponent = <UserResults search={search} />;
+      break;
     default:
       resultsComponent = <SongResults search={search} />;
   }
