@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 
 const PlayerBar = () => {
   const { currentPlaylist, currentPlaylistIndex, 
-  isPlaying, currentTime, setCurrentTime, setNextSong } = usePlayerContext();
+  isPlaying, currentTime, setCurrentTime, setNextSong,
+  isMuted, volume } = usePlayerContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -39,13 +40,18 @@ const PlayerBar = () => {
         audioRef.current?.removeEventListener("ended", setNextSong);
       }
     }
-  }, [setNextSong])
+  }, [audioRef, setNextSong])
+
+  useEffect(() => {
+    const audioElement = document.getElementById("audio") as HTMLAudioElement;
+    audioElement.volume = volume;
+  }, [volume]);
 
   return <div className="player-bar">
     <SongData />
     <SongController />
     <SongVolume />
-    <audio ref={audioRef} onTimeUpdate={handleTimeUpdate}/>
+    <audio ref={audioRef} id="audio" onTimeUpdate={handleTimeUpdate} muted={isMuted ? true : false}/>
   </div>;
 };
 

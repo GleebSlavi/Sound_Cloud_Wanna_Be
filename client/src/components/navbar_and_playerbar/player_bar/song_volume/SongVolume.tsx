@@ -2,21 +2,23 @@ import "./song_volume.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeUp, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { usePlayerContext } from "../../../../providers/PlayerProvider";
 
 const SongVolume = () => {
-  const [isVolumeMuted, setVolumeMuted] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
   const [previousSliderValue, setPreviousSliderValue] = useState(100);
   const [isDragged, setIsDragged] = useState(false);
 
+  const { isMuted, setIsMuted, volume, setVolume } = usePlayerContext();
+
   const handleVolumeMute = (): void => {
-    setVolumeMuted(!isVolumeMuted);
-    if (!isVolumeMuted) {
+    setIsMuted(!isMuted)
+    if (!isMuted) {
       setPreviousSliderValue(sliderValue);
       setSliderValue(0);
     } else {
       if (sliderValue === 0 && isDragged) {
-        setVolumeMuted(false);
+        setIsMuted(false);
         setSliderValue(100);
         setIsDragged(false);
       } else {
@@ -30,12 +32,13 @@ const SongVolume = () => {
   ): void => {
     const value = parseInt(event.target.value, 10);
     setSliderValue(value);
+    setVolume(value / 100);
 
-    if (value === 0 && !isVolumeMuted) {
-      setVolumeMuted(true);
+    if (value === 0 && !isMuted) {
+      setIsMuted(true);
       setIsDragged(true);
-    } else if (value !== 0 && isVolumeMuted) {
-      setVolumeMuted(false);
+    } else if (value !== 0 && isMuted) {
+      setIsMuted(false);
     }
   };
 
@@ -49,7 +52,7 @@ const SongVolume = () => {
         >
           <FontAwesomeIcon
             icon={
-              isVolumeMuted && sliderValue === 0 ? faVolumeMute : faVolumeUp
+              isMuted && sliderValue === 0 ? faVolumeMute : faVolumeUp
             }
           />
         </button>

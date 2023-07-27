@@ -22,7 +22,11 @@ const PlayerContext = createContext<PlayerContextData>({
   originalPlaylist: {id: "", songs: []},
   setOriginalPlaylist: () => {},
   isNewPlaylist: false,
-  setIsNewPlaylist: () => {}
+  setIsNewPlaylist: () => {},
+  isMuted: false,
+  setIsMuted: () => {},
+  volume: 1.0,
+  setVolume: () => {}
 });
 
 export const usePlayerContext = () => {
@@ -42,6 +46,8 @@ const PlayerProvider = ({ children }: Props) => {
   const [isShuffled, setIsShuffled] = useState(false);
   const [originalPlaylist, setOriginalPlaylist] = useState<{id: string, songs: Song[]}>({id: "", songs: []});
   const [isNewPlaylist, setIsNewPlaylist] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1.0);
 
   const setSong = (index: number, condition: boolean, conditionShuffle: boolean) => {
       if (condition) {
@@ -88,7 +94,8 @@ const PlayerProvider = ({ children }: Props) => {
       setSong, setNextSong, shuffleSongs, currentSongId,
       setCurrentSongId, isShuffled, setIsShuffled,
       originalPlaylist, setOriginalPlaylist,
-      isNewPlaylist, setIsNewPlaylist
+      isNewPlaylist, setIsNewPlaylist, isMuted,
+      setIsMuted, volume, setVolume
     }}>
       {children}
     </PlayerContext.Provider>

@@ -25,5 +25,8 @@ export interface PlayerContextData {
   setOriginalPlaylist: (value: Playlist) => void;
   isNewPlaylist: boolean;
   setIsNewPlaylist: (value: boolean) => void;
-
+  isMuted: boolean;
+  setIsMuted: (value: boolean) => void;
+  volume: number;
+  setVolume: (value: number) => void;
 }
