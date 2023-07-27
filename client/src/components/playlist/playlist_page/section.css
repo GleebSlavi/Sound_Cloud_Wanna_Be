@@ -3,7 +3,7 @@
 }
 
 .playlist-page-info-container {
-  grid-template-columns: 1fr 5fr 0.5fr;
+  grid-template-columns: 1fr 5fr 0.3fr;
   width: 95%;
   height: 25vh;
   border-bottom: solid white;

@@ -25,7 +25,7 @@ const PlayerBar = () => {
       }
     }
 
-  }, [currentPlaylist, currentPlaylistIndex, isPlaying])
+  }, [currentPlaylistIndex, isPlaying])
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
