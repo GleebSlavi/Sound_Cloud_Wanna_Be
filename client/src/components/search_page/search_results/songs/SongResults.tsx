@@ -10,7 +10,8 @@ import axios from "axios";
 const SongResults = () => {
   const [items, setItems] = useState<Song[]>([]);
 
-  const { setCurrentPlaylist, setSong, setCurrentSongId, currentSongId } = usePlayerContext();
+  const { setCurrentPlaylist, setSong, setCurrentSongId, currentSongId,
+  setOriginalPlaylist } = usePlayerContext();
 
   const { search } = useParams();
 
@@ -36,7 +37,9 @@ const SongResults = () => {
 
   const handleSongPlay = (item: Song) => {
     if (currentSongId !== item.id) {
-      setCurrentPlaylist({id: uuidv4(), songs: [item]});
+      const id = uuidv4();
+      setCurrentPlaylist({id: id, songs: [item]});
+      setOriginalPlaylist({id: id, songs: [item]});
       setCurrentSongId(item.id);
     }
     setSong(0, item.id !== currentSongId, item.id === currentSongId);

@@ -8,7 +8,7 @@ import default_playlist_picture from "../../../pictures/playlist_default_picture
 import SongBox from "../../song/SongBox";
 import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faPause, faBars } from "@fortawesome/free-solid-svg-icons";
 
 
 const PlaylistPageSection = () => {
@@ -197,6 +197,11 @@ const PlaylistPageSection = () => {
               </span>
             </div>
           </div>
+        </div>
+        <div className="container burger-menu-button-container">
+          <button className="burger-menu-button" type="button">
+            <FontAwesomeIcon icon={faBars} className="playlist-burger-menu" />
+          </button>
         </div>
       </div>
       <div className="container playlist-songs-info-control-container">
