@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSearchContext } from "../../../providers/SearchProvider";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [ input, setInput ] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,10 +28,11 @@ const Navbar = () => {
   const handleSubmut = (event: React.FormEvent) => {
     event.preventDefault();
 
+    setSearch(input);
     if (!/^\/search\/(songs|playlists|users)\/.+$/.test(location.pathname)) {
-      navigate(`/search/songs/${search}`);
+      navigate(`/search/songs/${input}`);
     } else {
-      navigate(`search/${type}/${search}`);
+      navigate(`search/${type}/${input}`);
     }
   }
 
@@ -68,7 +71,7 @@ const Navbar = () => {
               pattern="^.+$"
               title="Please enter something to search!"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setSearch(event.target.value);
+                setInput(event.target.value);
               }}
             />
             <button className="search-button" type="submit">
