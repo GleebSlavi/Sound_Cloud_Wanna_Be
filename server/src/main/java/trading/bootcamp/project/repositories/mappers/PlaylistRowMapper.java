@@ -1,7 +1,7 @@
 package trading.bootcamp.project.repositories.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 
 import java.sql.ResultSet;

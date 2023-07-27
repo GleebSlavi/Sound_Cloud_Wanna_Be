@@ -1,7 +1,7 @@
 package trading.bootcamp.project.repositories;
 
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.UserEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface UserRepository {
     List<UserEntity> listUsers();
 
-    List<UserEntity> searchForUsers(String username);
+    List<UserEntity> searchForUsers(List<String> ids);
 
     Optional<UserEntity> getUserById(UUID id);
 

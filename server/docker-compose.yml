@@ -1,3 +1,8 @@
+#networks:
+#  elastic:
+#    driver: bridge
+
+
 services:
   mysql:
     container_name: mysql
@@ -11,13 +16,19 @@ services:
     volumes:
       - ./data/mysql:/data/mysql
 
-#  elasticsearch:
-#    container_name: elasticsearch
-#    image: arm64v8/elasticsearch:8.8.1
-#    restart: unless-stopped
-#    environment:
-#      - discovery.type=single-node
-#    ports:
-#      - "9200:9200"
-#    volumes:
-#      - ./data/elasticsearch:/data/elasticsearch
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: arm64v8/elasticsearch:8.8.1
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - "xpack.security.enabled=false"
+#    network_mode: host
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./data/elasticsearch:/data/elasticsearch
+#      - ./http_ca.crt:/usr/share/elasticsearch/config/certs/http_ca.crt
+#    networks:
+#      - elastic

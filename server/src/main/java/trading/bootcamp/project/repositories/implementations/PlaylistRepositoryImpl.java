@@ -1,16 +1,17 @@
-package trading.bootcamp.project.repositories.implementations.sqls;
+package trading.bootcamp.project.repositories.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
 import trading.bootcamp.project.repositories.mappers.PlaylistRowMapper;
 import trading.bootcamp.project.repositories.mappers.SongRowMapper;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +26,13 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     public List<PlaylistEntity> listPlaylistsByUser(UUID userId) {
         return jdbcTemplate.query(Queries.LIST_PLAYLISTS_BY_USER,
                 new PlaylistRowMapper(), userId.toString());
+    }
+
+    @Override
+    public List<PlaylistEntity> searchForPlaylists(List<String> ids) {
+        return jdbcTemplate.query(String.format(Queries.SEARCH_FOR_PLAYLISTS,
+                String.join(", ", Collections.nCopies(ids.size(), "?"))),
+                new PlaylistRowMapper(), ids.toArray());
     }
 
     @Override
@@ -89,6 +97,13 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 user_id = ? AND
                 is_all_songs = 1;
                 """);
+
+        public final static String SEARCH_FOR_PLAYLISTS = """
+                SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url
+                FROM playlist
+                WHERE id IN (%s)
+                LIMIT 100;
+                """;
 
         public final static String GET_PLAYLIST_BY_NAME_AND_USER_ID = String.format(SELECT_PLAYLIST_QUERY, """
                 name = ? AND

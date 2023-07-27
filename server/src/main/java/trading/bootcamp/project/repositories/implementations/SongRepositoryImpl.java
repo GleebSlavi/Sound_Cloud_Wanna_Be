@@ -1,14 +1,15 @@
-package trading.bootcamp.project.repositories.implementations.sqls;
+package trading.bootcamp.project.repositories.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.SongRepository;
 import trading.bootcamp.project.repositories.entities.enums.SongType;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
 import trading.bootcamp.project.repositories.mappers.SongRowMapper;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +23,13 @@ public class SongRepositoryImpl implements SongRepository {
     public List<SongEntity> listSongsByUser(UUID userId) {
         return jdbcTemplate.query(Queries.LIST_SONGS_BY_USER,
             new SongRowMapper(), userId.toString());
+    }
+
+    @Override
+    public List<SongEntity> searchForSongs(List<String> ids) {
+        return jdbcTemplate.query(String.format(Queries.SEARCH_FOR_SONGS,
+                String.join(", ", Collections.nCopies(ids.size(), "?"))),
+                new SongRowMapper(), ids.toArray());
     }
 
     @Override
@@ -55,6 +63,13 @@ public class SongRepositoryImpl implements SongRepository {
                 SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
                 FROM song
                 WHERE %s
+                """;
+
+        public final static String SEARCH_FOR_SONGS = """
+                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                FROM song
+                WHERE id IN (%s)
+                LIMIT 100;
                 """;
 
         public final static String ADD_SONG_TO_PLAYLIST = """

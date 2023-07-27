@@ -1,4 +1,4 @@
-package trading.bootcamp.project.repositories.entities.sqls;
+package trading.bootcamp.project.repositories.entities;
 
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
 

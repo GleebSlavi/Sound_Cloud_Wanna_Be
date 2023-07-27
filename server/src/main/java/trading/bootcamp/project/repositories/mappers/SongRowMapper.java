@@ -2,7 +2,7 @@ package trading.bootcamp.project.repositories.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
 import trading.bootcamp.project.repositories.entities.enums.SongType;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.exceptions.*;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.repositories.entities.UserEntity;
 import trading.bootcamp.project.services.UserService;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.UserOutput;
@@ -31,9 +30,9 @@ public class UserController {
         return service.getUserById(id);
     }
 
-    @GetMapping("/search/{username}")
-    public List<UserOutput> searchForUsers(@PathVariable("username") String username) {
-        return service.searchForUsers(username);
+    @GetMapping("/search/{search}")
+    public List<UserOutput> searchForUsers(@PathVariable("search") String search) {
+        return service.searchForUsers(search);
     }
 
     @PatchMapping("{id}")
@@ -51,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public UserEntity deleteUser(@PathVariable("id") UUID id) throws NoSuchUserException {
+    public UserOutput deleteUser(@PathVariable("id") UUID id) throws NoSuchUserException {
         return service.deleteUser(id);
     }
 

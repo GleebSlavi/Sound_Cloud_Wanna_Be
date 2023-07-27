@@ -1,15 +1,16 @@
-package trading.bootcamp.project.repositories.implementations.sqls;
+package trading.bootcamp.project.repositories.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.UserRepository;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.UserEntity;
 import trading.bootcamp.project.repositories.mappers.PlaylistRowMapper;
 import trading.bootcamp.project.repositories.mappers.UserRowMapper;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,8 +27,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<UserEntity> searchForUsers(String username) {
-        return jdbcTemplate.query(Queries.SEARCH_FOR_USERS, new UserRowMapper(), username);
+    public List<UserEntity> searchForUsers(List<String> ids) {
+        return jdbcTemplate.query(String.format(Queries.SEARCH_FOR_USERS,
+                String.join(", ", Collections.nCopies(ids.size(), "?"))),
+                new UserRowMapper(), ids.toArray());
     }
 
     @Override
@@ -106,7 +109,8 @@ public class UserRepositoryImpl implements UserRepository {
         public final static String SEARCH_FOR_USERS = """
                 SELECT id, username, email, password, create_date, image_url
                 FROM user
-                WHERE username LIKE '%?%';
+                WHERE id IN (%s)
+                LIMIT 100;
                 """;
 
         public final static String GET_USER_BY_ID = String.format(GET_USER_BY, "id");

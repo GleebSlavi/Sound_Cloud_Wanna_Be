@@ -14,16 +14,16 @@ const SearchPageSection = () => {
   let resultsComponent;
   switch (type) {
     case 'songs':
-      resultsComponent = <SongResults search={search} />;
+      resultsComponent = <SongResults />;
       break;
     case 'playlists':
-      resultsComponent = <PlaylistResults search={search} />;
+      resultsComponent = <PlaylistResults />;
       break;
     case 'users':
       resultsComponent = <UserResults />;
       break;
     default:
-      resultsComponent = <SongResults search={search} />;
+      resultsComponent = <SongResults />;
   }
 
   return (

@@ -1,17 +1,16 @@
 package trading.bootcamp.project.api.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.PlaylistInput;
 import trading.bootcamp.project.exceptions.InvalidFieldException;
 import trading.bootcamp.project.exceptions.NoSuchPlaylistException;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.services.PlaylistService;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.SongOutput;
+import trading.bootcamp.project.services.outputs.UserOutput;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +30,11 @@ public class PlaylistController {
                 ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/search/{search}")
+    public List<PlaylistOutput> searchForPlaylists(@PathVariable("search") String search) {
+        return service.searchForPlaylists(search);
+    }
+
     @GetMapping("/user/{userId}")
     public List<PlaylistOutput> getAllPlaylistsByUser(@PathVariable("userId") UUID userId) {
         return service.getPlaylistsByUser(userId);
@@ -42,7 +46,7 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public ResponseEntity<PlaylistEntity> createPlaylist(@RequestBody PlaylistInput playlist) {
+    public ResponseEntity<PlaylistOutput> createPlaylist(@RequestBody PlaylistInput playlist) {
         try {
             return ResponseEntity.ok(service.addPlaylist(playlist));
         } catch (InvalidFieldException ex) {
@@ -53,7 +57,7 @@ public class PlaylistController {
     }
 
     @DeleteMapping("{id}")
-    public PlaylistEntity deletePlaylist(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
+    public PlaylistOutput deletePlaylist(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
         return service.deletePlaylist(id);
     }
 

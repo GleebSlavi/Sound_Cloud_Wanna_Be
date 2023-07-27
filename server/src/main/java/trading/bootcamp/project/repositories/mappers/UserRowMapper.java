@@ -1,7 +1,7 @@
 package trading.bootcamp.project.repositories.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
-import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
+import trading.bootcamp.project.repositories.entities.UserEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

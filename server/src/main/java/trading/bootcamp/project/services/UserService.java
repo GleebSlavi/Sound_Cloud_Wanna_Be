@@ -1,21 +1,23 @@
 package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import trading.bootcamp.project.api.rest.mappers.OutputMappers;
+import org.springframework.transaction.annotation.Transactional;
+import trading.bootcamp.project.api.rest.FromEntityToOutput;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.exceptions.*;
+import trading.bootcamp.project.repositories.ElasticsearchUserRepository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.UserRepository;
+import trading.bootcamp.project.repositories.entities.ElasticsearchUserEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
-import trading.bootcamp.project.repositories.entities.sqls.UserEntity;
-import trading.bootcamp.project.services.mappers.InputMappers;
+import trading.bootcamp.project.repositories.entities.UserEntity;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.UserOutput;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,6 +25,7 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private static final String EMAIL_REGEX = "^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
@@ -33,18 +36,24 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ElasticsearchUserRepository searchRepository;
+
     public List<UserOutput> getUsers() {
         return userRepository.listUsers()
             .stream()
-            .map(OutputMappers::fromUserEntity)
+            .map(FromEntityToOutput::fromUserEntity)
             .toList();
     }
 
-    public List<UserOutput> searchForUsers(String username) {
-        return userRepository.searchForUsers(username)
+    public List<UserOutput> searchForUsers(String search) {
+        List<String> ids = searchRepository.searchForUser(search);
+
+        return !ids.isEmpty()
+                ? userRepository.searchForUsers(ids)
                 .stream()
-                .map(OutputMappers::fromUserEntity)
-                .toList();
+                .map(FromEntityToOutput::fromUserEntity)
+                .toList()
+                : Collections.emptyList();
     }
 
     public UserOutput getUserById(UUID id) throws NoSuchUserException {
@@ -52,7 +61,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new NoSuchUserException(String.format("User with id %s not found", id.toString()));
         }
-        return OutputMappers.fromUserEntity(user.get());
+        return FromEntityToOutput.fromUserEntity(user.get());
     }
 
     public UserEntity getUserByUsername(String username) throws NoSuchUserException {
@@ -100,7 +109,7 @@ public class UserService {
         String password = userInput.getNewPassword();
         String username = userInput.getUsername();
 
-        if (username.isBlank() || username.strip().length() < 4) {
+        if (username == null || username.isBlank() || username.strip().length() < 4) {
             throw new InvalidFieldException("Username can't be less than 4 symbols");
         }
 
@@ -108,48 +117,49 @@ public class UserService {
             throw new InvalidFieldException("Invalid email");
         }
 
-        if (password.isBlank() || password.length() < 8) {
+        if (password == null || password.isBlank() || password.length() < 8) {
             throw new InvalidFieldException("Password must be 8 or more symbols");
         }
 
-        UserEntity user = InputMappers.fromUserInput(userInput);
-        if (userRepository.createUser(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getImageUrl()) != 1) {
-            throw new IllegalStateException("Couldn't create all songs playlist");
-        }
+        UserEntity user = FromInputToEntityMappers.fromUserInput(userInput);
+        userRepository.createUser(user.getId(), user.getUsername(), user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getCreateDate(), user.getImageUrl());
 
+        // Create all songs playlist and add it to favorites
         UUID playlistId = UUID.randomUUID();
-        if (playlistRepository.createPlaylist(playlistId, user.getId(), "All songs", "Playlist that consists of all uploaded songs",
-            true, LocalDate.now(), PlaylistType.PUBLIC, null) != 1) {
-            userRepository.deleteUser(user.getId());
-            throw new IllegalStateException("Couldn't create all songs playlist");
-        }
+        playlistRepository.createPlaylist(playlistId, user.getId(), "All songs", "Playlist that consists of all uploaded songs",
+                true, LocalDate.now(), PlaylistType.PUBLIC, null);
+        userRepository.insertFavoritePlaylist(user.getId(), playlistId);
 
-        if (userRepository.insertFavoritePlaylist(user.getId(), playlistId) != 1) {
-            userRepository.deleteUser(user.getId());
-            playlistRepository.deletePlaylist(playlistId);
-            throw new IllegalStateException("Couldn't add the favorite playlist");
+        if (!searchRepository.createUserIndex(
+                new ElasticsearchUserEntity(user.getId(), user.getUsername())).equals(user.getId().toString())) {
+            throw new IllegalStateException("Couldn't create the index!");
         }
 
         return user;
     }
 
-    public UserEntity deleteUser(UUID id) throws NoSuchUserException {
+    public UserOutput deleteUser(UUID id) throws NoSuchUserException {
         Optional<UserEntity> user = userRepository.getUserById(id);
         if (user.isEmpty()) {
             throw new NoSuchUserException(String.format("User with id %s not found", id.toString()));
         }
 
         if (userRepository.deleteUser(id) != 1) {
-            throw new IllegalStateException("Couldn't delete the user");
+            throw new IllegalStateException("Couldn't delete the user!");
         }
-        return user.get();
+
+        if (!searchRepository.deleteUserIndex(id).equals(id.toString())) {
+            throw new IllegalStateException("Couldn't delete the index!");
+        }
+
+        return FromEntityToOutput.fromUserEntity(user.get());
     }
 
 
     public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId) {
         return userRepository.getUserFavouritePlaylists(userId)
             .stream()
-            .map(playlist -> OutputMappers.fromPlaylistEntity(userRepository, playlist))
+            .map(playlist -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
             .toList();
     }
 }

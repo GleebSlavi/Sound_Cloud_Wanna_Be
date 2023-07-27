@@ -2,26 +2,37 @@ package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import trading.bootcamp.project.api.rest.FromEntityToOutput;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
 import trading.bootcamp.project.exceptions.InvalidSongNameException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
+import trading.bootcamp.project.repositories.ElasticsearchSongRepository;
 import trading.bootcamp.project.repositories.PlaylistRepository;
 import trading.bootcamp.project.repositories.SongRepository;
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
-import trading.bootcamp.project.services.mappers.InputMappers;
+import trading.bootcamp.project.repositories.UserRepository;
+import trading.bootcamp.project.repositories.entities.ElasticsearchSongEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
+import trading.bootcamp.project.services.outputs.SongOutput;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SongService {
 
     private final SongRepository songRepository;
 
     private final PlaylistRepository playlistRepository;
+
+    private final ElasticsearchSongRepository searchRepository;
+
+    private final UserRepository userRepository;
 
     public List<SongEntity> getSongsByUser(UUID userId) {
         return songRepository.listSongsByUser(userId);
@@ -35,12 +46,23 @@ public class SongService {
         return song.get();
     }
 
-    public SongEntity addSong(SongInput songInput) {
+    public List<SongOutput> searchForSongs(String search) {
+        List<String> ids = searchRepository.searchForSong(search);
+
+            return !ids.isEmpty()
+                    ? songRepository.searchForSongs(ids)
+                    .stream()
+                    .map((song) -> FromEntityToOutput.fromSongEntity(userRepository, song))
+                    .toList()
+                    : Collections.emptyList();
+    }
+
+    public SongOutput addSong(SongInput songInput) {
         if (songInput.getName().strip().length() < 1 || songInput.getArtist().strip().length() < 1) {
             throw new InvalidSongNameException("Song name and artist can't be less than 1 character");
         }
 
-        SongEntity song = InputMappers.fromSongInput(songInput);
+        SongEntity song = FromInputToEntityMappers.fromSongInput(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
             song.artist(), song.releaseYear(), song.duration(), song.type(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {
@@ -50,10 +72,14 @@ public class SongService {
         Optional<PlaylistEntity> allSongsPlaylist = playlistRepository.getAllSongsPlaylist(song.userId());
         allSongsPlaylist.ifPresent(playlistEntity -> songRepository.addSongToPlaylist(playlistEntity.id(), song.id()));
 
-        return song;
+        if (!searchRepository.createSongIndex(new ElasticsearchSongEntity(song.id(), song.name(), song.artist()))
+                .equals(song.id().toString())) {
+            throw new IllegalStateException("Couldn't create index!");
+        }
+        return FromEntityToOutput.fromSongEntity(userRepository, song);
     }
 
-    public SongEntity deleteSong(UUID id) throws NoSuchSongException {
+    public SongOutput deleteSong(UUID id) throws NoSuchSongException {
         Optional<SongEntity> song = songRepository.getSongById(id);
         if (song.isEmpty()) {
             throw new NoSuchSongException(String.format("Song with id %s not found", id.toString()));
@@ -63,7 +89,11 @@ public class SongService {
             throw new IllegalStateException("Couldn't delete the song");
         }
 
-        return song.get();
+        if (!searchRepository.deleteSongIndex(id).equals(id.toString())) {
+            throw new IllegalStateException("Couldn't delete the index!");
+        }
+
+        return FromEntityToOutput.fromSongEntity(userRepository, song.get());
     }
 
 

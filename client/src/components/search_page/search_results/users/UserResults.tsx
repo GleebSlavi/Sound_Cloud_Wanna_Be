@@ -12,7 +12,6 @@ const UserResults = () => {
 
   useEffect(() => {
     (async () => {
-      console.log(search);
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_USERS_ENDPOINT}/search/${search}`,
@@ -28,7 +27,6 @@ const UserResults = () => {
         console.log(error);
       }
 
-      console.log("here");
     })();
   }, [search, setItems]);
 

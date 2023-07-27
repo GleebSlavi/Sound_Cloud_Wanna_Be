@@ -1,8 +1,8 @@
 package trading.bootcamp.project.repositories;
 
-import trading.bootcamp.project.repositories.entities.sqls.PlaylistEntity;
+import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.enums.PlaylistType;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface PlaylistRepository {
 
     List<PlaylistEntity> listPlaylistsByUser(UUID userId);
+
+    List<PlaylistEntity> searchForPlaylists(List<String> ids);
 
     Optional<PlaylistEntity> getPlaylistById(UUID id);
 

@@ -150,11 +150,13 @@ const PlaylistPageSection = () => {
   }, [currentPlaylistIndex, currentPlaylist, setCurrentSongId])
 
   const handlePlaylistPlay = () => {
-    if (currentPlaylist.id !== playlistData.id) {
-      setCurrentPlaylist({id: playlistData.id, songs: items});
-      playSong(0);
-    } else {
-      setIsPlaying(!isPlaying);
+    if (items.length > 0) {
+      if (currentPlaylist.id !== playlistData.id) {
+        setCurrentPlaylist({id: playlistData.id, songs: items});
+        playSong(0);
+      } else {
+        setIsPlaying(!isPlaying);
+      }
     }
   }
 

@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
 import trading.bootcamp.project.exceptions.InvalidFieldException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
-import trading.bootcamp.project.repositories.entities.sqls.SongEntity;
+import trading.bootcamp.project.repositories.entities.SongEntity;
 import trading.bootcamp.project.services.SongService;
+import trading.bootcamp.project.services.outputs.PlaylistOutput;
+import trading.bootcamp.project.services.outputs.SongOutput;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,19 +26,9 @@ public class SongController {
         return service.getSongsByUser(userId);
     }
 
-    @GetMapping("/name/{name}")
-    public List<SongEntity> getAllSongsByName(@PathVariable String name) {
-        return service.getSongsByTerm(name, "name");
-    }
-
-    @GetMapping("/artist/{artist}")
-    public List<SongEntity> getAllSongsByArtist(@PathVariable String artist) {
-        return service.getSongsByTerm(artist, "artist");
-    }
-
-    @GetMapping("/genre/{genre}")
-    public List<SongEntity> getAllSongsByGenre(@PathVariable String genre) {
-        return service.getSongsByTerm(genre, "genre");
+    @GetMapping("/search/{search}")
+    public List<SongOutput> searchForSongs(@PathVariable("search") String search) {
+        return service.searchForSongs(search);
     }
 
     @GetMapping("/id/{id}")
@@ -45,7 +37,7 @@ public class SongController {
     }
 
     @PostMapping
-    public ResponseEntity<SongEntity> addSong(@RequestBody SongInput song) {
+    public ResponseEntity<SongOutput> addSong(@RequestBody SongInput song) {
         try {
             return ResponseEntity.ok(service.addSong(song));
         } catch (InvalidFieldException ex) {
@@ -56,7 +48,7 @@ public class SongController {
     }
 
     @DeleteMapping("{id}")
-    public SongEntity deletePlaylist(@PathVariable("id") UUID id) throws NoSuchSongException {
+    public SongOutput deletePlaylist(@PathVariable("id") UUID id) throws NoSuchSongException {
         return service.deleteSong(id);
     }
 }
