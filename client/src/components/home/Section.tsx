@@ -44,6 +44,7 @@ const HomeSection = () => {
               item.userId === localStorage.getItem("id") ? "you" : item.creator
             }
             imageUrl={item.imageUrl}
+            songId={null}
           />
         ))}
       </div>

@@ -29,5 +29,11 @@ public interface PlaylistRepository {
 
     List<SongEntity> getSongsInPlaylist(UUID playlistId);
 
+    int addSongToPlaylist(UUID playlistId, UUID songId);
+
+    int removeSongFromPlaylist(UUID playlistId, UUID songId);
+
     int changePlaylistType(UUID id, PlaylistType type);
+
+    List<PlaylistEntity> allPlaylistsNotContainingSong(UUID userId, UUID songId);
 }

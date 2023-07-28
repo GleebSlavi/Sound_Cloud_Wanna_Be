@@ -107,10 +107,29 @@ public class PlaylistService {
         return FromEntityToOutput.fromPlaylistEntity(userRepository, playlist.get());
     }
 
+    public void addSongToPlaylist(UUID playlistId, UUID songId) {
+        if(playlistRepository.addSongToPlaylist(playlistId, songId) != 1) {
+            throw new IllegalStateException("Couldn't add to the playlist");
+        }
+    }
+
+    public void removeSongFromPlaylist(UUID playlistId, UUID songId) {
+        if(playlistRepository.removeSongFromPlaylist(playlistId, songId) != 1) {
+            throw new IllegalStateException("Couldn't remove from the playlist");
+        }
+    }
+
     public List<SongOutput> getSongsInPlaylist(UUID playlistId) {
         return playlistRepository.getSongsInPlaylist(playlistId)
             .stream()
             .map(song -> FromEntityToOutput.fromSongEntity(userRepository, song))
             .toList();
+    }
+
+    public List<PlaylistOutput> allPlaylistsNotContainingSong(UUID userId, UUID songId) {
+        return playlistRepository.allPlaylistsNotContainingSong(userId, songId)
+                .stream()
+                .map(playlist -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
+                .toList();
     }
 }

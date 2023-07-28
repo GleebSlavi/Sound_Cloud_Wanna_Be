@@ -38,6 +38,7 @@ const PlaylistResults = () => {
         name={item.name}
         creator={item.userId === localStorage.getItem("id") ? "you" : item.creator}
         imageUrl={item.imageUrl}
+        songId={null}
         />
       ))}
     </div>

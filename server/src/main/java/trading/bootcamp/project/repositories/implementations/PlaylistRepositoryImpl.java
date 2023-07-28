@@ -86,8 +86,24 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
+    public int addSongToPlaylist(UUID playlistId, UUID songId) {
+        return jdbcTemplate.update(Queries.ADD_SONG_TO_PLAYLIST, playlistId.toString(), songId.toString());
+    }
+
+    @Override
+    public int removeSongFromPlaylist(UUID playlistId, UUID songId) {
+        return jdbcTemplate.update(Queries.REMOVE_SONG_FROM_PLAYLIST, playlistId.toString(), songId.toString());
+    }
+
+    @Override
     public int changePlaylistType(UUID id, PlaylistType type) {
         return jdbcTemplate.update(Queries.CHANGE_PLAYLIST_TYPE, type.toString(), id.toString());
+    }
+
+    @Override
+    public List<PlaylistEntity> allPlaylistsNotContainingSong(UUID userId, UUID songId) {
+        return jdbcTemplate.query(Queries.ALL_PLAYLISTS_NOT_CONTAINING_SONG, new PlaylistRowMapper(),
+                userId.toString(), songId.toString());
     }
 
 
@@ -99,16 +115,28 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 WHERE %s
                 """;
 
+        public final static String ALL_PLAYLISTS_NOT_CONTAINING_SONG = """
+                SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url
+                FROM playlist
+                WHERE user_id = ? AND is_all_songs = 0 AND id NOT IN (
+                    SELECT playlist_id
+                    FROM playlist_song
+                    WHERE song_id = ? );
+                """;
+
         public final static String GET_ALL_SONGS_PLAYLIST = String.format(SELECT_PLAYLIST_QUERY, """
                 user_id = ? AND
                 is_all_songs = 1;
                 """);
 
-        public final static String IS_FAVORITE_PLAYLIST = """
-                SELECT user_id, playlist_id
-                FROM user_playlist
-                WHERE user_id = ? AND
-                      playlist_id = ?;
+        public final static String ADD_SONG_TO_PLAYLIST = """
+                INSERT INTO playlist_song(playlist_id, song_id)
+                VALUES(?, ?);
+                """;
+
+        public final static String REMOVE_SONG_FROM_PLAYLIST = """
+                DELETE FROM playlist_song
+                WHERE playlist_id = ? AND song_id = ?;
                 """;
 
         public final static String CHANGE_PLAYLIST_TYPE = """

@@ -17,6 +17,8 @@ interface Props {
   handlePlay: () => void;
   inPlaylist: boolean;
   playlistUploaderId: string;
+  isAllSongsPlaylist: boolean;
+  songId: string;
 }
 
 const SongBox = ({
@@ -29,7 +31,9 @@ const SongBox = ({
   isCurrentSong,
   handlePlay,
   inPlaylist,
-  playlistUploaderId
+  playlistUploaderId,
+  isAllSongsPlaylist,
+  songId
 }: Props) => {
   const [hovering, setHovering] = useState(false);
 
@@ -85,8 +89,9 @@ const SongBox = ({
           <FontAwesomeIcon className="song-box-burger-menu-button" icon={faBars} 
           onClick={() => setIsBurgerMenuVisible(!isBurgerMenuVisible)}/>
         </button>
-        <BurgerMenuSong inPlaylist={inPlaylist} isBarVisible={isBurgerMenuVisible}
-        isYours={playlistUploaderId === localStorage.getItem("id")}/>
+        <BurgerMenuSong isYours={
+         playlistUploaderId === localStorage.getItem("id")} isBarVisible={isBurgerMenuVisible}
+          inPlaylist={inPlaylist} songId={songId} isAllSongs={isAllSongsPlaylist}/>
       </div>
     </div>
   );

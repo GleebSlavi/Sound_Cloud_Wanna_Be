@@ -62,6 +62,8 @@ const SongResults = () => {
           handlePlay={() => handleSongPlay(item)}
           inPlaylist={false}
           playlistUploaderId=""
+          isAllSongsPlaylist={false}
+          songId=""
         />
       ))} 
     </div>

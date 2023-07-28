@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import NotFoundSection from "./not_found/Section";
 import PlaylistPageSection from "./playlist/playlist_page/Section";
 import SearchPageSection from "./search_page/Section";
+import AddToPlaylistSection from "./song/burger_menu/add_to_playlist/AddToPlaylist";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -43,7 +44,8 @@ const AppRoutes = () => {
     "/profile/create_playlist",
     /^\/playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
     /^\/search\/(songs|playlists|users)\/.+$/,
-    /^\/user\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+    /^\/user\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    /^\/add-to-playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
   ];
   return validRoutes.includes(path);
   };
@@ -59,7 +61,8 @@ const AppRoutes = () => {
         <Route path="/" element={<NavbarAndPlayerBarMain />}>
           <Route index element={<HomeSection />} />
           <Route path="/streams" element={<StreamsSection />} />
-          <Route path="search/:type/:search" element={<SearchPageSection />} />
+          <Route path="/search/:type/:search" element={<SearchPageSection />} />
+          <Route path="/add-to-playlist/:uuid" element={<AddToPlaylistSection />} />
           <Route path="/profile">
             <Route index element={<ProfileSection />} />
             <Route path=":uuid" element={<ProfileSection />} />

@@ -77,4 +77,22 @@ public class PlaylistController {
     public List<SongOutput> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
         return service.getSongsInPlaylist(playlistId);
     }
+
+    @PostMapping("/{playlistId}/add/{songId}")
+    public void addSongToPlaylist(@PathVariable("playlistId") UUID playlistId,
+                                  @PathVariable("songId") UUID songId) {
+        service.addSongToPlaylist(playlistId, songId);
+    }
+
+    @DeleteMapping("/{playlistId}/remove/{songId}")
+    public void removeSongFromPlaylist(@PathVariable("playlistId") UUID playlistId,
+                                       @PathVariable("songId") UUID songId) {
+        service.removeSongFromPlaylist(playlistId, songId);
+    }
+
+    @GetMapping("/{userId}/song-not-in/{songId}")
+    public List<PlaylistOutput> allPlaylistsNotContainingSong(@PathVariable("userId") UUID userId,
+                                                              @PathVariable("songId") UUID songId) {
+        return service.allPlaylistsNotContainingSong(userId, songId);
+    }
 }

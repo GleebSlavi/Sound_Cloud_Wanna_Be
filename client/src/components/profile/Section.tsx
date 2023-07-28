@@ -55,6 +55,7 @@ const ProfileSection = () => {
             name={item.name}
             creator="you"
             imageUrl={item.imageUrl}
+            songId={null}
           />
         ))}
       </div>

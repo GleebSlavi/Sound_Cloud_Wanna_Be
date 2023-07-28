@@ -1,23 +1,46 @@
 import "./playlist_box.css";
 import playlist_default_picture from "../../../pictures/playlist_default_picture.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface Props {
   id: string;
   name: string;
   creator: string;
   imageUrl: string | null;
+  songId: string | null;
 }
 
-const PlaylistBox = ({ id, name, creator, imageUrl }: Props) => {
+const PlaylistBox = ({ id, name, creator, imageUrl, songId }: Props) => {
   const navigate = useNavigate();
+
+  const handleOnClick = async () => {
+    if (songId) {
+      handleAddSongToPlaylist();
+    } 
+    navigate(`/playlist/${id}`);
+  }
+
+  const handleAddSongToPlaylist = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${id}/add/${songId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      alert(`Successfully added the song to playlist ${name}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
       className="playlist-box"
-      onClick={() => {
-        navigate(`/playlist/${id}`);
-      }}
+      onClick={handleOnClick}
     >
       <div className="container">
         <img

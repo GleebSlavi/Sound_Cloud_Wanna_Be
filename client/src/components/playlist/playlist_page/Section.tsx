@@ -285,7 +285,9 @@ const PlaylistPageSection = () => {
             isCurrentSong={`${playlistData.id}_${item.id}` === `${currentPlaylist.id}_${currentSong?.id}`}
             handlePlay={() => handleSongPlay(index)}
             inPlaylist={true}
-            playlistUploaderId={item.userId}
+            playlistUploaderId={playlistData.userId}
+            isAllSongsPlaylist={playlistData.isAllSongs}
+            songId={item.id}
           />
         ))}
       </div>

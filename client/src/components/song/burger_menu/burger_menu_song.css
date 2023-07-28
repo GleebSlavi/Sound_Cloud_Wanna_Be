@@ -21,6 +21,11 @@
   height: 170%;
 }
 
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
 .bottom-menu-button-container {
   border-top: 3px solid white;
 }

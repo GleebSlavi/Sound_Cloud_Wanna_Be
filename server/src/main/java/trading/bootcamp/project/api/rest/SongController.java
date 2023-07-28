@@ -47,8 +47,8 @@ public class SongController {
         }
     }
 
-    @DeleteMapping("{id}")
-    public SongOutput deletePlaylist(@PathVariable("id") UUID id) throws NoSuchSongException {
+    @DeleteMapping("/{id}")
+    public SongOutput deleteSong(@PathVariable("id") UUID id) throws NoSuchSongException {
         return service.deleteSong(id);
     }
 }

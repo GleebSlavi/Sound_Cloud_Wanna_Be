@@ -77,14 +77,14 @@ public class SongRepositoryImpl implements SongRepository {
                 VALUES(?, ?);
                 """;
         public final static String LIST_SONGS_BY_USER = """
-                SELECT id, user_id, name, artist, release_year, type, upload_date, image_url, cloud_url
+                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
                 FROM song
                 WHERE user_id = ?
                 LIMIT 100;
                 """;
 
         public final static String GET_SONG_BY_ID = """
-                SELECT id, user_id, name, artist, release_year, genre, upload_date, image_url, cloud_url
+                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
                 FROM song
                 WHERE id = ?;
                 """;
