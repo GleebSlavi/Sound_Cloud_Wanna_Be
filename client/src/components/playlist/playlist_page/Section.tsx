@@ -12,7 +12,6 @@ import { faPlay, faPause, faBars } from "@fortawesome/free-solid-svg-icons";
 import BurgerMenuPlaylist from "./burger_menu/BurgerMenuPlaylist";
 import DeleteWindow from "./delete_window/DeleteWindow";
 
-
 const PlaylistPageSection = () => {
   const [playlistData, setPlaylistData] = useState<Playlist>({
     id: "",
@@ -42,6 +41,25 @@ const PlaylistPageSection = () => {
   const { uuid } = useParams();
 
   const burgerMenuRef = useRef<HTMLDivElement>(null);
+  const burgerButtonRef = useRef<SVGSVGElement>(null);
+
+  const handleClickOutside = (event: any) => {
+    const clickedOnBurgerButton = burgerButtonRef.current?.contains(event.target);
+    const clickedInsideBurgerMenu = burgerMenuRef.current?.contains(event.target);
+
+    if (clickedOnBurgerButton) {
+      setIsVisible((prevVisible) => !prevVisible);
+    } else if (!clickedInsideBurgerMenu) {
+      setIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+        document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -187,12 +205,13 @@ const PlaylistPageSection = () => {
         { playlistData.isAllSongs ? <div></div>
           : <div className="container burger-menu-button-container">
               <button className="burger-menu-button" type="button">
-                <FontAwesomeIcon icon={faBars} className="playlist-burger-menu" onClick={() => setIsVisible(!isVisible)}/>
+                <FontAwesomeIcon ref={burgerButtonRef} icon={faBars} className="playlist-burger-menu"/>
               </button>
-              <BurgerMenuPlaylist isYours={playlistData.userId === localStorage.getItem("id")} isBarVisible={isVisible}
-              onClick={onSpanClick} isPublic={playlistData.type === "PUBLIC"} setTypeChanged={setTypeChanged}
-              isFavorite={isFavorite} setIsFavorite={setIsFavorite} setIsDeleteWindowVisible={setIsDeleteWindowVisible}
-              ref={burgerMenuRef} handleBlur={() => setIsVisible(false)}/>
+              <div ref={burgerMenuRef}>
+                <BurgerMenuPlaylist isYours={playlistData.userId === localStorage.getItem("id")} isBarVisible={isVisible}
+                onClick={onSpanClick} isPublic={playlistData.type === "PUBLIC"} setTypeChanged={setTypeChanged}
+                isFavorite={isFavorite} setIsFavorite={setIsFavorite} setIsDeleteWindowVisible={setIsDeleteWindowVisible}/>
+              </div>
             </div> }
       </div>
       <div className="container playlist-songs-info-control-container">

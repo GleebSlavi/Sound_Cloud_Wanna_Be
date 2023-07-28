@@ -74,6 +74,10 @@
   cursor: pointer;
 }
 
+.song-box-burger-menu-button {
+  position: absolute;
+}
+
 .song-box-burger-menu-button:hover {
   color: rgb(171, 169, 169);
 }

@@ -2,7 +2,7 @@ import "./song_box.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import default_song_picture from "../../pictures/default_song_picture.png";
-import { useContext, useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePlayerContext } from "../../providers/PlayerProvider";
 import BurgerMenuSong from "./burger_menu/BurgerMenuSong";
 
@@ -39,9 +39,8 @@ const SongBox = ({
 
   const [isBurgerMenuVisible, setIsBurgerMenuVisible] = useState(false);
 
-  const burgerSongMenuRef = useRef<HTMLButtonElement | null>(null);
-  const burgerSongButtonRef = useRef<HTMLButtonElement | null>(null);
-
+  const burgerMenuRef = useRef<HTMLDivElement>(null);
+  const burgerButtonRef = useRef<SVGSVGElement>(null);
 
   const { isPlaying } = usePlayerContext();
 
@@ -53,10 +52,27 @@ const SongBox = ({
     return `${stringMinutes}:${seconds}`;
   };
 
+  const handleClickOutside = (event: any) => {
+    const clickedOnBurgerButton = burgerButtonRef.current?.contains(event.target);
+    const clickedInsideBurgerMenu = burgerMenuRef.current?.contains(event.target);
+
+    if (clickedOnBurgerButton) {
+      setIsBurgerMenuVisible((prevVisible) => !prevVisible);
+    } else if (!clickedInsideBurgerMenu) {
+      setIsBurgerMenuVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+        document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
+
   return (
     <div
-      className="container song-box"
-    >
+      className="container song-box">
       <div className="container song-box-picture-container">
         <img
           className="song-box-picture"
@@ -86,12 +102,13 @@ const SongBox = ({
       </div>
       <div className="container song-box-burger-menu-container">
         <button className="burger-menu-button" type="button">
-          <FontAwesomeIcon className="song-box-burger-menu-button" icon={faBars} 
-          onClick={() => setIsBurgerMenuVisible(!isBurgerMenuVisible)}/>
+          <FontAwesomeIcon ref={burgerButtonRef} className="song-box-burger-menu-button" icon={faBars} />
         </button>
-        <BurgerMenuSong isYours={
-         playlistUploaderId === localStorage.getItem("id")} isBarVisible={isBurgerMenuVisible}
-          inPlaylist={inPlaylist} songId={songId} isAllSongs={isAllSongsPlaylist}/>
+        <div ref={burgerMenuRef}>
+          <BurgerMenuSong isYours={
+          playlistUploaderId === localStorage.getItem("id")} isBarVisible={isBurgerMenuVisible}
+            inPlaylist={inPlaylist} songId={songId} isAllSongs={isAllSongsPlaylist}/>
+        </div>
       </div>
     </div>
   );

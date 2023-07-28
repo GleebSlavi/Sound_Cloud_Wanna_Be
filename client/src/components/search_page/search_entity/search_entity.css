@@ -9,6 +9,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   color: white;
+  text-align: center;
   font-family: 'Press Start 2P';
   transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
 }
@@ -26,4 +27,16 @@
   width: 65%;
   font-size: 0.9375rem;
   border-radius:16px;
+}
+
+.search-entity-container {
+  position: relative;
+}
+
+.entity-count {
+  position: absolute;
+  right: 25%;
+  font-family: 'Press Start 2P';
+  font-size: 0.875rem;
+  color: white;
 }
