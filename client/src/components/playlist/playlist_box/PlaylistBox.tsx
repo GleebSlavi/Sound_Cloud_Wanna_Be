@@ -31,7 +31,6 @@ const PlaylistBox = ({ id, name, creator, imageUrl, songId }: Props) => {
           },
         }
       )
-      alert(`Successfully added the song to playlist ${name}`);
     } catch (error) {
       console.log(error);
     }

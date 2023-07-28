@@ -41,8 +41,7 @@ const PlaylistPageSection = () => {
 
   const { uuid } = useParams();
 
-  const burgerMenuRef = useRef<HTMLDivElement | null>(null);
-  const burgerButtonRef = useRef<HTMLButtonElement | null>(null);
+  const burgerMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -83,25 +82,6 @@ const PlaylistPageSection = () => {
     })();
   }, [typeChanged, uuid, setPlaylistData, setItems]);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      burgerButtonRef.current &&
-      !burgerButtonRef.current.contains(event.target as Node) &&
-      burgerMenuRef.current &&
-      !burgerMenuRef.current.contains(event.target as Node)
-    ) {
-      setIsVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isVisible]);
-
   const onSpanClick = () => {
     setIsVisible(false);
   }
@@ -136,28 +116,6 @@ const PlaylistPageSection = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     if (currentPlaylist.id === playlistData.id) {
-  //       if (isShuffled) {
-  //         setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, currentPlaylist, currentPlaylistIndex)})
-  //         setSong(0, true, true);
-  //       } else {
-  //         setCurrentPlaylist({id: currentPlaylist.id, songs: items});
-  //         setSong((items.findIndex((song) => song.id === currentSongId)), true, true);
-  //       }
-  //     } else {
-  //       if (isShuffled) {
-  //         setCurrentPlaylist({id: currentPlaylist.id, songs: shuffleSongs(true, originalPlaylist, currentPlaylistIndex)})
-  //         setSong(0, true, true);
-  //       } else {
-  //         setCurrentPlaylist({id: originalPlaylist.id, songs: originalPlaylist.songs});
-  //         setSong((originalPlaylist.songs.findIndex((song) => song.id === currentSongId)), true, true);
-  //       }
-  //     }
-  // }
-  // }, [isShuffled])
-
   useEffect(() => {
     if (isPlaying) {
       if (isShuffled) {
@@ -172,20 +130,6 @@ const PlaylistPageSection = () => {
       }
     }
   }, [isShuffled])
-
-  // Optimized variant
-  // useEffect(() => {
-  //   if (isPlaying && isShuffled) {
-  //     const updatedSongs = shuffleSongs(true, currentPlaylist.id === playlistData.id ? currentPlaylist : originalPlaylist, currentPlaylistIndex);
-  //     setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
-  //     setSong(0, true, true);
-  //   } else if (isPlaying && !isShuffled) {
-  //     const updatedSongs = currentPlaylist.id === playlistData.id ? items : originalPlaylist.songs;
-  //     const indexToSet = updatedSongs.findIndex((song) => song.id === currentSongId);
-  //     setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
-  //     setSong(indexToSet, true, true);
-  //   }
-  // }, [isPlaying, isShuffled, currentPlaylist, currentPlaylistIndex, playlistData.id, items, originalPlaylist, currentSongId]);
 
   useEffect(() => {
     setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id)
@@ -242,13 +186,13 @@ const PlaylistPageSection = () => {
         </div>
         { playlistData.isAllSongs ? <div></div>
           : <div className="container burger-menu-button-container">
-              <button className="burger-menu-button" type="button" ref={burgerButtonRef}>
+              <button className="burger-menu-button" type="button">
                 <FontAwesomeIcon icon={faBars} className="playlist-burger-menu" onClick={() => setIsVisible(!isVisible)}/>
               </button>
               <BurgerMenuPlaylist isYours={playlistData.userId === localStorage.getItem("id")} isBarVisible={isVisible}
               onClick={onSpanClick} isPublic={playlistData.type === "PUBLIC"} setTypeChanged={setTypeChanged}
               isFavorite={isFavorite} setIsFavorite={setIsFavorite} setIsDeleteWindowVisible={setIsDeleteWindowVisible}
-              ref={burgerMenuRef}/>
+              ref={burgerMenuRef} handleBlur={() => setIsVisible(false)}/>
             </div> }
       </div>
       <div className="container playlist-songs-info-control-container">

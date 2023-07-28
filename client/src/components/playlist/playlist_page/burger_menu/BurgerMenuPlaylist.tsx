@@ -12,10 +12,11 @@ interface Props {
   isFavorite: boolean;
   setIsFavorite: (value: boolean) => void;
   setIsDeleteWindowVisible: (value: boolean) => void;
+  handleBlur: () => void;
 }
 
 const BurgerMenuPlaylist = ({ isYours, isBarVisible, ref, onClick, isPublic, setTypeChanged, isFavorite,
-  setIsFavorite, setIsDeleteWindowVisible }: Props) => {
+  setIsFavorite, setIsDeleteWindowVisible, handleBlur }: Props) => {
 
   const { uuid } = useParams();
 
@@ -71,7 +72,7 @@ const BurgerMenuPlaylist = ({ isYours, isBarVisible, ref, onClick, isPublic, set
 
   return (
     <div ref={ref} className={`contianer burger-menu-playlist${isYours ? " bigger-menu" : ""}
-    ${isBarVisible ? " visible" : ""}`}>
+    ${isBarVisible ? " visible" : ""}`} onBlur={handleBlur} tabIndex={0}>
        <div className="container border-bottom-container">
         <span className="burger-menu-text" onClick={handleFavoritesChange}>
           {isFavorite ? "Remove from favorites" : "Add to favorites"}</span>
