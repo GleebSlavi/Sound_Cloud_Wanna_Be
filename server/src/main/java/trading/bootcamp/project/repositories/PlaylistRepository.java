@@ -28,4 +28,6 @@ public interface PlaylistRepository {
     int deletePlaylist(UUID id);
 
     List<SongEntity> getSongsInPlaylist(UUID playlistId);
+
+    int changePlaylistType(UUID id, PlaylistType type);
 }

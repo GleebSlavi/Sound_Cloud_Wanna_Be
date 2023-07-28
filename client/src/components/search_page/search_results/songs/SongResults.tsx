@@ -60,6 +60,8 @@ const SongResults = () => {
           imageUrl={item.imageUrl}
           isCurrentSong={item.id === currentSongId}
           handlePlay={() => handleSongPlay(item)}
+          inPlaylist={false}
+          playlistUploaderId=""
         />
       ))} 
     </div>

@@ -1,0 +1,26 @@
+
+.burger-menu-song {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: black;
+  border: 3px solid white;
+  border-radius: 10px;
+  position: absolute;
+  top:69%;
+  right: 59%;
+  width: 150%;
+  height: 90%;
+  opacity: 0;
+  z-index: 1;
+  visibility: hidden;
+  transition: visibility 0.15s, opacity 0.15s;
+}
+
+.bigger-song-menu {
+  grid-auto-rows: 50%;
+  height: 170%;
+}
+
+.bottom-menu-button-container {
+  border-top: 3px solid white;
+}

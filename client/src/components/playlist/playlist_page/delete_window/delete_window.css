@@ -1,0 +1,84 @@
+
+.delete-window {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  background-color: black;
+  border: 3px solid white;
+  border-radius: 20px;
+  position: fixed;
+  top: 25%;
+  width: 60%;
+  height: 40%;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  cursor: default;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.delete-header {
+  font-family: "Press Start 2P";
+  color: white;
+  width: 100%;
+  cursor: none;
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+.delete-playlist-button-container {
+  grid-template-columns: 1fr 1fr;
+  gap: 15%;
+}
+
+.delete-window-button {
+  width: 45%;
+  height: 45%;
+  border-radius: 16px;
+  border: darkmagenta;
+  font-family: 'Press Start 2P';
+  font-size: 0.9375rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+}
+
+.delete-window-button:hover {
+  width: 46%;
+  height: 46%;
+  font-size: 1rem;
+  border-radius: 17px;
+}
+
+.delete-window-button:active {
+  transform: translate(1px, 1px);
+  width: 45%;
+  height: 45%;
+  font-size: 1rem;
+  border-radius: 16px;
+}
+
+.left-button-container {
+  justify-items: end;
+}
+
+.right-button-container {
+  justify-items: start;
+}
+
+.delete-window-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}

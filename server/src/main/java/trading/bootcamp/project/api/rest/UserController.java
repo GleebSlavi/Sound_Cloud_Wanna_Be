@@ -25,7 +25,7 @@ public class UserController {
         return service.getUsers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public UserOutput getById(@PathVariable("id") UUID id) throws NoSuchUserException {
         return service.getUserById(id);
     }
@@ -35,7 +35,7 @@ public class UserController {
         return service.searchForUsers(search);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable("id") UUID id, @RequestBody UserInput user) {
         try {
             service.updateUser(id, user);
@@ -49,7 +49,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public UserOutput deleteUser(@PathVariable("id") UUID id) throws NoSuchUserException {
         return service.deleteUser(id);
     }
@@ -57,5 +57,23 @@ public class UserController {
     @GetMapping("/{userId}/playlists")
     public List<PlaylistOutput> getUserFavouritePlaylists(@PathVariable("userId") UUID userId) {
         return service.getUserFavouritePlaylists(userId);
+    }
+
+    @GetMapping("/{userId}/favorite/{playlistId}")
+    public boolean isFavoritePlaylistOfUser(@PathVariable("playlistId") UUID playlistId,
+                                            @PathVariable("userId") UUID userId) {
+        return service.isFavoritePlaylistOfUser(playlistId, userId);
+    }
+
+    @PostMapping("/{userId}/favorite/{playlistId}")
+    public void addToFavorites(@PathVariable("playlistId") UUID playlistId,
+                               @PathVariable("userId") UUID userId) {
+        service.addToFavorites(playlistId, userId);
+    }
+
+    @DeleteMapping("/{userId}/favorite/{playlistId}")
+    public void removeFromFavorites(@PathVariable("playlistId") UUID playlistId,
+                                       @PathVariable("userId") UUID userId) {
+        service.removeFromFavorites(playlistId, userId);
     }
 }

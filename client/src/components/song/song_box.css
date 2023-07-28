@@ -1,6 +1,5 @@
 .song-box {
   grid-template-columns: 0.3fr 2.5fr 1fr 0.5fr 1fr 0.5fr;
-  cursor: pointer;
   background-color: rgb(70, 0, 70);
   border-radius: 10px;
   transition: width 0.15s, height 0.15s, border-radius 0.15s, transform 0.15s;
@@ -10,13 +9,6 @@
   width: 101%;
   height: 101%;
   border-radius: 11px;
-}
-
-.song-box:active {
-  transform: translate(1px, 1px);
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
 }
 
 .song-box-picture-container {
@@ -31,6 +23,7 @@
   background-color: white;
   border-radius: 10px;
   transition: filter 0.15s;
+  cursor: pointer;
 }
 
 .song-box-song-data-container {
@@ -81,6 +74,14 @@
   cursor: pointer;
 }
 
+.song-box-burger-menu-button:hover {
+  color: rgb(171, 169, 169);
+}
+
+.song-box-burger-menu-button:active {
+  color: white;
+}
+
 .song-hover {
   position: absolute;
   top: 50%;
@@ -95,12 +96,16 @@
   transition: opacity 0.15s;
 }
 
-.song-box:hover .song-box-picture {
+.song-box-picture:hover {
   filter: brightness(70%);
 }
 
 .song-box-picture-container:hover,
 .song-hover {
   opacity: 1;
+}
+
+.song-box-burger-menu-container {
+  position: relative;
 }
 

@@ -85,6 +85,12 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
             new SongRowMapper(), playlistId.toString());
     }
 
+    @Override
+    public int changePlaylistType(UUID id, PlaylistType type) {
+        return jdbcTemplate.update(Queries.CHANGE_PLAYLIST_TYPE, type.toString(), id.toString());
+    }
+
+
     private static class Queries {
 
         private final static String SELECT_PLAYLIST_QUERY = """
@@ -97,6 +103,19 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 user_id = ? AND
                 is_all_songs = 1;
                 """);
+
+        public final static String IS_FAVORITE_PLAYLIST = """
+                SELECT user_id, playlist_id
+                FROM user_playlist
+                WHERE user_id = ? AND
+                      playlist_id = ?;
+                """;
+
+        public final static String CHANGE_PLAYLIST_TYPE = """
+                UPDATE playlist
+                SET type = ?
+                WHERE id = ?;
+                """;
 
         public final static String SEARCH_FOR_PLAYLISTS = """
                 SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url

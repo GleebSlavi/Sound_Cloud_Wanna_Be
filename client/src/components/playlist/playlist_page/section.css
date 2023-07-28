@@ -144,6 +144,7 @@
 .burger-menu-button-container {
   align-items: start;
   height: 55%;
+  position: relative;
 }
 
 .playlist-burger-menu {

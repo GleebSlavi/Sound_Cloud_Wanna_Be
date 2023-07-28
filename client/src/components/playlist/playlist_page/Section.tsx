@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import "./section.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Playlist } from "../../../interfaces/Playlist";
 import { Song } from "../../../interfaces/Song";
 import axios from "axios";
@@ -9,6 +9,8 @@ import SongBox from "../../song/SongBox";
 import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faBars } from "@fortawesome/free-solid-svg-icons";
+import BurgerMenuPlaylist from "./burger_menu/BurgerMenuPlaylist";
+import DeleteWindow from "./delete_window/DeleteWindow";
 
 
 const PlaylistPageSection = () => {
@@ -25,6 +27,10 @@ const PlaylistPageSection = () => {
   });
   const [items, setItems] = useState<Song[]>([]);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [typeChanged, setTypeChanged] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isDeleteWindowVisible, setIsDeleteWindowVisible] = useState(false);
   
   const { currentPlaylist, currentPlaylistIndex, setIsPlaying, isPlaying, 
     setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId,
@@ -34,6 +40,9 @@ const PlaylistPageSection = () => {
   const playlist = {id: playlistData.id, songs: items};
 
   const { uuid } = useParams();
+
+  const burgerMenuRef = useRef<HTMLDivElement | null>(null);
+  const burgerButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +59,7 @@ const PlaylistPageSection = () => {
         setImageUrl(responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : "");
 
         const responseSongs = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${responsePlaylist.data.id}/songs`,
+          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}/songs`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -58,11 +67,44 @@ const PlaylistPageSection = () => {
           }
         );
         setItems(responseSongs.data);
+        
+        const responseFavorite = await axios.get(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}/favorite/${uuid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+         );
+         setIsFavorite(responseFavorite.data)
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [uuid, setPlaylistData, setItems]);
+  }, [typeChanged, uuid, setPlaylistData, setItems]);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      burgerButtonRef.current &&
+      !burgerButtonRef.current.contains(event.target as Node) &&
+      burgerMenuRef.current &&
+      !burgerMenuRef.current.contains(event.target as Node)
+    ) {
+      setIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isVisible]);
+
+  const onSpanClick = () => {
+    setIsVisible(false);
+  }
 
   const playSong = (index: number) => {
     setOriginalPlaylist(playlist);
@@ -198,11 +240,16 @@ const PlaylistPageSection = () => {
             </div>
           </div>
         </div>
-        <div className="container burger-menu-button-container">
-          <button className="burger-menu-button" type="button">
-            <FontAwesomeIcon icon={faBars} className="playlist-burger-menu" />
-          </button>
-        </div>
+        { playlistData.isAllSongs ? <div></div>
+          : <div className="container burger-menu-button-container">
+              <button className="burger-menu-button" type="button" ref={burgerButtonRef}>
+                <FontAwesomeIcon icon={faBars} className="playlist-burger-menu" onClick={() => setIsVisible(!isVisible)}/>
+              </button>
+              <BurgerMenuPlaylist isYours={playlistData.userId === localStorage.getItem("id")} isBarVisible={isVisible}
+              onClick={onSpanClick} isPublic={playlistData.type === "PUBLIC"} setTypeChanged={setTypeChanged}
+              isFavorite={isFavorite} setIsFavorite={setIsFavorite} setIsDeleteWindowVisible={setIsDeleteWindowVisible}
+              ref={burgerMenuRef}/>
+            </div> }
       </div>
       <div className="container playlist-songs-info-control-container">
         <div className="container playlist-songs-play-button-container">
@@ -237,9 +284,12 @@ const PlaylistPageSection = () => {
             imageUrl={item.imageUrl}
             isCurrentSong={`${playlistData.id}_${item.id}` === `${currentPlaylist.id}_${currentSong?.id}`}
             handlePlay={() => handleSongPlay(index)}
+            inPlaylist={true}
+            playlistUploaderId={item.userId}
           />
         ))}
       </div>
+      <DeleteWindow isVisible={isDeleteWindowVisible} setIsVisible={setIsDeleteWindowVisible}/>
     </section>
   );
 };

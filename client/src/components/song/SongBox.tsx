@@ -2,8 +2,9 @@ import "./song_box.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import default_song_picture from "../../pictures/default_song_picture.png";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { usePlayerContext } from "../../providers/PlayerProvider";
+import BurgerMenuSong from "./burger_menu/BurgerMenuSong";
 
 interface Props {
   name: string;
@@ -14,6 +15,8 @@ interface Props {
   imageUrl: string | null;
   isCurrentSong: boolean;
   handlePlay: () => void;
+  inPlaylist: boolean;
+  playlistUploaderId: string;
 }
 
 const SongBox = ({
@@ -24,9 +27,17 @@ const SongBox = ({
   uploadDate,
   imageUrl,
   isCurrentSong,
-  handlePlay
+  handlePlay,
+  inPlaylist,
+  playlistUploaderId
 }: Props) => {
   const [hovering, setHovering] = useState(false);
+
+  const [isBurgerMenuVisible, setIsBurgerMenuVisible] = useState(false);
+
+  const burgerSongMenuRef = useRef<HTMLButtonElement | null>(null);
+  const burgerSongButtonRef = useRef<HTMLButtonElement | null>(null);
+
 
   const { isPlaying } = usePlayerContext();
 
@@ -41,14 +52,14 @@ const SongBox = ({
   return (
     <div
       className="container song-box"
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-      onClick={handlePlay}
     >
       <div className="container song-box-picture-container">
         <img
           className="song-box-picture"
           src={imageUrl ? imageUrl : default_song_picture}
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+          onClick={handlePlay}
         />
         {hovering && <FontAwesomeIcon className="song-hover" icon={isPlaying && isCurrentSong ? faPause : faPlay} />}
       </div>
@@ -71,8 +82,11 @@ const SongBox = ({
       </div>
       <div className="container song-box-burger-menu-container">
         <button className="burger-menu-button" type="button">
-          <FontAwesomeIcon icon={faBars} />
+          <FontAwesomeIcon className="song-box-burger-menu-button" icon={faBars} 
+          onClick={() => setIsBurgerMenuVisible(!isBurgerMenuVisible)}/>
         </button>
+        <BurgerMenuSong inPlaylist={inPlaylist} isBarVisible={isBurgerMenuVisible}
+        isYours={playlistUploaderId === localStorage.getItem("id")}/>
       </div>
     </div>
   );

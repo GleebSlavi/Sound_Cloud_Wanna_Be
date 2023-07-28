@@ -54,7 +54,7 @@ const EditProfileSection = () => {
       };
 
       await axios.patch(
-        `http://localhost:8080/api/users/${localStorage.getItem("id")}`,
+        `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
         data,
         {
           headers: {

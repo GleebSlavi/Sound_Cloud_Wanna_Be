@@ -30,4 +30,10 @@ public interface UserRepository {
     List<PlaylistEntity> getUserFavouritePlaylists(UUID userId);
 
     int insertFavoritePlaylist(UUID userId, UUID playlistId);
+
+    boolean isFavoritePlaylistOfUser(UUID userId, UUID playlistId);
+
+    int addToFavorites(UUID userId, UUID playlistId);
+
+    int removeFromFavorites(UUID userId, UUID playlistId);
 }

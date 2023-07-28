@@ -82,6 +82,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean isFavoritePlaylistOfUser(UUID userId, UUID playlistId) {
+        return !jdbcTemplate.queryForList(Queries.IS_FAVORITE_PLAYLIST, userId.toString(), playlistId.toString()).isEmpty();
+    }
+
+    @Override
+    public int addToFavorites(UUID userId, UUID playlistId) {
+        return jdbcTemplate.update(Queries.ADD_TO_FAVORITES, userId.toString(), playlistId.toString());
+    }
+
+    @Override
+    public int removeFromFavorites(UUID userId, UUID playlistId) {
+        return jdbcTemplate.update(Queries.REMOVE_FROM_FAVORITES, userId.toString(), playlistId.toString());
+    }
+
+    @Override
     public int insertFavoritePlaylist(UUID userId, UUID playlistId) {
         return jdbcTemplate.update(Queries.INSERT_FAVORITE_PLAYLIST, userId.toString(), playlistId.toString());
     }
@@ -98,6 +113,23 @@ public class UserRepositoryImpl implements UserRepository {
                 SELECT id, username, email, password, create_date, image_url
                 FROM user
                 WHERE %s = ?;
+                """;
+
+        public final static String IS_FAVORITE_PLAYLIST = """
+                SELECT user_id, playlist_id
+                FROM user_playlist
+                WHERE user_id = ? AND
+                      playlist_id = ?;
+                """;
+
+        public final static String ADD_TO_FAVORITES = """
+                INSERT INTO user_playlist(user_id, playlist_id)
+                VALUES(?, ?);
+                """;
+
+        public final static String REMOVE_FROM_FAVORITES = """
+                DELETE FROM user_playlist
+                WHERE user_id = ? AND playlist_id = ?;
                 """;
 
         public final static String LIST_USERS = """

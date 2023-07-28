@@ -35,6 +35,18 @@ public class PlaylistController {
         return service.searchForPlaylists(search);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> changePlaylistType(@PathVariable("id") UUID id, @RequestBody PlaylistInput playlist) {
+        try {
+            service.changePlaylistType(id, playlist);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.internalServerError().build();
+        } catch (NoSuchPlaylistException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/user/{userId}")
     public List<PlaylistOutput> getAllPlaylistsByUser(@PathVariable("userId") UUID userId) {
         return service.getPlaylistsByUser(userId);
@@ -56,12 +68,12 @@ public class PlaylistController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public PlaylistOutput deletePlaylist(@PathVariable("id") UUID id) throws NoSuchPlaylistException {
         return service.deletePlaylist(id);
     }
 
-    @GetMapping("{playlistId}/songs")
+    @GetMapping("/{playlistId}/songs")
     public List<SongOutput> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
         return service.getSongsInPlaylist(playlistId);
     }

@@ -1,6 +1,6 @@
 package trading.bootcamp.project.exceptions;
 
-public class NoSuchPlaylistException extends Exception {
+public class NoSuchPlaylistException extends RuntimeException {
 
     public NoSuchPlaylistException(String message) {
         super(message);

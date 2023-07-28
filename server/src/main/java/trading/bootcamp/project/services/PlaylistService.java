@@ -50,6 +50,19 @@ public class PlaylistService {
                 : Collections.emptyList();
     }
 
+    public void changePlaylistType(UUID id, PlaylistInput inputPlaylist) {
+        Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistById(id);
+        if (playlist.isEmpty()) {
+            throw new NoSuchPlaylistException("There is no playlist with such id!");
+        }
+
+        if (inputPlaylist.getType() != null) {
+            playlistRepository.changePlaylistType(id, inputPlaylist.getType());
+            return;
+        }
+        throw new IllegalStateException("There is a problem with the server");
+    }
+
     public PlaylistOutput getPlaylistById(UUID id) throws NoSuchPlaylistException {
         Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistById(id);
         if (playlist.isEmpty()) {

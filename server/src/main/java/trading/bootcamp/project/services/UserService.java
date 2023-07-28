@@ -99,6 +99,23 @@ public class UserService {
         }
     }
 
+    public boolean isFavoritePlaylistOfUser(UUID playlistId, UUID userId) {
+        return userRepository.isFavoritePlaylistOfUser(userId, playlistId);
+    }
+
+    public void addToFavorites(UUID playlistId, UUID userId) {
+        if(userRepository.addToFavorites(userId, playlistId) != 1) {
+            throw new IllegalStateException("Couldn't add to favorites");
+        }
+    }
+
+    public void removeFromFavorites(UUID playlistId, UUID userId) {
+        if(userRepository.removeFromFavorites(userId, playlistId) != 1) {
+            throw new IllegalStateException("Couldn't remove from favorites");
+        }
+    }
+
+
     private boolean isInvalidEmail(String email) {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
         return !pattern.matcher(email).matches();
