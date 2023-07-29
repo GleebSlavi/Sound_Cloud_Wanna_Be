@@ -19,9 +19,9 @@ const AppRoutes = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!isValidToken() && isValidRoute(location.pathname)) {
-    localStorage.clear();
-    navigate("/login");
+    if (/*!isValidToken()*/ false && isValidRoute(location.pathname)) {
+      localStorage.clear();
+      navigate("/login");
     }
   }, [navigate, location]);
 
@@ -32,37 +32,40 @@ const AppRoutes = () => {
       return Date.now() < expirationTime * 1000;
     }
     return false;
-    };
+  };
 
   const isValidRoute = (path: string): boolean => {
-  const validRoutes = [
-    "/",
-    "/streams",
-    "/profile",
-    "/profile/edit_profile",
-    "/profile/add_song",
-    "/profile/create_playlist",
-    /^\/playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    /^\/search\/(songs|playlists|users)\/.+$/,
-    /^\/user\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-    /^\/add-to-playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
-  ];
-  return validRoutes.includes(path);
+    const validRoutes = [
+      "/",
+      "/streams",
+      "/profile",
+      "/profile/edit_profile",
+      "/profile/add_song",
+      "/profile/create_playlist",
+      /^\/playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+      /^\/search\/(songs|playlists|users)\/.*?$/,
+      /^\/user\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+      /^\/add-to-playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+    ];
+    return validRoutes.includes(path);
   };
 
   const isLoggedIn = isValidToken();
   const isValidPath = isValidRoute(location.pathname);
 
   return (
-  <div>
-    <Routes>
-      <Route path="/login" element={<LoginRegisterMain />} />
-      {isLoggedIn && (
+    <div>
+      <Routes>
+        <Route path="/login" element={<LoginRegisterMain />} />
+        {/* {//isLoggedIn && ( */}
         <Route path="/" element={<NavbarAndPlayerBarMain />}>
           <Route index element={<HomeSection />} />
           <Route path="/streams" element={<StreamsSection />} />
-          <Route path="/search/:type/:search" element={<SearchPageSection />} />
-          <Route path="/add-to-playlist/:uuid" element={<AddToPlaylistSection />} />
+          <Route path="/search/:type/*" element={<SearchPageSection />} />
+          <Route
+            path="/add-to-playlist/:uuid"
+            element={<AddToPlaylistSection />}
+          />
           <Route path="/profile">
             <Route index element={<ProfileSection />} />
             <Route path=":uuid" element={<ProfileSection />} />
@@ -72,13 +75,13 @@ const AppRoutes = () => {
           </Route>
           <Route path="/playlist/:uuid" element={<PlaylistPageSection />} />
         </Route>
-         )}
-      {!isValidPath && (  
-      <Route path="*" element={<NotFoundSection />} />
-       )}
-    </Routes>
-  </div>
-  ); 
-}
+        {/* )} */}
+        {/* // {!isValidPath && (   */}
+        <Route path="*" element={<NotFoundSection />} />
+        {/* //)} */}
+      </Routes>
+    </div>
+  );
+};
 
 export default AppRoutes;

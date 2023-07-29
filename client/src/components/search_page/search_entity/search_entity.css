@@ -14,6 +14,12 @@
   transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
 }
 
+.clicked {
+  background-color: white;
+  color: rgb(70, 0, 70);
+  border: 4px solid rgb(70, 0, 70);
+}
+
 .entity:hover {
   width: 66%;
   height: 66%;
@@ -31,12 +37,4 @@
 
 .search-entity-container {
   position: relative;
-}
-
-.entity-count {
-  position: absolute;
-  right: 25%;
-  font-family: 'Press Start 2P';
-  font-size: 0.875rem;
-  color: white;
 }

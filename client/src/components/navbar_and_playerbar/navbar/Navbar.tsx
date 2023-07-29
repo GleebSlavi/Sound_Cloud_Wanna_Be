@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSearchContext } from "../../../providers/SearchProvider";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Navbar = () => {
-  const [ input, setInput ] = useState("");
+  const [input, setInput] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { search, setSearch } = useSearchContext();
+  const { setSearch } = useSearchContext();
   const { type } = useParams();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -21,6 +23,13 @@ const Navbar = () => {
 
   const handleOnClickButtons = (path: string) => () => {
     if (location.pathname !== path && location.pathname !== `${path}/`) {
+      if (
+        /^\/search\/(songs|playlists|users)\/.*?$/.test(location.pathname) &&
+        inputRef.current
+      ) {
+        setInput("");
+        inputRef.current.value = "";
+      }
       navigate(path);
     }
   };
@@ -34,7 +43,7 @@ const Navbar = () => {
     } else {
       navigate(`search/${type}/${input}`);
     }
-  }
+  };
 
   return (
     <header>
@@ -61,8 +70,12 @@ const Navbar = () => {
           Streams
         </button>
         <div className="container">
-          <form className="container search-bar-container" onSubmit={handleSubmut}>
+          <form
+            className="container search-bar-container"
+            onSubmit={handleSubmut}
+          >
             <input
+              ref={inputRef}
               className="search-bar welcome-input"
               type="text"
               name="search"
