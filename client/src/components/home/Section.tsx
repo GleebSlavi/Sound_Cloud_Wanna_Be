@@ -3,9 +3,12 @@ import PlaylistBox from "../playlist/playlist_box/PlaylistBox";
 import { useState, useEffect } from "react";
 import { Playlist } from "../../interfaces/Playlist";
 import axios from "axios";
+import MessageWindow from "../message_window/MessageWindow";
 
 const HomeSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -16,7 +19,7 @@ const HomeSection = () => {
           )}/playlists`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -48,6 +51,11 @@ const HomeSection = () => {
           />
         ))}
       </div>
+      <MessageWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message={message}
+      />
     </section>
   );
 };

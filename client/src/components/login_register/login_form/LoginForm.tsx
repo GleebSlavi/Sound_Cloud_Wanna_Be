@@ -4,7 +4,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+interface Props {
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Login = ({ setIsVisible, setMessage }: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,10 +17,11 @@ const Login = () => {
 
   const handleErrors = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
+      setIsVisible(true);
       if (error.response.status === 400) {
-        alert("Invalid login data! Please try again!");
+        setMessage("Invalid login data! Please try again!");
       } else {
-        alert(`An error occured: ${error.response.data.message}`);
+        setMessage(`An error occured: ${error.response.data.message}`);
       }
     }
   };
@@ -52,7 +58,6 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.userId);
-      alert("Welcome to SoundCloud Wanna-Be :D");
       navigate("/");
     } catch (error) {
       handleErrors(error);

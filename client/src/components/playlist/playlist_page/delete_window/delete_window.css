@@ -72,11 +72,6 @@
 }
 
 .delete-window-container {
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  height: 100%;
-  width: 100%;
   position: fixed;
   top: 0;
   left: 0;

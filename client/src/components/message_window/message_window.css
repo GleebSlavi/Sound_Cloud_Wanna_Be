@@ -1,0 +1,65 @@
+.message-window-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.message-window {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  background-color: black;
+  border: 3px solid white;
+  border-radius: 20px;
+  position: fixed;
+  top: 30%;
+  width: 60%;
+  height: 40%;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1001;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.message-text {
+  width: 95%;
+  user-select: none;
+  font-family: 'Press Start 2P';
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.ok-button {
+  width: 30%;
+  height: 45%;
+  border-radius: 14px;
+  border: darkmagenta;
+  font-family: 'Press Start 2P';
+  font-size: 0.875rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+}
+
+.ok-button:hover {
+  width: 30.5%;
+  height: 46%;
+  font-size: 0.9375rem;
+  border-radius: 15px;
+}
+
+.ok-button:active {
+  transform: translate(2px, 2px);
+  width: 30%;
+  height: 45%;
+  font-size: 0.9375rem;
+  border-radius: 14px;
+}

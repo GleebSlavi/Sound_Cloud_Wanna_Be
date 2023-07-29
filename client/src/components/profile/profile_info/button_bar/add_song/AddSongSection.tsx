@@ -7,6 +7,7 @@ import { uploadFileToS3 } from "../../../../../s3/s3";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
+import MessageWindow from "../../../../message_window/MessageWindow";
 
 const AddSongSection = () => {
   const [isFreeSong, setFreeSong] = useState(true);
@@ -18,6 +19,9 @@ const AddSongSection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [duration, setDuration] = useState(0);
   const [audioSrc, setAudioSrc] = useState("");
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
   const fileInputRefSong = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -75,28 +79,30 @@ const AddSongSection = () => {
       };
 
       try {
-        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT!}`, songData,
-        {
+        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT!}`, songData, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        alert(`Successfuly uploaded ${name} by ${artist}`);
+        setIsVisible(true);
+        setMessage(`Successfuly uploaded ${name} by ${artist}.`);
         navigate("/profile");
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
+          setIsVisible(true);
           if (error.response.status === 400) {
-            alert("Song name and artist can't be less than 1 character!");
+            setMessage("Song name and artist can't be less than 1 character!");
           } else if (error.response.status === 500) {
-            alert("There is a problem with the server! Try again later!");
+            setMessage("There is a problem with the server! Try again later!");
           } else {
-            alert(`An error occured: ${error.response.data.message}`);
+            setMessage(`An error occured: ${error.response.data.message}`);
           }
         }
       }
       return;
     }
-    alert("You need to upload an .mp3 file!");
+    setIsVisible(true);
+    setMessage("You need to upload an .mp3 file!");
   };
 
   return (
@@ -232,6 +238,11 @@ const AddSongSection = () => {
           </div>
         </form>
       </div>
+      <MessageWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message={message}
+      />
     </section>
   );
 };

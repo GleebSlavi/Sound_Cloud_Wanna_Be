@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import default_profile_picture from "../../../../../pictures/default_profile_picture.png";
 import { uploadFileToS3 } from "../../../../../s3/s3";
+import MessageWindow from "../../../../message_window/MessageWindow";
 
 const EditProfileSection = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -14,22 +15,26 @@ const EditProfileSection = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState<File | null>(null);
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [message, setMessage] = useState("");
+
   const navigate = useNavigate();
 
   const handleErros = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
+      setIsVisible(true);
       if (error.response.status === 404) {
-        alert("Invalid user! Log in again!");
+        setMessage("Invalid user! Log in again!");
         localStorage.clear();
         navigate("/login");
       } else if (error.response.status === 400) {
-        alert(
+        setMessage(
           "The old password doesn't match or the new is less than 8 chracters!"
         );
       } else if (error.response.status === 500) {
-        alert("There is a problem with the server! Try again later!");
+        setMessage("There is a problem with the server! Try again later!");
       } else {
-        alert(`An error occured: ${error.message}`);
+        setMessage(`An error occured: ${error.message}`);
       }
     }
   };
@@ -58,12 +63,13 @@ const EditProfileSection = () => {
         data,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
 
-      alert("Successfully updated profile");
+      setIsVisible(true);
+      setMessage("Successfully updated you profile.");
       navigate("/profile");
     } catch (error) {
       handleErros(error);
@@ -142,6 +148,11 @@ const EditProfileSection = () => {
           </div>
         </form>
       </div>
+      <MessageWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message={message}
+      />
     </section>
   );
 };

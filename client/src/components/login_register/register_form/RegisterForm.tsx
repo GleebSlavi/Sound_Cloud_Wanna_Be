@@ -4,7 +4,12 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const RegisterForm = () => {
+interface Props {
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const RegisterForm = ({ setIsVisible, setMessage }: Props) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,16 +19,16 @@ const RegisterForm = () => {
 
   const handleErrors = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
+      setIsVisible(true);
       if (error.response.status === 400) {
-        alert(error.message)
+        setMessage(error.message);
       } else if (error.response.status === 500) {
-        alert("There is a problem with the server! Try again later!");
-      } 
-      else {
-        alert(`An error occured: ${error.response.data.message}`);
+        setMessage("There is a problem with the server! Try again later!");
+      } else {
+        setMessage(`An error occured: ${error.response.data.message}`);
       }
     }
-  }
+  };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -64,7 +69,6 @@ const RegisterForm = () => {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.userId);
-      alert("Welcome to SoundCloud Wanna-Be :D");
       navigate("/");
     } catch (error) {
       handleErrors(error);
@@ -110,10 +114,7 @@ const RegisterForm = () => {
         title="Please enter a password that matches"
         onChange={handleInputChange}
       />
-      <button
-        className="register-form-button"
-        type="submit"
-      >
+      <button className="register-form-button" type="submit">
         Register
       </button>
     </form>

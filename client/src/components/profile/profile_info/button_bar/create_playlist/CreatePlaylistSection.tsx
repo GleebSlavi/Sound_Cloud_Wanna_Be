@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import { uploadFileToS3 } from "../../../../../s3/s3";
+import MessageWindow from "../../../../message_window/MessageWindow";
 
 const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);
@@ -12,6 +13,9 @@ const CreatePlaylistSection = () => {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState<File | null>(null);
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -34,24 +38,25 @@ const CreatePlaylistSection = () => {
     };
 
     await axios
-      .post(`http://localhost:8080/api/playlists`, playlistData,
-      {
+      .post(`http://localhost:8080/api/playlists`, playlistData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
-        alert(`Successfully created playlist ${response.data.name}`);
+        setIsVisible(true);
+        setMessage(`Successfully created playlist ${response.data.name}`);
         navigate("/profile");
       })
       .catch((error) => {
         if (axios.isAxiosError(error) && error.response) {
+          setIsVisible(true);
           if (error.response.status === 400) {
-            alert("Playlist can't have no name! Please enter one!");
+            setMessage("Playlist can't have no name! Please enter one!");
           } else if (error.response.status === 500) {
-            alert("There is a problem with the server! Try again later!");
+            setMessage("There is a problem with the server! Try again later!");
           } else {
-            alert(`An error occured: ${error.response.data.message}`);
+            setMessage(`An error occured: ${error.response.data.message}`);
           }
         }
       });
@@ -67,12 +72,13 @@ const CreatePlaylistSection = () => {
         )}/${name}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
 
-      alert(
+      setIsVisible(true);
+      setMessage(
         "There is already a playlist with this name among your playlists. Please enter another name."
       );
     } catch (error) {
@@ -80,7 +86,8 @@ const CreatePlaylistSection = () => {
         if (error.response.status === 404) {
           handleNotFoundPlaylist();
         } else {
-          alert(`An error occured: ${error.response.data.message}`);
+          setIsVisible(true);
+          setMessage(`An error occured: ${error.response.data.message}`);
         }
       }
     }
@@ -165,6 +172,11 @@ const CreatePlaylistSection = () => {
           </div>
         </form>
       </div>
+      <MessageWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message={message}
+      />
     </section>
   );
 };
