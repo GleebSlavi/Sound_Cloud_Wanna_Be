@@ -106,7 +106,7 @@ const AddSongSection = () => {
   };
 
   return (
-    <section className="section">
+    <section className="section add-song-section">
       <div className="button-bar-field">
         <div className="container button-bar-header-container">
           <h2 className="button-bar-header">Add Song</h2>

@@ -1,4 +1,8 @@
 
+.create-playlist-page-section {
+  grid-template-rows: 1fr;
+}
+
 .playlist-info-container {
   grid-template-rows: 0.5fr 0.8fr 0.3fr;
   margin-top: 2%;

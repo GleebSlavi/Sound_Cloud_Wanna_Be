@@ -94,7 +94,7 @@ const CreatePlaylistSection = () => {
   };
 
   return (
-    <section className="section">
+    <section className="section create-playlist-page-section">
       <div className="button-bar-field">
         <div className="container button-bar-header-container">
           <h2 className="button-bar-header">Create Playlist</h2>

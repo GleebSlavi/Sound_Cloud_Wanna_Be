@@ -100,7 +100,7 @@ const EditProfileSection = () => {
   };
 
   return (
-    <section className="section" onSubmit={handleEditProfile}>
+    <section className="section edit-profile-section" onSubmit={handleEditProfile}>
       <div className="button-bar-field">
         <div className="container button-bar-header-container">
           <h2 className="button-bar-header">Edit Profile</h2>

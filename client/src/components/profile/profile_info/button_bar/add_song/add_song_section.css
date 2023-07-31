@@ -1,4 +1,7 @@
 
+.add-song-section {
+  grid-template-rows: 1fr;
+}
 
 .add-song-info-container {
   grid-template-rows: 1fr 1fr 1fr;

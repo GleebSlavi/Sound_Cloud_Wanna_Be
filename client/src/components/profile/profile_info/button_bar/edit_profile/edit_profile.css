@@ -1,4 +1,8 @@
 
+.edit-profile-section {
+  grid-template-rows: 1fr;
+}
+
 .change-password-field-container {
   grid-template-rows: 1fr 1fr 1fr;
   justify-items: stretch;
