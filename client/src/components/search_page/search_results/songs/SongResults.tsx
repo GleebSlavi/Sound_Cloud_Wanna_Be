@@ -5,6 +5,7 @@ import SongBox from "../../../song/SongBox";
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from "react-router-dom";
+import { useStreamContext } from "../../../../providers/StreamProvider";
 
 interface Props {
   items: Song[];

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import trading.bootcamp.project.api.rest.FromEntityToOutput;
+import trading.bootcamp.project.api.rest.FromEntityToOutputMappers;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
 import trading.bootcamp.project.exceptions.*;
 import trading.bootcamp.project.repositories.ElasticsearchUserRepository;
@@ -41,7 +41,7 @@ public class UserService {
     public List<UserOutput> getUsers() {
         return userRepository.listUsers()
             .stream()
-            .map(FromEntityToOutput::fromUserEntity)
+            .map(FromEntityToOutputMappers::fromUserEntity)
             .toList();
     }
 
@@ -51,7 +51,7 @@ public class UserService {
         return !ids.isEmpty()
                 ? userRepository.searchForUsers(ids)
                 .stream()
-                .map(FromEntityToOutput::fromUserEntity)
+                .map(FromEntityToOutputMappers::fromUserEntity)
                 .toList()
                 : Collections.emptyList();
     }
@@ -61,7 +61,7 @@ public class UserService {
         if (user.isEmpty()) {
             throw new NoSuchUserException(String.format("User with id %s not found", id.toString()));
         }
-        return FromEntityToOutput.fromUserEntity(user.get());
+        return FromEntityToOutputMappers.fromUserEntity(user.get());
     }
 
     public UserEntity getUserByUsername(String username) throws NoSuchUserException {
@@ -169,14 +169,14 @@ public class UserService {
             throw new IllegalStateException("Couldn't delete the index!");
         }
 
-        return FromEntityToOutput.fromUserEntity(user.get());
+        return FromEntityToOutputMappers.fromUserEntity(user.get());
     }
 
 
     public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId) {
         return userRepository.getUserFavouritePlaylists(userId)
             .stream()
-            .map(playlist -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
+            .map(playlist -> FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist))
             .toList();
     }
 }

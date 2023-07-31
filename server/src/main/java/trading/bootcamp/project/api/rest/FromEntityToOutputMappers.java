@@ -11,7 +11,7 @@ import trading.bootcamp.project.services.outputs.UserOutput;
 
 
 @RequiredArgsConstructor
-public class FromEntityToOutput {
+public class FromEntityToOutputMappers {
 
     public static SongOutput fromSongEntity(UserRepository repository, SongEntity song) {
         String username = repository.getUserById(song.userId()).get().getUsername();

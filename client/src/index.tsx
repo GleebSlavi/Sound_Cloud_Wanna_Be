@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import PlayerProvider from './providers/PlayerProvider';
 import SearchProvider from './providers/SearchProvider';
+import StreamProvider from './providers/StreamProvider';
 
 
 const root = ReactDOM.createRoot(
@@ -15,7 +16,9 @@ root.render(
     <BrowserRouter>
       <PlayerProvider>
         <SearchProvider>
-          <App />
+          <StreamProvider>
+            <App />
+          </StreamProvider>
         </SearchProvider>
       </PlayerProvider>
     </BrowserRouter>

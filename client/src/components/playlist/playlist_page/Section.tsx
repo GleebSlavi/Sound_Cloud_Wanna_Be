@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faBars } from "@fortawesome/free-solid-svg-icons";
 import BurgerMenuPlaylist from "./burger_menu/BurgerMenuPlaylist";
 import DeleteWindow from "./delete_window/DeleteWindow";
+import { useStreamContext } from "../../../providers/StreamProvider";
 
 const PlaylistPageSection = () => {
   const [playlistData, setPlaylistData] = useState<Playlist>({
@@ -30,6 +31,8 @@ const PlaylistPageSection = () => {
   const [typeChanged, setTypeChanged] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isDeleteWindowVisible, setIsDeleteWindowVisible] = useState(false);
+
+  const { setStreamData, streaming } = useStreamContext();
   
   const { currentPlaylist, currentPlaylistIndex, setIsPlaying, isPlaying, 
     setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId,
@@ -117,6 +120,17 @@ const PlaylistPageSection = () => {
     } else {
       setSong(index, true, currentPlaylist.id === playlistData.id ? true : false);
     }
+    if (streaming) {
+    const item = items[index];
+    setStreamData({
+      isPlaying: true,
+      songUrl: item.cloudUrl,
+      currentTime: 0,
+      songName: item.name,
+      songArtist: item.artist,
+      songImageUrl: item.imageUrl
+    });
+  }
   }
 
   const handleSongPlay = (index: number) => {

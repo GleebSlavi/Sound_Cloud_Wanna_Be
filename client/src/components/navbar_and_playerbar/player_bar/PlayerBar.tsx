@@ -4,11 +4,14 @@ import SongVolume from "./song_volume/SongVolume";
 import "./player_bar.css";
 import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { useEffect, useRef, useState } from "react";
+import { useStreamContext } from "../../../providers/StreamProvider";
 
 const PlayerBar = () => {
   const { currentPlaylist, currentPlaylistIndex, 
   isPlaying, currentTime, setCurrentTime, setNextSong,
   isMuted, volume } = usePlayerContext();
+
+  const { setStreamData } = useStreamContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -30,6 +33,10 @@ const PlayerBar = () => {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
+      setStreamData((prevStreamData) => ({
+        ...prevStreamData,
+        currentTime: audioRef.current!.currentTime,
+      }));
     }
   }
 

@@ -14,7 +14,7 @@ import trading.bootcamp.project.repositories.entities.ElasticsearchPlaylistEntit
 import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.services.outputs.PlaylistOutput;
 import trading.bootcamp.project.services.outputs.SongOutput;
-import trading.bootcamp.project.api.rest.FromEntityToOutput;
+import trading.bootcamp.project.api.rest.FromEntityToOutputMappers;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +35,7 @@ public class PlaylistService {
     public List<PlaylistOutput> getPlaylistsByUser(UUID userId) {
         return playlistRepository.listPlaylistsByUser(userId)
             .stream()
-            .map(playlist -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
+            .map(playlist -> FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist))
             .toList();
     }
 
@@ -45,7 +45,7 @@ public class PlaylistService {
         return !ids.isEmpty()
                 ? playlistRepository.searchForPlaylists(ids)
                 .stream()
-                .map((playlist) -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
+                .map((playlist) -> FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist))
                 .toList()
                 : Collections.emptyList();
     }
@@ -68,12 +68,12 @@ public class PlaylistService {
         if (playlist.isEmpty()) {
             throw new NoSuchPlaylistException(String.format("Playlist with id %s not found", id.toString()));
         }
-        return FromEntityToOutput.fromPlaylistEntity(userRepository, playlist.get());
+        return FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist.get());
     }
 
     public PlaylistOutput getPlaylistByNameAndUserId(UUID userId, String playlistName) {
         Optional<PlaylistEntity> playlist = playlistRepository.getPlaylistByNameAndUserId(userId, playlistName);
-        return playlist.map(playlistEntity -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlistEntity)).orElse(null);
+        return playlist.map(playlistEntity -> FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlistEntity)).orElse(null);
     }
 
     public PlaylistOutput addPlaylist(PlaylistInput playlistInput) {
@@ -92,7 +92,7 @@ public class PlaylistService {
             throw new IllegalStateException("Couldn't create the index!");
         }
 
-        return FromEntityToOutput.fromPlaylistEntity(userRepository, playlist);
+        return FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist);
     }
 
     public PlaylistOutput deletePlaylist(UUID id) throws NoSuchPlaylistException {
@@ -104,7 +104,7 @@ public class PlaylistService {
         if (playlistRepository.deletePlaylist(id) != 1) {
             throw new IllegalStateException("Couldn't delete the playlist");
         }
-        return FromEntityToOutput.fromPlaylistEntity(userRepository, playlist.get());
+        return FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist.get());
     }
 
     public void addSongToPlaylist(UUID playlistId, UUID songId) {
@@ -122,14 +122,14 @@ public class PlaylistService {
     public List<SongOutput> getSongsInPlaylist(UUID playlistId) {
         return playlistRepository.getSongsInPlaylist(playlistId)
             .stream()
-            .map(song -> FromEntityToOutput.fromSongEntity(userRepository, song))
+            .map(song -> FromEntityToOutputMappers.fromSongEntity(userRepository, song))
             .toList();
     }
 
     public List<PlaylistOutput> allPlaylistsNotContainingSong(UUID userId, UUID songId) {
         return playlistRepository.allPlaylistsNotContainingSong(userId, songId)
                 .stream()
-                .map(playlist -> FromEntityToOutput.fromPlaylistEntity(userRepository, playlist))
+                .map(playlist -> FromEntityToOutputMappers.fromPlaylistEntity(userRepository, playlist))
                 .toList();
     }
 }

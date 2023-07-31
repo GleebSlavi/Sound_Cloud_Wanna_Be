@@ -10,10 +10,11 @@ import {
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
-import io from "socket.io-client";
+import { useStreamContext } from "../../../../providers/StreamProvider";
 
 const SongController = () => {
-  const [isStreamActive, setStreamActive] = useState(false);
+  const { startStream, streaming, setStreaming } = useStreamContext();
+  const [streamIsActive, setStreamIsActive] = useState(streaming);
 
   const { isPlaying, setIsPlaying, currentPlaylistIndex,
    setSong, setNextSong, isShuffled, setIsShuffled } = usePlayerContext()
@@ -23,8 +24,12 @@ const SongController = () => {
     setSong(previousIndex, previousIndex >= 0, false);
   }
 
-  const handleStreamToggle = () => {
-    const socket = io()
+  const handleStreamPlay = () => {
+    setStreamIsActive(!streamIsActive);
+    setStreaming(!streamIsActive);
+    if (!streamIsActive) {
+      startStream();
+    }
   }
 
   return (
@@ -67,10 +72,10 @@ const SongController = () => {
       </div>
       <div className="container stream-container">
         <button
-          className={`song-controller-button stream-button
-        ${isStreamActive ? "active" : ""}`}
+          className={`song-controller-button stream-button 
+          ${streamIsActive ? "active" : ""}`}
           type="button"
-          onClick={() => setStreamActive(!isStreamActive)}
+          onClick={handleStreamPlay}
         >
           <FontAwesomeIcon icon={faTv} />
         </button>
