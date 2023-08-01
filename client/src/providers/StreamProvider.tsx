@@ -53,7 +53,7 @@ const StreamProvider = ({ children }: Props) => {
   const [inStream, setInStream] = useState(false);
 
   const { setCurrentPlaylist, setCurrentSongId,
-  setSong, setIsPlaying, setPlayingPlaylistId } = usePlayerContext();
+  setSong, setIsPlaying, setPlayingPlaylistId, currentTime } = usePlayerContext();
 
 
   const createClient = (isOwner: boolean) => {
@@ -79,7 +79,12 @@ const StreamProvider = ({ children }: Props) => {
         } else {
           client.subscribe("/topic/user-join-notification", (message) => {
             if (message.body) {
-              sendData(client, streamData);
+              const updatedData: WebSocketMessage = {
+                ...streamData,
+                currentTime: currentTime,
+                delay: Date.now()
+              };
+              sendData(client, updatedData);
             }
           })
         }
@@ -102,7 +107,7 @@ const StreamProvider = ({ children }: Props) => {
       setCurrentPlaylist({id: id, songs: [song]});
       setPlayingPlaylistId(id);
       setCurrentSongId(message.songId);
-      setSong(0, true, true, message.currentTime);
+      setSong(0, true, true, message.currentTime + ((Date.now() - message.delay!) / 1000));
       setIsPlaying(message.isPlaying);
     } else if (streamData.isPlaying !== message.isPlaying) {
       setIsPlaying(message.isPlaying);

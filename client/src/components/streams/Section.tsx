@@ -1,8 +1,5 @@
 import { useStreamContext } from "../../providers/StreamProvider";
 import "./section.css";
-import { Song } from "../../interfaces/Song";
-import { v4 as uuidv4 } from 'uuid';
-import { usePlayerContext } from "../../providers/PlayerProvider";
 import StreamBox from "./stream_box/StreamBox";
 
 const StreamsSection = () => {
@@ -23,6 +20,7 @@ const StreamsSection = () => {
         <StreamBox/>
         <StreamBox/>
         <StreamBox/>
+        <button type="button" onClick={handleJoinStream}>Click me</button>
       </div>
     </section>
   );

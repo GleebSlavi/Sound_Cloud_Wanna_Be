@@ -78,12 +78,12 @@ const PlayerBar = () => {
       audioRef.current.src = currentSong.cloudUrl;
       audioRef.current.currentTime = currentTime;
   
-      const shouldSendData = isStreamOwner && currentSong;
-      if (shouldSendData) {
+      if (isStreamOwner) {
         const updatedData: WebSocketMessage = {
           ...dataToSend,
           isPlaying: isPlaying,
           currentTime: currentTime,
+          delay: Date.now()
         };
         setStreamData(updatedData);
         sendData(stompClient!, updatedData);
@@ -100,10 +100,6 @@ const PlayerBar = () => {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
-      setStreamData((prevStreamData) => ({
-        ...prevStreamData,
-        currentTime: audioRef.current!.currentTime,
-      }));
     }
   }
 
