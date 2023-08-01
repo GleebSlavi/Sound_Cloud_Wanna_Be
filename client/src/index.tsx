@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import PlayerProvider from './providers/PlayerProvider';
-import SearchProvider from './providers/SearchProvider';
 import StreamProvider from './providers/StreamProvider';
 
 
@@ -15,11 +14,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <PlayerProvider>
-        <SearchProvider>
-          <StreamProvider>
-            <App />
-          </StreamProvider>
-        </SearchProvider>
+        <StreamProvider>
+          <App />
+        </StreamProvider>
       </PlayerProvider>
     </BrowserRouter>
   </React.StrictMode>

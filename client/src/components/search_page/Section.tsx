@@ -16,7 +16,7 @@ const SearchPageSection = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isActive, setIsActive] = useState("songs");
 
-  const { type, search } = useParams();
+  const { type, '*': search } = useParams();
 
   type Item = Song[] | Playlist[] | User[];
 
@@ -39,7 +39,8 @@ const SearchPageSection = () => {
 
   useEffect(() => {
     (async () => {
-      if (search !== "") {
+      console.log(search);
+      if (search) {
         await fetchItems(setSongs, process.env.REACT_APP_SONGS_ENDPOINT!);
         await fetchItems(setUsers, process.env.REACT_APP_USERS_ENDPOINT!);
         await fetchItems(

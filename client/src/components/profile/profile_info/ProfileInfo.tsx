@@ -3,8 +3,7 @@ import ButtonBar from "./button_bar/ButtonBar";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
-import { useSearchContext } from "../../../providers/SearchProvider";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const ProfileInfo = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +11,11 @@ const ProfileInfo = () => {
 
   const { uuid } = useParams();
 
-  const { checkPath } = useSearchContext();
+  const location = useLocation();
+
+  const checkPath = () => {
+    return location.pathname === "/profile";
+  }
 
   useEffect(() => {
     (async () => {

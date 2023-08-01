@@ -2,7 +2,6 @@ import "./navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useSearchContext } from "../../../providers/SearchProvider";
 import { useState, useRef } from "react";
 
 const Navbar = () => {
@@ -10,7 +9,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { setSearch } = useSearchContext();
   const { type } = useParams();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,7 +35,6 @@ const Navbar = () => {
   const handleSubmut = (event: React.FormEvent) => {
     event.preventDefault();
 
-    setSearch(input);
     if (!/^\/search\/(songs|playlists|users)\/.+$/.test(location.pathname)) {
       navigate(`/search/songs/${input}`);
     } else {

@@ -5,14 +5,18 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { Playlist } from "../../interfaces/Playlist";
-import { useSearchContext } from "../../providers/SearchProvider";
 
 const ProfileSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
 
+  const location = useLocation();
+
   const { uuid } = useParams();
 
-  const { checkPath } = useSearchContext();
+  const checkPath = () => {
+    return location.pathname === "/profile";
+  }
+
 
   useEffect(() => {
     const fetchItems = async () => {

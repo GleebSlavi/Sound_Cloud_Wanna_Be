@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./search_entity.css";
-import { useSearchContext } from "../../../providers/SearchProvider";
 
 interface Props {
   entityName: string;
@@ -15,8 +14,7 @@ const SearchEntity = ({
   isActive,
   onClick,
 }: Props) => {
-  const { type } = useParams();
-  const { search } = useSearchContext();
+  const { type, "*": search } = useParams();
   const navigate = useNavigate();
 
   const handleOnClick = () => {
