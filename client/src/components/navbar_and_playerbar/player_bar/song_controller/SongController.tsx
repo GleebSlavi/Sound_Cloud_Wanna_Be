@@ -11,24 +11,68 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import { useStreamContext } from "../../../../providers/StreamProvider";
+import MessageWindow from "../../../message_window/MessageWindow";
 
 const SongController = () => {
   const { startStream, streaming, setStreaming } = useStreamContext();
   const [streamIsActive, setStreamIsActive] = useState(streaming);
+  const [isMessageWindowVissible, setIsMessageWindowVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const { isPlaying, setIsPlaying, currentPlaylistIndex,
-   setSong, setNextSong, isShuffled, setIsShuffled } = usePlayerContext()
+  const { inStream } = useStreamContext();
+
+  const {
+    isPlaying,
+    setIsPlaying,
+    currentPlaylistIndex,
+    setSong,
+    setNextSong,
+    isShuffled,
+    setIsShuffled,
+  } = usePlayerContext();
 
   const handlePreviousSong = () => {
-    const previousIndex = currentPlaylistIndex - 1;
-    setSong(previousIndex, previousIndex >= 0, false, -1);
-  }
+    if (!inStream) {
+      const previousIndex = currentPlaylistIndex - 1;
+      setSong(previousIndex, previousIndex >= 0, false, -1);
+    } else {
+      setIsMessageWindowVisible(true);
+      setMessage("You can't change song while in stream!");
+    }
+  };
 
+  const handleNextSong = () => {
+    if (!inStream) {
+      setNextSong();
+    } else {
+      setIsMessageWindowVisible(true);
+      setMessage("You can't change song while in stream!");
+    }
+  }
+  
   const handleStreamPlay = () => {
     setStreamIsActive(!streamIsActive);
     setStreaming(!streamIsActive);
     if (!streamIsActive) {
       startStream();
+    }
+  };
+
+  const handleShuffling = () => {
+    if (inStream) {
+      setIsMessageWindowVisible(true);
+      setMessage("You can't shuffle while in stream!");
+    } else {
+      setIsShuffled(!isShuffled);
+    }
+  };
+
+  const handlePlay = () => {
+    if (inStream) {
+      setIsMessageWindowVisible(true);
+      setMessage("You can't play/pause music while in stream!");
+    } else {
+      setIsPlaying(!isPlaying);
     }
   }
 
@@ -39,7 +83,7 @@ const SongController = () => {
           className={`song-controller-button shuffle-button 
         ${isShuffled ? "active" : ""}`}
           type="button"
-          onClick={() => setIsShuffled(!isShuffled)}
+          onClick={handleShuffling}
         >
           <FontAwesomeIcon icon={faShuffle} />
         </button>
@@ -47,26 +91,21 @@ const SongController = () => {
       <div className="container controller-container">
         <div className="container backward-container">
           <button className="song-controller-button click" type="button">
-            <FontAwesomeIcon
-              icon={faBackward}
-              onClick={handlePreviousSong}
-            />
+            <FontAwesomeIcon icon={faBackward} onClick={handlePreviousSong} />
           </button>
         </div>
         <div className="container start-stop-container">
           <button
             className="song-controller-button click"
             type="button"
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={handlePlay}  
           >
             <FontAwesomeIcon icon={!isPlaying ? faPlay : faPause} />
           </button>
         </div>
         <div className="container forward-container">
           <button className="song-controller-button click" type="button">
-            <FontAwesomeIcon 
-            icon={faForward}
-            onClick={setNextSong} />
+            <FontAwesomeIcon icon={faForward} onClick={handleNextSong} />
           </button>
         </div>
       </div>
@@ -80,6 +119,11 @@ const SongController = () => {
           <FontAwesomeIcon icon={faTv} />
         </button>
       </div>
+      <MessageWindow
+        isVisible={isMessageWindowVissible}
+        setIsVisible={setIsMessageWindowVisible}
+        message={message}
+      />
     </div>
   );
 };

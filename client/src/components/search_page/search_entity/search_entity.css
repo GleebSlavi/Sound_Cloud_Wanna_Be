@@ -17,7 +17,7 @@
 .clicked {
   background-color: white;
   color: rgb(70, 0, 70);
-  border: 4px solid rgb(70, 0, 70);
+  border: 5px solid rgb(70, 0, 70);
 }
 
 .entity:hover {

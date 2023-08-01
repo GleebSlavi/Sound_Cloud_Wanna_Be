@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { Playlist } from "../../../interfaces/Playlist";
 import { Song } from "../../../interfaces/Song";
 import axios from "axios";
-import default_playlist_picture from "../../../pictures/playlist_default_picture.png"
+import default_playlist_picture from "../../../pictures/playlist_default_picture.png";
 import SongBox from "../../song/SongBox";
 import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,7 @@ import { faPlay, faPause, faBars } from "@fortawesome/free-solid-svg-icons";
 import BurgerMenuPlaylist from "./burger_menu/BurgerMenuPlaylist";
 import DeleteWindow from "./delete_window/DeleteWindow";
 import { useStreamContext } from "../../../providers/StreamProvider";
+import MessageWindow from "../../message_window/MessageWindow";
 
 const PlaylistPageSection = () => {
   const [playlistData, setPlaylistData] = useState<Playlist>({
@@ -31,15 +32,28 @@ const PlaylistPageSection = () => {
   const [typeChanged, setTypeChanged] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isDeleteWindowVisible, setIsDeleteWindowVisible] = useState(false);
+  const [messageWindowVisible, setMessageWindowVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const { setStreamData, streaming } = useStreamContext();
-  
-  const { currentPlaylist, currentPlaylistIndex, setIsPlaying, isPlaying, 
-    setCurrentPlaylist, setSong, shuffleSongs, setCurrentSongId, currentSongId,
-    isShuffled, setOriginalPlaylist, originalPlaylist } = usePlayerContext();
+  const { inStream } = useStreamContext();
+
+  const {
+    currentPlaylist,
+    currentPlaylistIndex,
+    setIsPlaying,
+    isPlaying,
+    setCurrentPlaylist,
+    setSong,
+    shuffleSongs,
+    setCurrentSongId,
+    currentSongId,
+    isShuffled,
+    setOriginalPlaylist,
+    originalPlaylist,
+  } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
-  const playlist = {id: playlistData.id, songs: items};
+  const playlist = { id: playlistData.id, songs: items };
 
   const { uuid } = useParams();
 
@@ -47,8 +61,12 @@ const PlaylistPageSection = () => {
   const burgerButtonRef = useRef<SVGSVGElement>(null);
 
   const handleClickOutside = (event: any) => {
-    const clickedOnBurgerButton = burgerButtonRef.current?.contains(event.target);
-    const clickedInsideBurgerMenu = burgerMenuRef.current?.contains(event.target);
+    const clickedOnBurgerButton = burgerButtonRef.current?.contains(
+      event.target
+    );
+    const clickedInsideBurgerMenu = burgerMenuRef.current?.contains(
+      event.target
+    );
 
     if (clickedOnBurgerButton) {
       setIsVisible((prevVisible) => !prevVisible);
@@ -58,9 +76,9 @@ const PlaylistPageSection = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside, true);
+    document.addEventListener("click", handleClickOutside, true);
     return () => {
-        document.removeEventListener('click', handleClickOutside, true);
+      document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
 
@@ -71,32 +89,36 @@ const PlaylistPageSection = () => {
           `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/${uuid}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
         setPlaylistData(responsePlaylist.data);
-        setImageUrl(responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : "");
+        setImageUrl(
+          responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : ""
+        );
 
         const responseSongs = await axios.get(
           `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}/songs`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
         setItems(responseSongs.data);
-        
+
         const responseFavorite = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}/favorite/${uuid}`,
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            "id"
+          )}/favorite/${uuid}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
-         );
-         setIsFavorite(responseFavorite.data)
+        );
+        setIsFavorite(responseFavorite.data);
       } catch (error) {
         console.log(error);
       }
@@ -105,67 +127,95 @@ const PlaylistPageSection = () => {
 
   const onSpanClick = () => {
     setIsVisible(false);
-  }
+  };
 
   const playSong = (index: number) => {
     setOriginalPlaylist(playlist);
     if (isShuffled) {
       setCurrentPlaylist({
-          id: !isPlaying ? playlistData.id : currentPlaylist.id, 
-          songs: shuffleSongs(
-            !isPlaying ? true : false,
-            !isPlaying ? playlist : currentPlaylist,
-            index)});
+        id: !isPlaying ? playlistData.id : currentPlaylist.id,
+        songs: shuffleSongs(
+          !isPlaying ? true : false,
+          !isPlaying ? playlist : currentPlaylist,
+          index
+        ),
+      });
       setSong(0, true, false, -1);
     } else {
-      setSong(index, true, currentPlaylist.id === playlistData.id ? true : false, -1);
+      setSong(
+        index,
+        true,
+        currentPlaylist.id === playlistData.id ? true : false,
+        -1
+      );
     }
-  }
+  };
 
   const handleSongPlay = (index: number) => {
-    setOriginalPlaylist(playlist);
-    let newPlaylist = false;
-    if (currentPlaylist.id !== playlistData.id) {
-        setCurrentPlaylist({id: playlistData.id, songs: items});
+    if (!inStream) {
+      setOriginalPlaylist(playlist);
+      let newPlaylist = false;
+      if (currentPlaylist.id !== playlistData.id) {
+        setCurrentPlaylist({ id: playlistData.id, songs: items });
         newPlaylist = true;
-    }
+      }
 
-    if (!isPlaying || currentPlaylistIndex !== index || newPlaylist) {
-      playSong(index);
+      if (!isPlaying || currentPlaylistIndex !== index || newPlaylist) {
+        playSong(index);
+      } else {
+        setIsPlaying(false);
+      }
     } else {
-      setIsPlaying(false);
+      setMessageWindowVisible(true);
+      setMessage("You can't play music while in stream!");
     }
-  }
+  };
 
   useEffect(() => {
     if (isPlaying) {
       if (isShuffled) {
-        const updatedSongs = shuffleSongs(true, currentPlaylist.id === playlistData.id ? currentPlaylist : originalPlaylist, currentPlaylistIndex);
+        const updatedSongs = shuffleSongs(
+          true,
+          currentPlaylist.id === playlistData.id
+            ? currentPlaylist
+            : originalPlaylist,
+          currentPlaylistIndex
+        );
         setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
         setSong(0, true, true, -1);
       } else {
-        const updatedSongs = currentPlaylist.id === playlistData.id ? items : originalPlaylist.songs;
-        const indexToSet = updatedSongs.findIndex((song) => song.id === currentSongId);
+        const updatedSongs =
+          currentPlaylist.id === playlistData.id
+            ? items
+            : originalPlaylist.songs;
+        const indexToSet = updatedSongs.findIndex(
+          (song) => song.id === currentSongId
+        );
         setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
         setSong(indexToSet, true, true, -1);
       }
     }
-  }, [isShuffled])
+  }, [isShuffled]);
 
   useEffect(() => {
-    setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id)
-  }, [currentPlaylistIndex, currentPlaylist, setCurrentSongId])
+    setCurrentSongId(currentPlaylist.songs[currentPlaylistIndex]?.id);
+  }, [currentPlaylistIndex, currentPlaylist, setCurrentSongId]);
 
   const handlePlaylistPlay = () => {
-    if (items.length > 0) {
-      if (currentPlaylist.id !== playlistData.id) {
-        setCurrentPlaylist({id: playlistData.id, songs: items});
-        playSong(0);
-      } else {
-        setIsPlaying(!isPlaying);
+    if (!inStream) {
+      if (items.length > 0) {
+        if (currentPlaylist.id !== playlistData.id) {
+          setCurrentPlaylist({ id: playlistData.id, songs: items });
+          playSong(0);
+        } else {
+          setIsPlaying(!isPlaying);
+        }
       }
+    } else {
+      setMessageWindowVisible(true);
+      setMessage("You can't play music while in stream!");
     }
-  }
+  };
 
   return (
     <section className="section playlist-page-section">
@@ -205,35 +255,61 @@ const PlaylistPageSection = () => {
             </div>
           </div>
         </div>
-        { playlistData.isAllSongs ? <div></div>
-          : <div className="container burger-menu-button-container">
-              <button className="burger-menu-button" type="button">
-                <FontAwesomeIcon ref={burgerButtonRef} icon={faBars} className="playlist-burger-menu"/>
-              </button>
-              <div ref={burgerMenuRef}>
-                <BurgerMenuPlaylist isYours={playlistData.userId === localStorage.getItem("id")} isBarVisible={isVisible}
-                onClick={onSpanClick} isPublic={playlistData.type === "PUBLIC"} setTypeChanged={setTypeChanged}
-                isFavorite={isFavorite} setIsFavorite={setIsFavorite} setIsDeleteWindowVisible={setIsDeleteWindowVisible}/>
-              </div>
-            </div> }
+        {playlistData.isAllSongs ? (
+          <div></div>
+        ) : (
+          <div className="container burger-menu-button-container">
+            <button className="burger-menu-button" type="button">
+              <FontAwesomeIcon
+                ref={burgerButtonRef}
+                icon={faBars}
+                className="playlist-burger-menu"
+              />
+            </button>
+            <div ref={burgerMenuRef}>
+              <BurgerMenuPlaylist
+                isYours={playlistData.userId === localStorage.getItem("id")}
+                isBarVisible={isVisible}
+                onClick={onSpanClick}
+                isPublic={playlistData.type === "PUBLIC"}
+                setTypeChanged={setTypeChanged}
+                isFavorite={isFavorite}
+                setIsFavorite={setIsFavorite}
+                setIsDeleteWindowVisible={setIsDeleteWindowVisible}
+              />
+            </div>
+          </div>
+        )}
       </div>
       <div className="container playlist-songs-info-control-container">
         <div className="container playlist-songs-play-button-container">
-            <button type="button" className="song-controller-button playlist-songs-play-button click"
-            onClick={handlePlaylistPlay}>
-              <FontAwesomeIcon icon={currentPlaylist.id === playlistData.id && isPlaying ? faPause : faPlay} />
-            </button>
+          <button
+            type="button"
+            className="song-controller-button playlist-songs-play-button click"
+            onClick={handlePlaylistPlay}
+          >
+            <FontAwesomeIcon
+              icon={
+                currentPlaylist.id === playlistData.id && isPlaying
+                  ? faPause
+                  : faPlay
+              }
+            />
+          </button>
         </div>
-        <div className="container filler-container">
-        </div>
+        <div className="container filler-container"></div>
         <div className="container playlist-songs-uploader">
           <span className="playlist-songs-info">Uploader</span>
         </div>
         <div className="container playlist-songs-uploader">
-          <span className="playlist-songs-info playlist-songs-duration-text">Duration</span>
+          <span className="playlist-songs-info playlist-songs-duration-text">
+            Duration
+          </span>
         </div>
         <div className="container playlist-songs-upload-date">
-          <span className="playlist-songs-info playlist-songs-upload-date-text">Upload date</span>
+          <span className="playlist-songs-info playlist-songs-upload-date-text">
+            Upload date
+          </span>
         </div>
       </div>
       <div className="container playlist-songs-container">
@@ -243,12 +319,17 @@ const PlaylistPageSection = () => {
             name={item.name}
             artist={item.artist}
             uploader={
-              item.userId === localStorage.getItem("id") ? "you" : item.uploader!
+              item.userId === localStorage.getItem("id")
+                ? "you"
+                : item.uploader!
             }
             duration={item.duration!}
             uploadDate={item.uploadDate!}
             imageUrl={item.imageUrl}
-            isCurrentSong={`${playlistData.id}_${item.id}` === `${currentPlaylist.id}_${currentSong?.id}`}
+            isCurrentSong={
+              `${playlistData.id}_${item.id}` ===
+              `${currentPlaylist.id}_${currentSong?.id}`
+            }
             handlePlay={() => handleSongPlay(index)}
             inPlaylist={true}
             playlistUploaderId={playlistData.userId}
@@ -257,7 +338,15 @@ const PlaylistPageSection = () => {
           />
         ))}
       </div>
-      <DeleteWindow isVisible={isDeleteWindowVisible} setIsVisible={setIsDeleteWindowVisible}/>
+      <DeleteWindow
+        isVisible={isDeleteWindowVisible}
+        setIsVisible={setIsDeleteWindowVisible}
+      />
+      <MessageWindow
+        isVisible={messageWindowVisible}
+        setIsVisible={setMessageWindowVisible}
+        message={message}
+      />
     </section>
   );
 };

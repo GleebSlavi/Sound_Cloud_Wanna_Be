@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { Song } from "../interfaces/Song";
 import { PlayerContextData } from "../interfaces/PlayerContextData";
+import { useStreamContext } from "./StreamProvider";
 
 
 const PlayerContext = createContext<PlayerContextData>({
@@ -48,6 +49,8 @@ const PlayerProvider = ({ children }: Props) => {
   const [isNewPlaylist, setIsNewPlaylist] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1.0);
+
+  const { inStream } = useStreamContext();
 
   const setSong = (index: number, condition: boolean, conditionShuffle: boolean,
     currentTime: number) => {
