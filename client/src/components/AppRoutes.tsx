@@ -16,6 +16,7 @@ import AddToPlaylistSection from "./song/burger_menu/add_to_playlist/AddToPlayli
 const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  
   const token = localStorage.getItem("token");
 
   useEffect(() => {

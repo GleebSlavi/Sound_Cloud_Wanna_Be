@@ -1,0 +1,86 @@
+
+.stream-box {
+  grid-template-rows: 2fr 1fr;
+  background-color: rgb(70,0,70);
+  width: 95%;
+  height: 95%;
+  border-radius: 12px;
+  border: 3px solid white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
+}
+
+.stream-box:hover {
+  width: 96%;
+  height: 96%;
+  border-radius: 13px;
+}
+
+.stream-box:active {
+  transform: translate(1px, 1px);
+  width: 95%;
+  height: 95%;
+  border-radius: 12px;
+}
+
+.stream-owner-container {
+  grid-template-rows: 2.5fr 1fr;
+  border-bottom: 3px solid white;
+}
+
+.stream-owner-picture-container {
+  position: relative;
+}
+
+.stream-owner-picture {
+  background-color: black;
+  position: absolute;
+  top: 10%;
+  left: 22.5%;
+  width: 55%;
+  height: 90%; 
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.stream-info-container {
+  grid-template-columns: 3.5fr 1fr;
+}
+
+.stream-song-info-container {
+  grid-template-rows: 2fr 1.5fr;
+  padding-left: 7%;
+}
+
+.stream-owner {
+  font-family: "Press Start 2P";
+  color: white;
+  width: 95%;
+  text-align: center;
+  font-size: 0.9375rem;
+}
+
+.stream-song-name {
+  font-family: "Press Start 2P";
+  width: 95%;
+  color: white;
+  text-align: start;
+  font-size: 0.85rem;
+  padding-top: 2.5%;
+}
+
+.stream-song-artist {
+  font-family: "Press Start 2P";
+  width: 95%;
+  color: white;
+  text-align: start;
+  font-size: 0.725rem;
+  padding-bottom: 5%;
+}
+
+.listeners {
+  font-family: "Press Start 2P";
+  width: 95%;
+  color: white;
+  text-align: center;
+  font-size: 0.77rem;
+}
