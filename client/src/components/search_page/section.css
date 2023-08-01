@@ -1,6 +1,7 @@
 
 .search-page-section {
   grid-template-rows: 0.8fr 4fr;
+  margin-bottom: 1%;
 }
 
 .search-page-top-container {

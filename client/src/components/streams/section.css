@@ -1,5 +1,6 @@
 .streams-section {
   grid-template-rows: 0.8fr 5fr;
+  margin-bottom: 1%;
 }
 
 .streams-header {
