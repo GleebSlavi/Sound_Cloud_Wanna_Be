@@ -50,6 +50,7 @@ const PlaylistPageSection = () => {
     isShuffled,
     setOriginalPlaylist,
     originalPlaylist,
+    setPlayingPlaylistId
   } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
@@ -140,6 +141,7 @@ const PlaylistPageSection = () => {
           index
         ),
       });
+      setPlayingPlaylistId(!isPlaying ? playlistData.id : currentPlaylist.id);
       setSong(0, true, false, -1);
     } else {
       setSong(
@@ -157,6 +159,7 @@ const PlaylistPageSection = () => {
       let newPlaylist = false;
       if (currentPlaylist.id !== playlistData.id) {
         setCurrentPlaylist({ id: playlistData.id, songs: items });
+        setPlayingPlaylistId(playlistData.id);
         newPlaylist = true;
       }
 
@@ -206,6 +209,7 @@ const PlaylistPageSection = () => {
       if (items.length > 0) {
         if (currentPlaylist.id !== playlistData.id) {
           setCurrentPlaylist({ id: playlistData.id, songs: items });
+          setPlayingPlaylistId(playlistData.id);
           playSong(0);
         } else {
           setIsPlaying(!isPlaying);

@@ -38,7 +38,7 @@ const CreatePlaylistSection = () => {
     };
 
     await axios
-      .post(`http://localhost:8080/api/playlists`, playlistData, {
+      .post(process.env.REACT_APP_PLAYLISTS_ENDPOINT!, playlistData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -67,7 +67,7 @@ const CreatePlaylistSection = () => {
 
     try {
       await axios.get(
-        `http://localhost:8080/api/playlists/users/${localStorage.getItem(
+        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/users/${localStorage.getItem(
           "id"
         )}/${name}`,
         {

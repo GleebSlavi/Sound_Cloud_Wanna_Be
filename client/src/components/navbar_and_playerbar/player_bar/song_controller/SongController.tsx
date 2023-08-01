@@ -12,19 +12,21 @@ import {
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import { useStreamContext } from "../../../../providers/StreamProvider";
 import MessageWindow from "../../../message_window/MessageWindow";
+import { WebSocketMessage } from "../../../../interfaces/WebSocketMessage";
 
 const SongController = () => {
-  const { startStream, streaming, setStreaming } = useStreamContext();
-  const [streamIsActive, setStreamIsActive] = useState(streaming);
+  const { startStream, inStream, isStreamOwner, streamData, sendData, stompClient } = useStreamContext();
+
+  const [streamIsActive, setStreamIsActive] = useState(inStream || isStreamOwner);
   const [isMessageWindowVissible, setIsMessageWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
 
-  const { inStream } = useStreamContext();
 
   const {
     isPlaying,
     setIsPlaying,
     currentPlaylistIndex,
+    currentPlaylist,
     setSong,
     setNextSong,
     isShuffled,
@@ -35,6 +37,7 @@ const SongController = () => {
     if (!inStream) {
       const previousIndex = currentPlaylistIndex - 1;
       setSong(previousIndex, previousIndex >= 0, false, -1);
+
     } else {
       setIsMessageWindowVisible(true);
       setMessage("You can't change song while in stream!");
@@ -51,11 +54,10 @@ const SongController = () => {
   }
   
   const handleStreamPlay = () => {
-    setStreamIsActive(!streamIsActive);
-    setStreaming(!streamIsActive);
     if (!streamIsActive) {
       startStream();
     }
+    setStreamIsActive(!streamIsActive);
   };
 
   const handleShuffling = () => {

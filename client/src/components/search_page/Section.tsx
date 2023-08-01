@@ -39,7 +39,6 @@ const SearchPageSection = () => {
 
   useEffect(() => {
     (async () => {
-      console.log(search);
       if (search) {
         await fetchItems(setSongs, process.env.REACT_APP_SONGS_ENDPOINT!);
         await fetchItems(setUsers, process.env.REACT_APP_USERS_ENDPOINT!);

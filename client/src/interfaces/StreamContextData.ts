@@ -3,14 +3,13 @@ import { WebSocketMessage } from "./WebSocketMessage";
 
 export interface StreamContextData {
   stompClient: Stomp.Client | null;
-  isStreamOwner: boolean;
   streamData: WebSocketMessage;
   setStreamData: React.Dispatch<React.SetStateAction<WebSocketMessage>>;
   startStream: () => void;
   joinStream: () => void;
-  sendData: (client: Stomp.Client) => void;
-  streaming: boolean;
-  setStreaming: React.Dispatch<React.SetStateAction<boolean>>;
+  sendData: (client: Stomp.Client, data: WebSocketMessage) => void;
   inStream: boolean;
   setInStream: React.Dispatch<React.SetStateAction<boolean>>;
+  isStreamOwner: boolean;
+  setIsStreamOwner: React.Dispatch<React.SetStateAction<boolean>>;
 }

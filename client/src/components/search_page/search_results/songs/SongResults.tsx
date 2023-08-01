@@ -19,6 +19,7 @@ const SongResults = ({ items }: Props) => {
     setCurrentSongId,
     currentSongId,
     setOriginalPlaylist,
+    setPlayingPlaylistId
   } = usePlayerContext();
 
   const { inStream, setStreamData } = useStreamContext();
@@ -31,6 +32,7 @@ const SongResults = ({ items }: Props) => {
       if (currentSongId !== item.id) {
         const id = uuidv4();
         setCurrentPlaylist({ id: id, songs: [item] });
+        setPlayingPlaylistId(id);
         setOriginalPlaylist({ id: id, songs: [item] });
         setCurrentSongId(item.id);
         setStreamData({

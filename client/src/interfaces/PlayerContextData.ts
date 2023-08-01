@@ -29,4 +29,6 @@ export interface PlayerContextData {
   setIsMuted: (value: boolean) => void;
   volume: number;
   setVolume: (value: number) => void;
+  playingPlaylistId: string;
+  setPlayingPlaylistId: (value: string) => void;
 }

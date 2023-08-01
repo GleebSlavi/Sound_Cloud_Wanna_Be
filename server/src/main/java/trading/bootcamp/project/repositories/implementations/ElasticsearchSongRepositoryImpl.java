@@ -41,7 +41,6 @@ public class ElasticsearchSongRepositoryImpl implements ElasticsearchSongReposit
         CriteriaQuery query = new CriteriaQuery(criteria);
 
         SearchHits<ElasticsearchSongEntity> songs = elasticsearchOperations.search(query, ElasticsearchSongEntity.class, IndexCoordinates.of(SONG_INDEX));
-        System.out.println(songs);
         return songs
                 .getSearchHits()
                 .stream()

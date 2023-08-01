@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { Song } from "../interfaces/Song";
 import { PlayerContextData } from "../interfaces/PlayerContextData";
 import { useStreamContext } from "./StreamProvider";
+import { WebSocketMessage } from "../interfaces/WebSocketMessage";
 
 
 const PlayerContext = createContext<PlayerContextData>({
@@ -27,7 +28,9 @@ const PlayerContext = createContext<PlayerContextData>({
   isMuted: false,
   setIsMuted: () => {},
   volume: 1.0,
-  setVolume: () => {}
+  setVolume: () => {},
+  playingPlaylistId: "",
+  setPlayingPlaylistId: () => {}
 });
 
 export const usePlayerContext = () => {
@@ -49,17 +52,16 @@ const PlayerProvider = ({ children }: Props) => {
   const [isNewPlaylist, setIsNewPlaylist] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1.0);
-
-  const { inStream } = useStreamContext();
+  const [playingPlaylistId, setPlayingPlaylistId] = useState("");
 
   const setSong = (index: number, condition: boolean, conditionShuffle: boolean,
-    currentTime: number) => {
+    songCurrentTine: number) => {
       if (condition) {
         setCurrentPlaylistIndex(index);
-        if (!conditionShuffle) {
+        if (!conditionShuffle || songCurrentTine === -1) {
           setCurrentTime(0);
-        } else if (currentTime !== -1) {
-          setCurrentTime(currentTime);
+        } else  {
+          setCurrentTime(songCurrentTine + 2.76);
         }
         setIsPlaying(true);
       } else {
@@ -101,7 +103,8 @@ const PlayerProvider = ({ children }: Props) => {
       setCurrentSongId, isShuffled, setIsShuffled,
       originalPlaylist, setOriginalPlaylist,
       isNewPlaylist, setIsNewPlaylist, isMuted,
-      setIsMuted, volume, setVolume
+      setIsMuted, volume, setVolume, playingPlaylistId,
+      setPlayingPlaylistId
     }}>
       {children}
     </PlayerContext.Provider>
