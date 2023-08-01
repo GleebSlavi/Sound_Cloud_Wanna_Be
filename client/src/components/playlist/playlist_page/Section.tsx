@@ -116,21 +116,10 @@ const PlaylistPageSection = () => {
             !isPlaying ? true : false,
             !isPlaying ? playlist : currentPlaylist,
             index)});
-      setSong(0, true, false);
+      setSong(0, true, false, -1);
     } else {
-      setSong(index, true, currentPlaylist.id === playlistData.id ? true : false);
+      setSong(index, true, currentPlaylist.id === playlistData.id ? true : false, -1);
     }
-    if (streaming) {
-    const item = items[index];
-    setStreamData({
-      isPlaying: true,
-      songUrl: item.cloudUrl,
-      currentTime: 0,
-      songName: item.name,
-      songArtist: item.artist,
-      songImageUrl: item.imageUrl
-    });
-  }
   }
 
   const handleSongPlay = (index: number) => {
@@ -153,12 +142,12 @@ const PlaylistPageSection = () => {
       if (isShuffled) {
         const updatedSongs = shuffleSongs(true, currentPlaylist.id === playlistData.id ? currentPlaylist : originalPlaylist, currentPlaylistIndex);
         setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
-        setSong(0, true, true);
+        setSong(0, true, true, -1);
       } else {
         const updatedSongs = currentPlaylist.id === playlistData.id ? items : originalPlaylist.songs;
         const indexToSet = updatedSongs.findIndex((song) => song.id === currentSongId);
         setCurrentPlaylist({ id: currentPlaylist.id, songs: updatedSongs });
-        setSong(indexToSet, true, true);
+        setSong(indexToSet, true, true, -1);
       }
     }
   }, [isShuffled])
@@ -254,10 +243,10 @@ const PlaylistPageSection = () => {
             name={item.name}
             artist={item.artist}
             uploader={
-              item.userId === localStorage.getItem("id") ? "you" : item.uploader
+              item.userId === localStorage.getItem("id") ? "you" : item.uploader!
             }
-            duration={item.duration}
-            uploadDate={item.uploadDate}
+            duration={item.duration!}
+            uploadDate={item.uploadDate!}
             imageUrl={item.imageUrl}
             isCurrentSong={`${playlistData.id}_${item.id}` === `${currentPlaylist.id}_${currentSong?.id}`}
             handlePlay={() => handleSongPlay(index)}

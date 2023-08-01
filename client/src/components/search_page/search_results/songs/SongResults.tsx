@@ -16,14 +16,24 @@ const SongResults = ({ items }: Props) => {
   const { setCurrentPlaylist, setSong, setCurrentSongId, currentSongId,
   setOriginalPlaylist } = usePlayerContext();
 
+  const { inStream, setStreamData } = useStreamContext();
+
   const handleSongPlay = (item: Song) => {
     if (currentSongId !== item.id) {
       const id = uuidv4();
       setCurrentPlaylist({id: id, songs: [item]});
       setOriginalPlaylist({id: id, songs: [item]});
       setCurrentSongId(item.id);
+      setStreamData({
+        songId: item.id,
+        isPlaying: true,
+        songUrl: item.cloudUrl,
+        songName: item.name,
+        songArtist: item.artist,
+        songImageUrl: item.imageUrl,
+        currentTime: 0});
     }
-    setSong(0, item.id !== currentSongId, item.id === currentSongId);
+    setSong(0, item.id !== currentSongId, item.id === currentSongId, -1);
   }
 
   return (
@@ -34,10 +44,10 @@ const SongResults = ({ items }: Props) => {
           name={item.name}
           artist={item.artist}
           uploader={
-            item.userId === localStorage.getItem("id") ? "you" : item.uploader
+            item.userId === localStorage.getItem("id") ? "you" : item.uploader!
           }
-          duration={item.duration}
-          uploadDate={item.uploadDate}
+          duration={item.duration!}
+          uploadDate={item.uploadDate!}
           imageUrl={item.imageUrl}
           isCurrentSong={item.id === currentSongId}
           handlePlay={() => handleSongPlay(item)}

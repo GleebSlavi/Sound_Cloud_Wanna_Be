@@ -21,7 +21,7 @@ const SongController = () => {
 
   const handlePreviousSong = () => {
     const previousIndex = currentPlaylistIndex - 1;
-    setSong(previousIndex, previousIndex >= 0, false);
+    setSong(previousIndex, previousIndex >= 0, false, -1);
   }
 
   const handleStreamPlay = () => {

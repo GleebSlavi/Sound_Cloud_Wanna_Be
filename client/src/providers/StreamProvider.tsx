@@ -12,7 +12,9 @@ import { Song } from "../interfaces/Song";
 const StreamContext = createContext<StreamContextData>({
   stompClient: null,
   isStreamOwner: false,
-  streamData: {isPlaying: false,
+  streamData: {
+    songId: "",
+    isPlaying: false,
     songUrl: "",
     currentTime: 0,
     songName: "",
@@ -23,7 +25,9 @@ const StreamContext = createContext<StreamContextData>({
   joinStream: () => {},
   sendData: () => {},
   streaming: false,
-  setStreaming: () => {}
+  setStreaming: () => {},
+  inStream: false,
+  setInStream: () => {}
 })
 
 export const useStreamContext = () => {
@@ -38,6 +42,7 @@ const StreamProvider = ({ children }: Props) => {
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
   const [isStreamOwner, setIsStreamOwner] = useState<boolean>(false)
   const [streamData, setStreamData] = useState<WebSocketMessage>({
+    songId: "",
     isPlaying: false,
     songUrl: "",
     currentTime: 0,
@@ -47,9 +52,10 @@ const StreamProvider = ({ children }: Props) => {
   });
   const [streaming, setStreaming] = useState(false);
   const [hasJoined, setHasJoined] = useState(false);
+  const [inStream, setInStream] = useState(false);
 
-  const { setCurrentPlaylist, setOriginalPlaylist, setCurrentSongId,
-  setSong } = usePlayerContext();
+  const { setCurrentPlaylist, setCurrentSongId,
+  setSong, setIsPlaying } = usePlayerContext();
 
 
   const createClient = (isOwner: boolean) => {
@@ -64,6 +70,7 @@ const StreamProvider = ({ children }: Props) => {
             if (message.body) {
               const receivedData: WebSocketMessage = JSON.parse(message.body);
               setStreamData(receivedData);
+              setInStream(true);
               handleReceivedMessage(receivedData);
             }
           });
@@ -75,18 +82,34 @@ const StreamProvider = ({ children }: Props) => {
         } else {
           client.subscribe("/topic/user-join-notification", (message) => {
             if (message.body) {
-              sendData();
+              console.log(client);
+              sendData(client);
             }
           })
         }
       }
     );
-
     setStompClient(client);
   }
 
   const handleReceivedMessage = (message: WebSocketMessage) => {
-    
+    if (streamData.songId !== message.songId) {
+      const song: Song = {
+        id: message.songId,
+        name: message.songName,
+        artist: message.songArtist,
+        imageUrl: message.songImageUrl,
+        cloudUrl: message.songUrl
+      }
+
+      const id = uuidv4();
+      setCurrentPlaylist({id: id, songs: [song]});
+      setCurrentSongId(message.songId);
+      setSong(0, true, true, message.currentTime + 2.25);
+      setIsPlaying(message.isPlaying);
+    } else if (streamData.isPlaying !== message.isPlaying) {
+      setIsPlaying(message.isPlaying);
+    }
   }
 
   const startStream = () => {
@@ -99,11 +122,11 @@ const StreamProvider = ({ children }: Props) => {
     createClient(false);
   }
 
-  const sendData = () => {
-    if (stompClient && streamData) {
+  const sendData = (client: Stomp.Client) => {
+    if (client && streamData) {
       const jsonData = JSON.stringify(streamData);
-      stompClient.send(
-        "/app/send-stream-data",
+      client.send(
+        "/app/send-data",
         {},
         jsonData);
     }
@@ -112,7 +135,7 @@ const StreamProvider = ({ children }: Props) => {
   return <StreamContext.Provider value={{
     stompClient, isStreamOwner, streamData,
     setStreamData, startStream, joinStream, sendData,
-    streaming, setStreaming
+    streaming, setStreaming, inStream, setInStream
   }}>
     {children}
   </StreamContext.Provider>

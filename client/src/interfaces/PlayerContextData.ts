@@ -14,7 +14,7 @@ export interface PlayerContextData {
   setCurrentPlaylist: (value: Playlist) => void;
   currentPlaylistIndex: number;
   setCurrentPlaylistIndex: (value: number) => void;
-  setSong: (value: number, conditionPlay: boolean, conditionShuffle: boolean) => void;
+  setSong: (value: number, conditionPlay: boolean, conditionShuffle: boolean, currentTime: number) => void;
   setNextSong: () => void;
   shuffleSongs: (condition: boolean, songs: Playlist, index: number) => Song[];
   setCurrentSongId: (value: string) => void;

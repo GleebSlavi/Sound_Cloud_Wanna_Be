@@ -49,11 +49,14 @@ const PlayerProvider = ({ children }: Props) => {
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1.0);
 
-  const setSong = (index: number, condition: boolean, conditionShuffle: boolean) => {
+  const setSong = (index: number, condition: boolean, conditionShuffle: boolean,
+    currentTime: number) => {
       if (condition) {
         setCurrentPlaylistIndex(index);
         if (!conditionShuffle) {
           setCurrentTime(0);
+        } else if (currentTime !== -1) {
+          setCurrentTime(currentTime);
         }
         setIsPlaying(true);
       } else {
@@ -64,7 +67,7 @@ const PlayerProvider = ({ children }: Props) => {
 
   const setNextSong = () => {
     const nextIndex = currentPlaylistIndex + 1;
-    setSong(nextIndex, nextIndex < currentPlaylist.songs.length, false);
+    setSong(nextIndex, nextIndex < currentPlaylist.songs.length, false, -1);
   }
 
   const shuffleSongs = (playFromCurrentPlaylist: boolean, songs: {id: string, songs: Song[]}, index: number): Song[] => {

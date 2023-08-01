@@ -12,28 +12,6 @@ const StreamsSection = () => {
 
   const handleJoinStream = () => {
     joinStream();
-    // setIsStreamActive(true);
-
-    console.log(streamData);
-    if (streamData.isPlaying) {
-      const item: Song= {
-        id: "",
-        userId: "",
-        name: streamData.songName,
-        artist: streamData.songArtist,
-        releaseYear: 0,
-        duration: 0,
-        type: "",
-        uploadDate: "",
-        imageUrl: streamData.songImageUrl,
-        cloudUrl: streamData.songUrl,
-        uploader: ""
-      }
-      const id = uuidv4();
-      setCurrentPlaylist({id: id, songs: [item]});
-      setCurrentSongId(item.id);
-      setSong(0, true, false);
-    }
   }
 
   return (

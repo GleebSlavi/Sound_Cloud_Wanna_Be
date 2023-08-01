@@ -8,7 +8,9 @@ export interface StreamContextData {
   setStreamData: React.Dispatch<React.SetStateAction<WebSocketMessage>>;
   startStream: () => void;
   joinStream: () => void;
-  sendData: () => void;
+  sendData: (client: Stomp.Client) => void;
   streaming: boolean;
   setStreaming: React.Dispatch<React.SetStateAction<boolean>>;
+  inStream: boolean;
+  setInStream: React.Dispatch<React.SetStateAction<boolean>>;
 }
