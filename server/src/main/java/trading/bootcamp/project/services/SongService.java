@@ -3,7 +3,7 @@ package trading.bootcamp.project.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import trading.bootcamp.project.api.rest.FromEntityToOutputMappers;
+import trading.bootcamp.project.api.rest.ToOutputMappers;
 import trading.bootcamp.project.api.rest.inputs.SongInput;
 import trading.bootcamp.project.exceptions.InvalidSongNameException;
 import trading.bootcamp.project.exceptions.NoSuchSongException;
@@ -52,7 +52,7 @@ public class SongService {
             return !ids.isEmpty()
                     ? songRepository.searchForSongs(ids)
                     .stream()
-                    .map((song) -> FromEntityToOutputMappers.fromSongEntity(userRepository, song))
+                    .map((song) -> ToOutputMappers.toSongOutput(userRepository, song))
                     .toList()
                     : Collections.emptyList();
     }
@@ -62,7 +62,7 @@ public class SongService {
             throw new InvalidSongNameException("Song name and artist can't be less than 1 character");
         }
 
-        SongEntity song = FromInputToEntityMappers.fromSongInput(songInput);
+        SongEntity song = ToEntityMappers.toSongEntity(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
             song.artist(), song.releaseYear(), song.duration(), song.type(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {
@@ -76,7 +76,7 @@ public class SongService {
                 .equals(song.id().toString())) {
             throw new IllegalStateException("Couldn't create index!");
         }
-        return FromEntityToOutputMappers.fromSongEntity(userRepository, song);
+        return ToOutputMappers.toSongOutput(userRepository, song);
     }
 
     public SongOutput deleteSong(UUID id) throws NoSuchSongException {
@@ -93,7 +93,7 @@ public class SongService {
             throw new IllegalStateException("Couldn't delete the index!");
         }
 
-        return FromEntityToOutputMappers.fromSongEntity(userRepository, song.get());
+        return ToOutputMappers.toSongOutput(userRepository, song.get());
     }
 
 

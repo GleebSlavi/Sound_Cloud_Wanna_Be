@@ -8,13 +8,30 @@ import { useStreamContext } from "../../../providers/StreamProvider";
 import { WebSocketMessage } from "../../../interfaces/WebSocketMessage";
 
 const PlayerBar = () => {
-  const { currentPlaylist, currentPlaylistIndex, 
-  isPlaying, currentTime, setCurrentTime, setNextSong,
-  isMuted, volume, playingPlaylistId } = usePlayerContext();
+  const {
+    currentPlaylist,
+    currentPlaylistIndex,
+    isPlaying,
+    currentTime,
+    setCurrentTime,
+    setNextSong,
+    isMuted,
+    volume,
+    playingPlaylistId,
+    currentSongId,
+    setIsPlaying,
+  } = usePlayerContext();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { sendData, stompClient, isStreamOwner, setStreamData } = useStreamContext();
+  const {
+    sendData,
+    stompClient,
+    isStreamOwner,
+    setStreamData,
+    streamId,
+    updateStream,
+  } = useStreamContext();
 
   // useEffect(() => {
   //   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
@@ -29,7 +46,7 @@ const PlayerBar = () => {
   //         currentTime: currentTime,
   //       }
   //       setStreamData(dataToSend);
-  
+
   //     audioRef.current.src = currentSong.cloudUrl;
   //     if (!isPlaying) {
   //       audioRef.current.pause();
@@ -62,37 +79,50 @@ const PlayerBar = () => {
   // }, [playingPlaylistId, currentPlaylistIndex, isPlaying])
 
   useEffect(() => {
-    const currentSong = currentPlaylist.songs[currentPlaylistIndex];
-    if (currentSong && audioRef.current) {
-      const dataToSend: WebSocketMessage = {
-        songId: currentSong.id,
-        songUrl: currentSong.cloudUrl,
-        songName: currentSong.name,
-        songArtist: currentSong.artist,
-        songImageUrl: currentSong.imageUrl,
-        isPlaying: isPlaying,
-        currentTime: currentTime,
-      };
-      setStreamData(dataToSend);
-  
-      audioRef.current.src = currentSong.cloudUrl;
-      audioRef.current.currentTime = currentTime;
-  
-      if (isStreamOwner) {
-        const updatedData: WebSocketMessage = {
-          ...dataToSend,
+    if (currentPlaylistIndex === -1 && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      const currentSong = currentPlaylist.songs[currentPlaylistIndex];
+      if (currentSong && audioRef.current) {
+        const dataToSend: WebSocketMessage = {
+          songId: currentSong.id,
+          songUrl: currentSong.cloudUrl,
+          songName: currentSong.name,
+          songArtist: currentSong.artist,
+          songImageUrl: currentSong.imageUrl,
           isPlaying: isPlaying,
           currentTime: currentTime,
-          delay: Date.now()
         };
-        setStreamData(updatedData);
-        sendData(stompClient!, updatedData);
-      }
-  
-      if (!isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
+        setStreamData(dataToSend);
+
+        audioRef.current.src = currentSong.cloudUrl;
+        audioRef.current.currentTime = currentTime;
+
+        if (isStreamOwner) {
+          const updatedData: WebSocketMessage = {
+            ...dataToSend,
+            isPlaying: isPlaying,
+            currentTime: currentTime,
+            delay: Date.now(),
+          };
+          setStreamData(updatedData);
+          if (currentSong.id !== currentSongId) {
+            updateStream(
+              streamId,
+              updatedData.songName,
+              updatedData.songArtist,
+              null
+            );
+          }
+          sendData(stompClient!, updatedData, streamId);
+        }
+
+        if (!isPlaying) {
+          audioRef.current.pause();
+        } else {
+          audioRef.current.play();
+        }
       }
     }
   }, [playingPlaylistId, currentPlaylistIndex, isPlaying]);
@@ -101,28 +131,35 @@ const PlayerBar = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
     }
-  }
+  };
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.addEventListener("ended", setNextSong);
       return () => {
         audioRef.current?.removeEventListener("ended", setNextSong);
-      }
+      };
     }
-  }, [audioRef, setNextSong])
+  }, [audioRef, setNextSong]);
 
   useEffect(() => {
     const audioElement = document.getElementById("audio") as HTMLAudioElement;
     audioElement.volume = volume;
   }, [volume]);
 
-  return <div className="player-bar">
-    <SongData />
-    <SongController />
-    <SongVolume />
-    <audio ref={audioRef} id="audio" onTimeUpdate={handleTimeUpdate} muted={isMuted ? true : false}/>
-  </div>;
+  return (
+    <div className="player-bar">
+      <SongData />
+      <SongController />
+      <SongVolume />
+      <audio
+        ref={audioRef}
+        id="audio"
+        onTimeUpdate={handleTimeUpdate}
+        muted={isMuted ? true : false}
+      />
+    </div>
+  );
 };
 
 export default PlayerBar;

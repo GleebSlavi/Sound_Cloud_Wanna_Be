@@ -15,6 +15,7 @@ const PlaylistResults = ({ items }: Props) => {
     <div className="container search-page-playlists">
       {items.map((item) => (
         <PlaylistBox 
+        key={item.id}
         id={item.id}
         name={item.name}
         creator={item.userId === localStorage.getItem("id") ? "you" : item.creator}

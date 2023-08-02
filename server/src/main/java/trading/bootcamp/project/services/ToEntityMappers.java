@@ -10,18 +10,18 @@ import trading.bootcamp.project.repositories.entities.UserEntity;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class FromInputToEntityMappers {
+public class ToEntityMappers {
 
-    public static UserEntity fromUserInput(UserInput user) {
+    public static UserEntity toUserEntity(UserInput user) {
         return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getNewPassword(), LocalDate.now(), null);
    }
 
-    public static PlaylistEntity fromPlaylistInput(PlaylistInput playlist) {
+    public static PlaylistEntity toPlaylistEntity(PlaylistInput playlist) {
         return new PlaylistEntity(UUID.randomUUID(), playlist.getUserId(), playlist.getName(),
             playlist.getDescription(), false, LocalDate.now(), playlist.getType(), playlist.getImageUrl());
     }
 
-    public static SongEntity fromSongInput(SongInput song) {
+    public static SongEntity toSongEntity(SongInput song) {
         return new SongEntity(UUID.randomUUID(), song.getUserid(), song.getName(), song.getArtist(),
             song.getReleaseYear(), song.getDuration(), song.getType(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
     }

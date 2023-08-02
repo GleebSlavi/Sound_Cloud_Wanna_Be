@@ -6,6 +6,7 @@
   height: 95%;
   border-radius: 12px;
   border: 3px solid white;
+  cursor: pointer;
   transition: transform 0.15s, width 0.15s, height 0.15s, border-radius 0.15s;
 }
 

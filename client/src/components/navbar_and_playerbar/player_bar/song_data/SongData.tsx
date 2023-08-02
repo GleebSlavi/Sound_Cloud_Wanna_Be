@@ -1,11 +1,22 @@
 import "./song_data.css";
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import default_song_picture from "../../../../pictures/default_song_picture.png"
+import { Song } from "../../../../interfaces/Song"
 
 const SongData = () => {
-  const { currentPlaylist, currentPlaylistIndex, isPlaying } = usePlayerContext();
+  const { currentPlaylist, currentPlaylistIndex } = usePlayerContext();
 
-  const currentSong = currentPlaylist.songs[currentPlaylistIndex];
+  const song: Song = {
+    id: "",
+    name: "",
+    artist: "",
+    imageUrl: "",
+    cloudUrl: "",
+  }
+
+  const currentSong = currentPlaylistIndex !== - 1 
+  ? currentPlaylist.songs[currentPlaylistIndex]
+  : song;
 
   return (
     <div className="container song-data-container">

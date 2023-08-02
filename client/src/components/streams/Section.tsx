@@ -1,14 +1,29 @@
-import { useStreamContext } from "../../providers/StreamProvider";
+import { useEffect } from "react";
 import "./section.css";
 import StreamBox from "./stream_box/StreamBox";
+import axios from "axios";
+import { useStreamContext } from "../../providers/StreamProvider";
 
 const StreamsSection = () => {
+  const { setStreams, streams } = useStreamContext();
 
- const { joinStream } = useStreamContext();
-
-  const handleJoinStream = () => {
-    joinStream();
-  }
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_STREAMS_ENDPOINT}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setStreams(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   return (
     <section className="section streams-section">
@@ -16,11 +31,17 @@ const StreamsSection = () => {
         <h2 className="streams-header">Streams</h2>
       </div>
       <div className="container streams-container">
-        <StreamBox/>
-        <StreamBox/>
-        <StreamBox/>
-        <StreamBox/>
-        <button type="button" onClick={handleJoinStream}>Click me</button>
+        {streams.map((item) => (
+          <StreamBox
+            key={item.streamId}
+            id={item.streamId}
+            ownerUsername={item.ownerUsername}
+            ownerImageUrl={item.ownerImageUrl}
+            songArtist={item.songArtist!}
+            songName={item.songName!}
+            listeners={item.listeners!}
+          />
+        ))}
       </div>
     </section>
   );

@@ -57,6 +57,7 @@ const ProfileSection = () => {
       <div className="container profile-playlists-container">
         {items.map((item) => (
           <PlaylistBox
+            key={item.id}
             id={item.id}
             name={item.name}
             creator="you"

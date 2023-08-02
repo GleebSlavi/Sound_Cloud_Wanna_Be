@@ -1,5 +1,5 @@
 import "./song_controller.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBackward,
@@ -12,32 +12,74 @@ import {
 import { usePlayerContext } from "../../../../providers/PlayerProvider";
 import { useStreamContext } from "../../../../providers/StreamProvider";
 import MessageWindow from "../../../message_window/MessageWindow";
-import { WebSocketMessage } from "../../../../interfaces/WebSocketMessage";
+import { v4 as uuidv4 } from "uuid";
+import { User } from "../../../../interfaces/User";
+import axios from "axios";
 
 const SongController = () => {
-  const { startStream, inStream, isStreamOwner, streamData, sendData, stompClient } = useStreamContext();
+  const { startStream, inStream, isStreamOwner, leaveStream } =
+    useStreamContext();
 
-  const [streamIsActive, setStreamIsActive] = useState(inStream || isStreamOwner);
+  const [streamIsActive, setStreamIsActive] = useState(false);
   const [isMessageWindowVissible, setIsMessageWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [user, setUser] = useState<User>({
+    id: "",
+    username: "",
+    imageUrl: null,
+    role: "",
+  });
 
   const {
     isPlaying,
     setIsPlaying,
     currentPlaylistIndex,
-    currentPlaylist,
     setSong,
     setNextSong,
     isShuffled,
     setIsShuffled,
   } = usePlayerContext();
 
+  useEffect(() => {
+    if (streamIsActive) {
+      window.addEventListener("beforeunload", leaveStream);
+    }
+
+    return () => {
+      if (streamIsActive) {
+        window.removeEventListener("beforeunload", leaveStream);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    setStreamIsActive(isStreamOwner || inStream);
+  }, [isStreamOwner, inStream]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            "id"
+          )}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const handlePreviousSong = () => {
     if (!inStream) {
       const previousIndex = currentPlaylistIndex - 1;
       setSong(previousIndex, previousIndex >= 0, false, -1);
-
     } else {
       setIsMessageWindowVisible(true);
       setMessage("You can't change song while in stream!");
@@ -51,11 +93,14 @@ const SongController = () => {
       setIsMessageWindowVisible(true);
       setMessage("You can't change song while in stream!");
     }
-  }
-  
+  };
+
   const handleStreamPlay = () => {
     if (!streamIsActive) {
-      startStream();
+      const id = uuidv4();
+      startStream(id, user.username, user.imageUrl);
+    } else {
+      leaveStream();
     }
     setStreamIsActive(!streamIsActive);
   };
@@ -76,7 +121,7 @@ const SongController = () => {
     } else {
       setIsPlaying(!isPlaying);
     }
-  }
+  };
 
   return (
     <div className="container song-controller-container">
@@ -100,7 +145,7 @@ const SongController = () => {
           <button
             className="song-controller-button click"
             type="button"
-            onClick={handlePlay}  
+            onClick={handlePlay}
           >
             <FontAwesomeIcon icon={!isPlaying ? faPlay : faPause} />
           </button>

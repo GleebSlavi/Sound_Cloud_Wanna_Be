@@ -41,6 +41,7 @@ const HomeSection = () => {
       <div className="container home-playlists-container">
         {items.map((item) => (
           <PlaylistBox
+            key={item.id}
             id={item.id}
             name={item.name}
             creator={

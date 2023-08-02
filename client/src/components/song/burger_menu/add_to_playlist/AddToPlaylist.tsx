@@ -37,6 +37,7 @@ const AddToPlaylistSection = () => {
       <div className="container add-to-playlist-playlists-container">
         {items.map((item) => (
           <PlaylistBox
+          key={item.id}
           id={item.id}
           name={item.name}
           creator="you"
