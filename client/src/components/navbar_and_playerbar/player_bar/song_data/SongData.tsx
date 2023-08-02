@@ -21,7 +21,7 @@ const SongData = () => {
   return (
     <div className="container song-data-container">
       <div className="container">
-        { currentSong && (
+        { currentSong && currentPlaylistIndex !== -1 && (
           <img className="picture" src={currentSong.imageUrl ? currentSong.imageUrl : default_song_picture}/>
         )}
       </div>

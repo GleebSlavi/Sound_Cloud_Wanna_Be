@@ -26,5 +26,5 @@ public class WebSocketController {
     @SendTo("/topic/user-join-notification/{streamId}")
     public String handleUserJoin(@Payload String message) {
         return message;
-    }   
+    }
 }

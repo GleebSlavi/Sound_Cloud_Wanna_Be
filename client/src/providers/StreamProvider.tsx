@@ -128,16 +128,11 @@ const StreamProvider = ({ children }: Props) => {
       setPlayingPlaylistId(id);
       setCurrentSongId(message.songId);
 
-      const now = Date.now();
-      console.log(now)
-      console.log(message.delay);
-      console.log(message.currentTime);
-      console.log((now - message.delay!) / 10000);
       setSong(
         0,
         true,
         true,
-        message.currentTime !== 0 ? (message.currentTime + ((Date.now() - message.delay!) / 1000)) : -1
+        message.currentTime !== 0 ? (message.currentTime + message.delay! / 10) : -1
       );
       setIsPlaying(message.isPlaying);
     } else if (streamData.isPlaying !== message.isPlaying) {
