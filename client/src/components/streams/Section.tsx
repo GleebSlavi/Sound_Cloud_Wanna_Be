@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./section.css";
 import StreamBox from "./stream_box/StreamBox";
 import axios from "axios";
 import { useStreamContext } from "../../providers/StreamProvider";
+import MessageWindow from "../message_window/MessageWindow";
 
 const StreamsSection = () => {
   const { setStreams, streams } = useStreamContext();
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -40,9 +44,12 @@ const StreamsSection = () => {
             songArtist={item.songArtist!}
             songName={item.songName!}
             listeners={item.listeners!}
+            setMessage={setMessage}
+            setIsVisible={setIsVisible}
           />
         ))}
       </div>
+      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} />
     </section>
   );
 };

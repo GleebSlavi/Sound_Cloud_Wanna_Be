@@ -66,7 +66,7 @@ const StreamProvider = ({ children }: Props) => {
     setPlayingPlaylistId,
     currentTime,
     currentSongId,
-    setCurrentPlaylistIndex
+    setCurrentPlaylistIndex,
   } = usePlayerContext();
 
   const createClient = (isOwner: boolean, streamId: string) => {
@@ -75,11 +75,14 @@ const StreamProvider = ({ children }: Props) => {
 
     client.connect({}, (frame) => {
       if (!isOwner) {
-        client.subscribe(`/topic/stream-end-notification/${streamId}`, (message) => {
-          if (message.body) {
-            leaveStream();
+        client.subscribe(
+          `/topic/stream-end-notification/${streamId}`,
+          (message) => {
+            if (message.body) {
+              leaveStream(client, true, true);
+            }
           }
-        });
+        );
 
         client.subscribe(`/topic/stream/${streamId}`, (message) => {
           if (message.body) {
@@ -91,7 +94,11 @@ const StreamProvider = ({ children }: Props) => {
 
         if (!hasJoined) {
           console.log(streamId);
-          client.send(`/app/user-join/${streamId}`, {}, JSON.stringify({message: "User has joined!"}));
+          client.send(
+            `/app/user-join/${streamId}`,
+            {},
+            JSON.stringify({ message: "User has joined!" })
+          );
           setHasJoined(true);
         }
       } else {
@@ -128,14 +135,16 @@ const StreamProvider = ({ children }: Props) => {
       setPlayingPlaylistId(id);
       setCurrentSongId(message.songId);
 
-      console.log(Date.now())
+      console.log(Date.now());
       console.log(message.delay);
-      console.log((Date.now() - message.delay!) / 50)
+      console.log((Date.now() - message.delay!) / 50);
       setSong(
         0,
         true,
         true,
-        message.currentTime !== 0 ? (message.currentTime + (((Date.now () - message.delay!) / 50))) : -1
+        message.currentTime !== 0
+          ? message.currentTime + (Date.now() - message.delay!) / 50
+          : -1
       );
       setIsPlaying(message.isPlaying);
     } else if (streamData.isPlaying !== message.isPlaying) {
@@ -157,9 +166,7 @@ const StreamProvider = ({ children }: Props) => {
         songArtist: streamData.songArtist,
         listeners: 0,
       };
-      await axios.post(`${process.env.REACT_APP_STREAMS_ENDPOINT}`, 
-      data,
-      {
+      await axios.post(`${process.env.REACT_APP_STREAMS_ENDPOINT}`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -172,8 +179,8 @@ const StreamProvider = ({ children }: Props) => {
         ownerImageUrl: imageurl,
         songName: data.songName,
         songArtist: data.songArtist,
-        listeners: data.listeners
-      }
+        listeners: data.listeners,
+      };
       setStreams((streams) => [...streams, stream]);
     } catch (error) {
       console.log(error);
@@ -256,11 +263,12 @@ const StreamProvider = ({ children }: Props) => {
       streamId,
       null,
       null,
-      (streams.find((stream) => stream.streamId === streamId)?.listeners ?? 0) + 1
+      (streams.find((stream) => stream.streamId === streamId)?.listeners ?? 0) +
+        1
     );
   };
 
-  const sendData = (
+  const sendData = async (
     client: Stomp.Client,
     data: WebSocketMessage,
     streamId: string
@@ -268,30 +276,54 @@ const StreamProvider = ({ children }: Props) => {
     if (client && data) {
       setStreamData(data);
       const jsonData = JSON.stringify(data);
-      client.send(`/app/send-data/${streamId}`, {}, jsonData);
+      await client.send(`/app/send-data/${streamId}`, {}, jsonData);
     }
   };
 
-  const leaveStream = () => {
-    if (stompClient) {
-      stompClient.disconnect(() => {
-        if (isStreamOwner) {
-          stompClient.send(`/app/stream-end/${streamId}`, {}, JSON.stringify({message: "Stream has ended!"}));
-          stompClient.unsubscribe(`/topic/user-join-notification/${streamId}`);
-          setIsStreamOwner(false);
-          removeStreamFromServer(streamId);
-        } else if (inStream) {
-          stompClient.unsubscribe(`/topic/stream/${streamId}`);
-          stompClient.unsubscribe(`/topic/stream-end-notification/${streamId}`);
-          setInStream(false);
-          setHasJoined(false);
-          setCurrentPlaylistIndex(-1);
-          updateStream(streamId, null, null, streams.find((stream) => stream.streamId === streamId)?.listeners! - 1)
+  const leaveStream = async (client: Stomp.Client | null, ownerEnded: boolean, inStream: boolean) => {
+    if (client) {
+      if (isStreamOwner) {
+        await client.send(
+          `/app/stream-end/${streamId}`,
+          {},
+          JSON.stringify({ message: "Stream has ended!" })
+        );
+        setIsStreamOwner(false);
+        removeStreamFromServer(streamId);
+        client.disconnect(() => {
+          client.unsubscribe(`/topic/user-join-notification/${streamId}`);
+        });
+      } else if (inStream) {
+        console.log("here");
+        setInStream(false);
+        setHasJoined(false);
+        setCurrentPlaylistIndex(-1);
+        if (!ownerEnded) {
+          updateStream(
+            streamId,
+            null,
+            null,
+            streams.find((stream) => stream.streamId === streamId)?.listeners! -
+              1
+          );
         }
-      });
-      setStreamId("");
-      setStompClient(null);
+        client.disconnect(() => {
+          client.unsubscribe(`/topic/stream/${streamId}`);
+          client.unsubscribe(`/topic/stream-end-notification/${streamId}`);
+        });
+        if (!ownerEnded) {
+          updateStream(
+            streamId,
+            null,
+            null,
+            streams.find((stream) => stream.streamId === streamId)?.listeners! -
+              1
+          );
+        }
+      }
     }
+    setStreamId("");
+    setStompClient(null);
   };
 
   return (
@@ -309,7 +341,7 @@ const StreamProvider = ({ children }: Props) => {
         leaveStream,
         streams,
         setStreams,
-        updateStream
+        updateStream,
       }}
     >
       {children}

@@ -56,7 +56,7 @@ const AppRoutes = () => {
 
   return (
     <div>
-      <Routes>
+      <Routes >
         <Route path="/login" element={<LoginRegisterMain />} />
         {/* {//isLoggedIn && ( */}
         <Route path="/" element={<NavbarAndPlayerBarMain />}>

@@ -12,7 +12,7 @@ export interface StreamContextData {
     imageUrl: string | null
   ) => void;
   joinStream: (streamId: string) => void;
-  leaveStream: () => void;
+  leaveStream: (client: Stomp.Client | null, ownerEnded: boolean, inStream: boolean) => void;
   sendData: (
     client: Stomp.Client,
     data: WebSocketMessage,

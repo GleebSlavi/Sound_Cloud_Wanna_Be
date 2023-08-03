@@ -36,10 +36,10 @@ public class StreamService {
     public void updateStream(UUID id, StreamInput streamInput) {
         int index = getStreamIndex(id);
         streams.set(index, streams.get(index).updateStream(
-                streamInput.getSongName(),
-                streamInput.getSongArtist(),
-                streamInput.getListeners(),
-                streamInput.getSongId()));
+                    streamInput.getSongName(),
+                    streamInput.getSongArtist(),
+                    streamInput.getListeners(),
+                    streamInput.getSongId()));
     }
 
     public List<StreamOutput> getStreams() {

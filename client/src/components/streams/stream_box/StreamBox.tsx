@@ -1,10 +1,6 @@
 import "./stream_box.css";
 import default_picture from "../../../pictures/default_profile_picture.png";
-import { User } from "../../../interfaces/User";
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { useStreamContext } from "../../../providers/StreamProvider";
-import MessageWindow from "../../message_window/MessageWindow";
 
 interface Props {
   id: string;
@@ -13,6 +9,8 @@ interface Props {
   listeners: number;
   ownerUsername: string;
   ownerImageUrl: string | null;
+  setMessage: React.Dispatch<React.SetStateAction<string>>
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const StreamBox = ({
@@ -22,11 +20,11 @@ const StreamBox = ({
   songName,
   songArtist,
   listeners,
+  setMessage,
+  setIsVisible
 }: Props) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [message, setMessage] = useState("");
 
-  const { isStreamOwner, joinStream, inStream, leaveStream } = useStreamContext();
+  const { isStreamOwner, joinStream, inStream, leaveStream, stompClient } = useStreamContext();
 
   const handleJoinStream = () => {
     if (isStreamOwner) {
@@ -34,8 +32,7 @@ const StreamBox = ({
       setMessage("You can't join a stream while streaming!");
     } else {
       if (inStream) {
-        console.log("in stream");
-        leaveStream();
+        leaveStream(stompClient, false, true);
       }
       joinStream(id);
     }
@@ -65,7 +62,6 @@ const StreamBox = ({
           <span className="listeners">{listeners}</span>
         </div>
       </div>
-      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} />
     </div>
   );
 };

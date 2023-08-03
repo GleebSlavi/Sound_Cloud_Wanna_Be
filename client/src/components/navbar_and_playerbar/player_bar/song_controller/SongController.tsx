@@ -1,5 +1,5 @@
 import "./song_controller.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBackward,
@@ -17,7 +17,7 @@ import { User } from "../../../../interfaces/User";
 import axios from "axios";
 
 const SongController = () => {
-  const { startStream, inStream, isStreamOwner, leaveStream } =
+  const { startStream, inStream, isStreamOwner, leaveStream, stompClient } =
     useStreamContext();
 
   const [streamIsActive, setStreamIsActive] = useState(false);
@@ -40,20 +40,31 @@ const SongController = () => {
     setIsShuffled,
   } = usePlayerContext();
 
-  useEffect(() => {
-    if (streamIsActive) {
-      window.addEventListener("beforeunload", leaveStream);
-    }
+  // const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  //   event.preventDefault();
+  //   event.returnValue = "onbeforeunload";
+  //   leaveStream(stompClient, false);
+  // };
 
-    return () => {
-      if (streamIsActive) {
-        window.removeEventListener("beforeunload", leaveStream);
-      }
-    };
-  }, []);
+  // const beforeunloadRef = useRef<HTMLDivElement>(null);
+
+  // useEffect(() => {
+  //   if (streamIsActive) {
+  //     window.addEventListener("beforeunload", handleBeforeUnload);
+  //   }
+
+  //   return () => {
+  //     if (streamIsActive) {
+  //       leaveStream(stompClient, false, inStream ? true : false);
+  //       window.removeEventListener("beforeunload", handleBeforeUnload);
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
     setStreamIsActive(isStreamOwner || inStream);
+    console.log(isStreamOwner);
+    console.log(inStream);
   }, [isStreamOwner, inStream]);
 
   useEffect(() => {
@@ -100,7 +111,7 @@ const SongController = () => {
       const id = uuidv4();
       startStream(id, user.username, user.imageUrl);
     } else {
-      leaveStream();
+      leaveStream(stompClient, false, inStream ? true : false);
     }
     setStreamIsActive(!streamIsActive);
   };
@@ -124,7 +135,7 @@ const SongController = () => {
   };
 
   return (
-    <div className="container song-controller-container">
+    <div /*ref={beforeunloadRef}*/ className="container song-controller-container">
       <div className="container shuffle-songs-container">
         <button
           className={`song-controller-button shuffle-button 
