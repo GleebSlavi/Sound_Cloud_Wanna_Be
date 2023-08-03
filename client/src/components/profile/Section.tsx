@@ -1,13 +1,19 @@
 import "./section.css";
 import ProfileInfo from "./profile_info/ProfileInfo";
 import PlaylistBox from "../playlist/playlist_box/PlaylistBox";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { Playlist } from "../../interfaces/Playlist";
 
 const ProfileSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
+  const [offset, setOffset] = useState(0);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const limit = 10;
 
   const location = useLocation();
 
@@ -24,7 +30,7 @@ const ProfileSection = () => {
         const responsePlaylists = await axios.get(
           `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/user/${
             checkPath() ? localStorage.getItem("id") : uuid
-          }`,
+          }?offset=${offset}&limit=${limit}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -33,21 +39,33 @@ const ProfileSection = () => {
         );
         setItems(
           checkPath()
-            ? responsePlaylists.data
-            : responsePlaylists.data.filter(
+            ? (prevItems) => [...prevItems, ...responsePlaylists.data]
+            : (prevItems) => [...prevItems, ...responsePlaylists.data.filter(
                 (playlist: Playlist) => playlist.type === "PUBLIC"
-              )
+              )]
         );
+
+        if (responsePlaylists.data.length < limit) {
+          setHasMoreItems(false);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchItems();
-  }, [setItems]);
+  }, [offset]);
+
+  const handleScroll = () => {
+    if (sectionRef.current && 
+      sectionRef.current.scrollTop + (window.innerHeight / 2) > sectionRef.current.scrollHeight / 2
+      && hasMoreItems) {
+        setOffset(offset + limit);
+  }
+  }
 
   return (
-    <section className="section profile-section">
+    <section ref={sectionRef} onScroll={handleScroll} className="section profile-section">
       <ProfileInfo />
       <div className="container playlists-header-container">
         <h3 className="playlists-header">

@@ -24,7 +24,7 @@ public class PlaylistController {
 
     @GetMapping("/users/{user-id}/{playlist-name}")
     public ResponseEntity<Void> getPlaylistByNameAndUserId(@PathVariable("user-id") UUID userId,
-                                                     @PathVariable("playlist-name") String playlistName) {
+                                                           @PathVariable("playlist-name") String playlistName) {
         return service.getPlaylistByNameAndUserId(userId, playlistName) != null ?
                 ResponseEntity.ok().build() :
                 ResponseEntity.notFound().build();
@@ -48,8 +48,10 @@ public class PlaylistController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<PlaylistOutput> getAllPlaylistsByUser(@PathVariable("userId") UUID userId) {
-        return service.getPlaylistsByUser(userId);
+    public List<PlaylistOutput> getAllPlaylistsByUser(@PathVariable("userId") UUID userId,
+                                                      @RequestParam("offset") Integer offset,
+                                                      @RequestParam("limit") Integer limit) {
+        return service.getPlaylistsByUser(userId, offset, limit);
     }
 
     @GetMapping("/{id}")

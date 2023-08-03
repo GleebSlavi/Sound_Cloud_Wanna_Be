@@ -1,5 +1,6 @@
 .playlist-page-section {
   grid-template-rows: 1.5fr 0.35fr 2.5fr;
+  height: 82%;
 }
 
 .playlist-page-info-container {

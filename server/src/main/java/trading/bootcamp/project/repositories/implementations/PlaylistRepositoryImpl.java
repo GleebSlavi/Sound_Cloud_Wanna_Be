@@ -23,9 +23,9 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<PlaylistEntity> listPlaylistsByUser(UUID userId) {
+    public List<PlaylistEntity> listPlaylistsByUser(UUID userId, Integer offset, Integer limit) {
         return jdbcTemplate.query(Queries.LIST_PLAYLISTS_BY_USER,
-                new PlaylistRowMapper(), userId.toString());
+                new PlaylistRowMapper(), userId.toString(), limit, offset);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 SELECT id, user_id, name, description, is_all_songs, create_date, type, image_url
                 FROM playlist
                 WHERE user_id = ?
-                LIMIT 100;
+                LIMIT ? OFFSET ?;
                 """;
 
         public final static String GET_PLAYLIST_BY_ID = """

@@ -32,8 +32,8 @@ public class PlaylistService {
 
     private final ElasticsearchPlaylistRepository searchRepository;
 
-    public List<PlaylistOutput> getPlaylistsByUser(UUID userId) {
-        return playlistRepository.listPlaylistsByUser(userId)
+    public List<PlaylistOutput> getPlaylistsByUser(UUID userId, Integer offset, Integer limit) {
+        return playlistRepository.listPlaylistsByUser(userId, offset, limit)
             .stream()
             .map(playlist -> ToOutputMappers.toPlaylistOutput(userRepository, playlist))
             .toList();

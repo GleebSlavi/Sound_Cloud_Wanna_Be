@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface PlaylistRepository {
 
-    List<PlaylistEntity> listPlaylistsByUser(UUID userId);
+    List<PlaylistEntity> listPlaylistsByUser(UUID userId, Integer offset, Integer limit);
 
     List<PlaylistEntity> searchForPlaylists(List<String> ids);
 
