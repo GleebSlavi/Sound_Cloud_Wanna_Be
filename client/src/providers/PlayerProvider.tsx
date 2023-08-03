@@ -61,7 +61,7 @@ const PlayerProvider = ({ children }: Props) => {
         if (!conditionShuffle || songCurrentTine === -1) {
           setCurrentTime(0);
         } else  {
-          setCurrentTime(songCurrentTine + 2.76);
+          setCurrentTime(songCurrentTine);
         }
         setIsPlaying(true);
       } else {

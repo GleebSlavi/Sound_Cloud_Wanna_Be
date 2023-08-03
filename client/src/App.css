@@ -4,6 +4,7 @@
   background-color: rgba(6, 1, 13, 0.925);
 }
 
+
 * {
   overscroll-behavior: none;
 }
@@ -16,8 +17,9 @@
   width: 100%;
   top: 9.7%;
   bottom: 8%;
+  height: 82%;
   background-color: transparent;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .container {

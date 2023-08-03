@@ -34,6 +34,10 @@ const PlaylistPageSection = () => {
   const [isDeleteWindowVisible, setIsDeleteWindowVisible] = useState(false);
   const [messageWindowVisible, setMessageWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [hasMoreItems, setHasMoreItems] = useState(true);
+
+  const limit = 8;
 
   const { inStream } = useStreamContext();
 
@@ -50,7 +54,7 @@ const PlaylistPageSection = () => {
     isShuffled,
     setOriginalPlaylist,
     originalPlaylist,
-    setPlayingPlaylistId
+    setPlayingPlaylistId,
   } = usePlayerContext();
 
   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
@@ -60,6 +64,74 @@ const PlaylistPageSection = () => {
 
   const burgerMenuRef = useRef<HTMLDivElement>(null);
   const burgerButtonRef = useRef<SVGSVGElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const responsePlaylist = await axios.get(
+          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/${uuid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setPlaylistData(responsePlaylist.data);
+        setImageUrl(
+          responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : ""
+        );
+
+        const responseFavorite = await axios.get(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            "id"
+          )}/favorite/${uuid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setIsFavorite(responseFavorite.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [typeChanged, uuid, setPlaylistData]);
+
+  
+  useEffect(() => {
+      (async () => {
+        try {
+          const responseSongs = await axios.get(
+            `${
+              process.env.REACT_APP_PLAYLISTS_ENDPOINT
+            }/${uuid}/songs?offset=${offset}&limit=${limit}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          setItems((prevItems) => [...prevItems, ...responseSongs.data]);
+
+          if (responseSongs.data.length < limit) {
+            setHasMoreItems(false);
+          }
+          console.log(responseSongs.data);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+  }, [offset]);
+
+  const handleScroll = () => {
+    if (sectionRef.current && 
+        sectionRef.current.scrollTop + (window.innerHeight / 2) > sectionRef.current.scrollHeight / 2
+        && hasMoreItems) {
+          setOffset(offset + limit);
+    }
+  };
 
   const handleClickOutside = (event: any) => {
     const clickedOnBurgerButton = burgerButtonRef.current?.contains(
@@ -82,49 +154,6 @@ const PlaylistPageSection = () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const responsePlaylist = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/${uuid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        setPlaylistData(responsePlaylist.data);
-        setImageUrl(
-          responsePlaylist.data.imageUrl ? responsePlaylist.data.imageUrl : ""
-        );
-
-        const responseSongs = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}/songs`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        setItems(responseSongs.data);
-
-        const responseFavorite = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
-            "id"
-          )}/favorite/${uuid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        setIsFavorite(responseFavorite.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [typeChanged, uuid, setPlaylistData, setItems]);
 
   const onSpanClick = () => {
     setIsVisible(false);
@@ -222,7 +251,7 @@ const PlaylistPageSection = () => {
   };
 
   return (
-    <section className="section playlist-page-section">
+    <section ref={sectionRef} onScroll={handleScroll} className="section playlist-page-section">
       <div className="container playlist-page-info-container">
         <div className="container playlist-info-left-container">
           <div className="container playlist-page-picture-container">

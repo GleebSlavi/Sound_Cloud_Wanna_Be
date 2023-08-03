@@ -80,9 +80,9 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     }
 
     @Override
-    public List<SongEntity> getSongsInPlaylist(UUID playlistId) {
+    public List<SongEntity> getSongsInPlaylist(UUID playlistId, Integer offset, Integer limit) {
         return jdbcTemplate.query(Queries.GET_SONGS_IN_PLAYLIST_IDS,
-            new SongRowMapper(), playlistId.toString());
+            new SongRowMapper(), playlistId.toString(), limit, offset);
     }
 
     @Override
@@ -190,7 +190,8 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
                 SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
                 FROM playlist_song ps
                 JOIN song s ON ps.song_id = s.id
-                WHERE playlist_id = ?;
+                WHERE playlist_id = ?
+                LIMIT ? OFFSET ?;
                 """;
     }
 }

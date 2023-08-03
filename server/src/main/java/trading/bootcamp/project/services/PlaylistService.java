@@ -119,8 +119,8 @@ public class PlaylistService {
         }
     }
 
-    public List<SongOutput> getSongsInPlaylist(UUID playlistId) {
-        return playlistRepository.getSongsInPlaylist(playlistId)
+    public List<SongOutput> getSongsInPlaylist(UUID playlistId, Integer offset, Integer limit) {
+        return playlistRepository.getSongsInPlaylist(playlistId, offset, limit)
             .stream()
             .map(song -> ToOutputMappers.toSongOutput(userRepository, song))
             .toList();

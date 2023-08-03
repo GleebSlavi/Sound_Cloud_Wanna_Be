@@ -23,7 +23,7 @@ const StreamsSection = () => {
         console.log(error);
       }
     })();
-  }, []);
+  }, [streams]);
 
   return (
     <section className="section streams-section">

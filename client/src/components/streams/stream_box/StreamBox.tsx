@@ -37,7 +37,6 @@ const StreamBox = ({
         console.log("in stream");
         leaveStream();
       }
-      console.log(id);
       joinStream(id);
     }
   }

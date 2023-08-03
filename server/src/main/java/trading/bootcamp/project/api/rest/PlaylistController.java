@@ -74,8 +74,10 @@ public class PlaylistController {
     }
 
     @GetMapping("/{playlistId}/songs")
-    public List<SongOutput> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId) {
-        return service.getSongsInPlaylist(playlistId);
+    public List<SongOutput> getSongsInPlaylistIDs(@PathVariable("playlistId") UUID playlistId,
+                                                  @RequestParam("offset") Integer offset,
+                                                  @RequestParam("limit") Integer limit) {
+        return service.getSongsInPlaylist(playlistId, offset, limit);
     }
 
     @PostMapping("/{playlistId}/add/{songId}")

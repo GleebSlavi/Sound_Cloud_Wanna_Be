@@ -11,7 +11,6 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
     <BrowserRouter>
       <PlayerProvider>
         <StreamProvider>
@@ -19,5 +18,4 @@ root.render(
         </StreamProvider>
       </PlayerProvider>
     </BrowserRouter>
-  </React.StrictMode>
 );
