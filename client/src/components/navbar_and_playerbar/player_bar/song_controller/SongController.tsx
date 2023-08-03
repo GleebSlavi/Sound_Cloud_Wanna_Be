@@ -63,8 +63,6 @@ const SongController = () => {
 
   useEffect(() => {
     setStreamIsActive(isStreamOwner || inStream);
-    console.log(isStreamOwner);
-    console.log(inStream);
   }, [isStreamOwner, inStream]);
 
   useEffect(() => {

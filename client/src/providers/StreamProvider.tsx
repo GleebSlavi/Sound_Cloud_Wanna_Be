@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useState, useRef, useEffect } from "react";
 import { StreamContextData } from "../interfaces/StreamContextData";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -64,10 +64,12 @@ const StreamProvider = ({ children }: Props) => {
     setSong,
     setIsPlaying,
     setPlayingPlaylistId,
-    currentTime,
     currentSongId,
     setCurrentPlaylistIndex,
   } = usePlayerContext();
+
+  const dataRef = useRef<WebSocketMessage>();
+  dataRef.current = streamData;
 
   const createClient = (isOwner: boolean, streamId: string) => {
     const socket: WebSocket = new SockJS("http://10.16.6.17:8080/ws");
@@ -84,6 +86,7 @@ const StreamProvider = ({ children }: Props) => {
           }
         );
 
+
         client.subscribe(`/topic/stream/${streamId}`, (message) => {
           if (message.body) {
             const receivedData: WebSocketMessage = JSON.parse(message.body);
@@ -93,7 +96,6 @@ const StreamProvider = ({ children }: Props) => {
         });
 
         if (!hasJoined) {
-          console.log(streamId);
           client.send(
             `/app/user-join/${streamId}`,
             {},
@@ -106,12 +108,7 @@ const StreamProvider = ({ children }: Props) => {
           `/topic/user-join-notification/${streamId}`,
           (message) => {
             if (message.body) {
-              const updatedData: WebSocketMessage = {
-                ...streamData,
-                currentTime: currentTime,
-                delay: Date.now(),
-              };
-              sendData(client, updatedData, streamId);
+              sendData(client, dataRef.current!, streamId);
             }
           }
         );
@@ -135,15 +132,13 @@ const StreamProvider = ({ children }: Props) => {
       setPlayingPlaylistId(id);
       setCurrentSongId(message.songId);
 
-      console.log(Date.now());
-      console.log(message.delay);
-      console.log((Date.now() - message.delay!) / 50);
+      console.log(message.currentTime!)
       setSong(
         0,
         true,
         true,
         message.currentTime !== 0
-          ? message.currentTime + (Date.now() - message.delay!) / 50
+          ? message.currentTime + (Date.now() - message.delay!) / 700
           : -1
       );
       setIsPlaying(message.isPlaying);
@@ -274,9 +269,10 @@ const StreamProvider = ({ children }: Props) => {
     streamId: string
   ) => {
     if (client && data) {
-      setStreamData(data);
       const jsonData = JSON.stringify(data);
+      console.log(data.currentTime);
       await client.send(`/app/send-data/${streamId}`, {}, jsonData);
+      console.log(data.currentTime);
     }
   };
 

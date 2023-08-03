@@ -33,51 +33,6 @@ const PlayerBar = () => {
     updateStream,
   } = useStreamContext();
 
-  // useEffect(() => {
-  //   const currentSong = currentPlaylist.songs[currentPlaylistIndex];
-  //   if (currentSong && audioRef.current) {
-  //       const dataToSend: WebSocketMessage = {
-  //         songId: currentSong.id,
-  //         songUrl: currentSong.cloudUrl,
-  //         songName: currentSong.name,
-  //         songArtist: currentSong.artist,
-  //         songImageUrl: currentSong.imageUrl,
-  //         isPlaying: isPlaying,
-  //         currentTime: currentTime,
-  //       }
-  //       setStreamData(dataToSend);
-
-  //     audioRef.current.src = currentSong.cloudUrl;
-  //     if (!isPlaying) {
-  //       audioRef.current.pause();
-  //       audioRef.current.currentTime = currentTime;
-  //       if (isStreamOwner) {
-  //       const updatedData: WebSocketMessage = {
-  //         ...dataToSend,
-  //         isPlaying: false,
-  //         currentTime: currentTime
-  //       }
-  //       setStreamData(updatedData);
-  //       console.log(updatedData);
-  //       sendData(stompClient!, updatedData);
-  //     }
-  //     } else {
-  //       audioRef.current.currentTime = currentTime;
-  //       audioRef.current.play();
-  //       if (isStreamOwner) {
-  //         const updatedData: WebSocketMessage = {
-  //           ...dataToSend,
-  //           isPlaying: true,
-  //           currentTime: currentTime
-  //         }
-  //         setStreamData(updatedData);
-  //         sendData(stompClient!, updatedData);
-  //       }
-  //     }
-  //   }
-
-  // }, [playingPlaylistId, currentPlaylistIndex, isPlaying])
-
   useEffect(() => {
     if (currentPlaylistIndex === -1 && audioRef.current) {
       audioRef.current.pause();
@@ -103,8 +58,6 @@ const PlayerBar = () => {
           const updatedData: WebSocketMessage = {
             ...dataToSend,
             isPlaying: isPlaying,
-            currentTime: currentTime,
-            delay: Date.now(),
           };
           setStreamData(updatedData);
           if (currentSong.id !== currentSongId) {
@@ -130,6 +83,11 @@ const PlayerBar = () => {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
+      setStreamData((prevStreamData) => ({
+        ...prevStreamData,
+        currentTime: audioRef.current!.currentTime,
+        delay: Date.now()
+      }));
     }
   };
 
