@@ -11,6 +11,7 @@
   color: white;
   text-align: center;
   font-family: 'Press Start 2P';
+  border: 3px solid white;
   transition: transform 0.15s height 0.15s, width 0.15s font-size 0.15s border-radius 0.15s;
 }
 

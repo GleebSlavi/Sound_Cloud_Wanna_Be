@@ -30,8 +30,8 @@
   display: grid;
   width: 80%;
   height: 80%;
-  background-color: black;
   border-radius: 10px;
+  border: 3px solid white;
 }
 
 .playlist-name {

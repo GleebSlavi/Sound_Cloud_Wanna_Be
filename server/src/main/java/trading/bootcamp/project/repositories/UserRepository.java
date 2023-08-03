@@ -27,7 +27,7 @@ public interface UserRepository {
 
     int updateUserImageUrl(UUID id, String imageUrl);
 
-    List<PlaylistEntity> getUserFavouritePlaylists(UUID userId);
+    List<PlaylistEntity> getUserFavouritePlaylists(UUID userId, Integer offset, Integer limit);
 
     int insertFavoritePlaylist(UUID userId, UUID playlistId);
 

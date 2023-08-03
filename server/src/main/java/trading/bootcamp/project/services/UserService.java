@@ -46,14 +46,19 @@ public class UserService {
     }
 
     public List<UserOutput> searchForUsers(String search) {
-        List<String> ids = searchRepository.searchForUser(search);
+        try {
+            List<String> ids = searchRepository.searchForUser(search);
 
-        return !ids.isEmpty()
-                ? userRepository.searchForUsers(ids)
-                .stream()
-                .map(ToOutputMappers::toUserOutput)
-                .toList()
-                : Collections.emptyList();
+            return !ids.isEmpty()
+                    ? userRepository.searchForUsers(ids)
+                    .stream()
+                    .map(ToOutputMappers::toUserOutput)
+                    .toList()
+                    : Collections.emptyList();
+
+        } catch (NoSuchUserException e) {
+            return Collections.emptyList();
+        }
     }
 
     public UserOutput getUserById(UUID id) throws NoSuchUserException {
@@ -173,8 +178,8 @@ public class UserService {
     }
 
 
-    public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId) {
-        return userRepository.getUserFavouritePlaylists(userId)
+    public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId, Integer offset, Integer limit) {
+        return userRepository.getUserFavouritePlaylists(userId, offset, limit)
             .stream()
             .map(playlist -> ToOutputMappers.toPlaylistOutput(userRepository, playlist))
             .toList();

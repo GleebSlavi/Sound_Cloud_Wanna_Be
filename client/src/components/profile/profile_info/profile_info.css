@@ -19,6 +19,7 @@
 }
 
 .profile-picture {
+  border: 3px solid white;
   position: absolute;
   top: 5%;
   left: 5%;

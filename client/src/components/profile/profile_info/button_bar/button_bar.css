@@ -11,7 +11,7 @@
   font-family: 'Press Start 2P';
   font-size: 0.857rem;
   border-radius: 18px;
-  border: darkmagenta;
+  border: 3px solid white;
   text-align: center;
   cursor: pointer;
   background-color: rgb(70, 0, 70);

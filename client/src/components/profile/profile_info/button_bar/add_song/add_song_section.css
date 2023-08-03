@@ -27,6 +27,7 @@
   border-radius: 10px;
   cursor: pointer;
   transition: filter 0.15s;
+  border: 3px solid white;
 }
 
 .change-image-text-song {
@@ -78,7 +79,7 @@
   width: 70%;
   height: 50%;
   border-radius: 10px;
-  border: darkmagenta;
+  border: 3px solid white;
   font-family: 'Press Start 2P';
   font-size: 0.8125rem;
   text-align: center;

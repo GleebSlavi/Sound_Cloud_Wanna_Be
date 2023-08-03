@@ -55,8 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/playlists")
-    public List<PlaylistOutput> getUserFavouritePlaylists(@PathVariable("userId") UUID userId) {
-        return service.getUserFavouritePlaylists(userId);
+    public List<PlaylistOutput> getUserFavouritePlaylists(@PathVariable("userId") UUID userId,
+                                                          @RequestParam("offset") Integer offset,
+                                                          @RequestParam("limit") Integer limit) {
+        System.out.println(offset);
+        System.out.println(limit);
+        return service.getUserFavouritePlaylists(userId, offset, limit);
     }
 
     @GetMapping("/{userId}/favorite/{playlistId}")

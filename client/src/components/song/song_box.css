@@ -25,6 +25,7 @@
   border-radius: 10px;
   transition: filter 0.15s;
   cursor: pointer;
+  border: 2px solid white;
 }
 
 .song-box-song-data-container {

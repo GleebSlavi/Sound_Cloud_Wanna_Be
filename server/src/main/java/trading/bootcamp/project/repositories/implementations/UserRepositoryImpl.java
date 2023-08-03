@@ -76,9 +76,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId) {
+    public List<PlaylistEntity> getUserFavouritePlaylists(UUID userId, Integer offset, Integer limit) {
         return jdbcTemplate.query(Queries.GET_USER_FAVOURITE_PLAYLISTS,
-                new PlaylistRowMapper(), userId.toString());
+                new PlaylistRowMapper(), userId.toString(), limit, offset);
     }
 
     @Override
@@ -165,7 +165,8 @@ public class UserRepositoryImpl implements UserRepository {
                 SELECT p.id, p.user_id, p.name, p.description, p.is_all_songs, p.create_date, p.type, p.image_url
                 FROM user_playlist up
                 JOIN playlist p ON up.playlist_id = p.id
-                WHERE up.user_id = ?;
+                WHERE up.user_id = ?
+                LIMIT ? OFFSET ?;
                 """;
 
         public final static String INSERT_FAVORITE_PLAYLIST = """

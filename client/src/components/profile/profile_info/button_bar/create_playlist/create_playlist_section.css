@@ -43,6 +43,7 @@
 .playlist-picture {
   width: 60%;
   height: 60%;
+  border: 3px solid white;
 }
 
 
