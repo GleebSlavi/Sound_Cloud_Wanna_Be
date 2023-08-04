@@ -64,7 +64,7 @@ public class SongService {
 
         SongEntity song = ToEntityMappers.toSongEntity(songInput);
         if (songRepository.createSong(song.id(), song.userId(), song.name(),
-            song.artist(), song.releaseYear(), song.duration(), song.type(), song.uploadDate(),
+            song.artist(), song.releaseYear(), song.duration(), song.uploadDate(),
             song.imageUrl(), song.cloudUrl()) != 1) {
             throw new IllegalStateException("Couldn't insert the song");
         }

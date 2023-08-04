@@ -8,9 +8,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import MessageWindow from "../../../../message_window/MessageWindow";
+import { useEffect } from "react";
+import { User } from "../../../../../interfaces/User";
+import PremiumWindow from "./premium_window/PremiumWindow";
 
 const AddSongSection = () => {
-  const [isFreeSong, setFreeSong] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [name, setName] = useState("");
@@ -19,14 +21,43 @@ const AddSongSection = () => {
   const [file, setFile] = useState<File | null>(null);
   const [duration, setDuration] = useState(0);
   const [audioSrc, setAudioSrc] = useState("");
+  const [user, setUser] = useState<User>({
+    id: "",
+    username: "",
+    imageUrl: null,
+    isPremium: false,
+    leftSongs: 0,
+    role: "",
+  });
 
   const [isVisible, setIsVisible] = useState(false);
+  const [premiumWindowVisible, setPremiumWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
 
   const fileInputRefSong = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            "id"
+          )}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const handleFileSelectSong = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files && event.target.files[0];
@@ -51,6 +82,13 @@ const AddSongSection = () => {
   const handleAddSong = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
+    if (!user.isPremium && user.leftSongs === 0) {
+      setPremiumWindowVisible(true);
+      setMessage(
+        "You've run out of uploads. Become premium user and upload unlimited or wait till Monday."
+      );
+    }
+
     if (file) {
       let songS3Url = await uploadFileToS3(
         file,
@@ -73,20 +111,42 @@ const AddSongSection = () => {
         artist: artist,
         releaseYear: year,
         duration: duration,
-        type: isFreeSong ? "FREE" : "PAID",
         imageUrl: image ? imgS3Url : null,
         cloudUrl: songS3Url,
       };
 
       try {
-        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT!}`, songData, {
+        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT}`, songData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+
+        if (!user.isPremium) {
+          const userData = {
+            leftSongs: user.leftSongs - 1,
+          };
+
+          await axios.patch(
+            `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+              "id"
+            )}`,
+            userData,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+        }
         setIsVisible(true);
-        setMessage(`Successfuly uploaded ${name} by ${artist}.`);
-        navigate("/profile");
+        setMessage(
+          `Successfuly uploaded ${name} by ${artist}.${
+            !user.isPremium
+              ? ` You got ${user.leftSongs - 1} uploads left.`
+              : ""
+          }`
+        );
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           setIsVisible(true);
@@ -121,38 +181,6 @@ const AddSongSection = () => {
                 setImage={setImage}
                 setImageUrl={setImageUrl}
               />
-              <div className="container upload-container">
-                <div className="container upload-button-container">
-                  <button
-                    className="upload-button"
-                    type="button"
-                    onClick={() => fileInputRefSong.current?.click()}
-                  >
-                    Upload song
-                  </button>
-                  <input
-                    type="file"
-                    ref={fileInputRefSong}
-                    style={{ display: "none" }}
-                    accept=".mp3"
-                    onChange={handleFileSelectSong}
-                  />
-                  <audio
-                    ref={audioRef}
-                    controls={false}
-                    preload="metadata"
-                    src={audioSrc}
-                    onLoadedMetadata={handleMetadataLoaded}
-                  />
-                </div>
-                <div className="container uploaded-song-icon-container">
-                  <FontAwesomeIcon
-                    className="uploaded-song-icon"
-                    icon={!file ? faX : faCheck}
-                    onClick={handleIconClick}
-                  />
-                </div>
-              </div>
             </div>
             <div className="container add-song-info-container">
               <div className="container song-data-input-container">
@@ -203,29 +231,36 @@ const AddSongSection = () => {
                     />
                   </div>
                 </div>
-                <div className="container song-type-container">
-                  <div className="song-label-container">
-                    <label className="song-label">Type:</label>
+                <div className="container upload-container">
+                  <div className="container upload-button-container">
+                    <button
+                      className="upload-button"
+                      type="button"
+                      onClick={() => fileInputRefSong.current?.click()}
+                    >
+                      Upload song
+                    </button>
+                    <input
+                      type="file"
+                      ref={fileInputRefSong}
+                      style={{ display: "none" }}
+                      accept=".mp3"
+                      onChange={handleFileSelectSong}
+                    />
+                    <audio
+                      ref={audioRef}
+                      controls={false}
+                      preload="metadata"
+                      src={audioSrc}
+                      onLoadedMetadata={handleMetadataLoaded}
+                    />
                   </div>
-                  <div className="container song-types">
-                    <button
-                      className={`type-playlist ${
-                        !isFreeSong ? "" : "active-playlist-type"
-                      }`}
-                      type="button"
-                      onClick={() => setFreeSong(true)}
-                    >
-                      Free
-                    </button>
-                    <button
-                      className={`type-playlist ${
-                        isFreeSong ? "" : "active-playlist-type"
-                      }`}
-                      type="button"
-                      onClick={() => setFreeSong(false)}
-                    >
-                      Paid
-                    </button>
+                  <div className="container uploaded-song-icon-container">
+                    <FontAwesomeIcon
+                      className="uploaded-song-icon"
+                      icon={!file ? faX : faCheck}
+                      onClick={handleIconClick}
+                    />
                   </div>
                 </div>
               </div>
@@ -241,6 +276,12 @@ const AddSongSection = () => {
       <MessageWindow
         isVisible={isVisible}
         setIsVisible={setIsVisible}
+        message={message}
+        profileButtonPage={true}
+      />
+      <PremiumWindow
+        isVisible={premiumWindowVisible}
+        setIsVisible={setPremiumWindowVisible}
         message={message}
       />
     </section>

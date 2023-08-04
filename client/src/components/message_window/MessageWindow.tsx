@@ -1,14 +1,25 @@
 import { String } from "aws-sdk/clients/cloudtrail";
 import "./message_window.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   message: String;
+  profileButtonPage: boolean;
 }
 
-const MessageWindow = ({ isVisible, setIsVisible, message }: Props) => {
+const MessageWindow = ({ isVisible, setIsVisible, message, profileButtonPage }: Props) => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    setIsVisible(false);
+    if (profileButtonPage) {
+      navigate("/profile");
+    }
+  }
+
   return (
     <div className={`${isVisible && "container message-window-container"}`}>
       <div className={`message-window${isVisible ? " visible" : ""}`}>
@@ -19,7 +30,7 @@ const MessageWindow = ({ isVisible, setIsVisible, message }: Props) => {
           <button
             className="ok-button"
             type="button"
-            onClick={() => setIsVisible(false)}
+            onClick={handleOnClick}
           >
             OK
           </button>

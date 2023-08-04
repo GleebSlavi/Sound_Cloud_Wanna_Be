@@ -78,7 +78,7 @@ const StreamProvider = ({ children }: Props) => {
     client.connect({}, (frame) => {
       if (!isOwner) {
         client.subscribe(
-          `/topic/stream-end-notification/${streamId}`,
+          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream-end-notification/${streamId}`,
           (message) => {
             if (message.body) {
               leaveStream(client, true, true);
@@ -87,7 +87,7 @@ const StreamProvider = ({ children }: Props) => {
         );
 
 
-        client.subscribe(`/topic/stream/${streamId}`, (message) => {
+        client.subscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream/${streamId}`, (message) => {
           if (message.body) {
             const receivedData: WebSocketMessage = JSON.parse(message.body);
             setStreamData(receivedData);
@@ -97,7 +97,7 @@ const StreamProvider = ({ children }: Props) => {
 
         if (!hasJoined) {
           client.send(
-            `/app/user-join/${streamId}`,
+            `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/user-join/${streamId}`,
             {},
             JSON.stringify({ message: "User has joined!" })
           );
@@ -105,7 +105,7 @@ const StreamProvider = ({ children }: Props) => {
         }
       } else {
         client.subscribe(
-          `/topic/user-join-notification/${streamId}`,
+          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/user-join-notification/${streamId}`,
           (message) => {
             if (message.body) {
               sendData(client, dataRef.current!, streamId);
@@ -271,7 +271,7 @@ const StreamProvider = ({ children }: Props) => {
     if (client && data) {
       const jsonData = JSON.stringify(data);
       console.log(data.currentTime);
-      await client.send(`/app/send-data/${streamId}`, {}, jsonData);
+      await client.send(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/send-data/${streamId}`, {}, jsonData);
       console.log(data.currentTime);
     }
   };
@@ -280,14 +280,14 @@ const StreamProvider = ({ children }: Props) => {
     if (client) {
       if (isStreamOwner) {
         await client.send(
-          `/app/stream-end/${streamId}`,
+          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/stream-end/${streamId}`,
           {},
           JSON.stringify({ message: "Stream has ended!" })
         );
         setIsStreamOwner(false);
         removeStreamFromServer(streamId);
         client.disconnect(() => {
-          client.unsubscribe(`/topic/user-join-notification/${streamId}`);
+          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/user-join-notification/${streamId}`);
         });
       } else if (inStream) {
         console.log("here");
@@ -304,8 +304,8 @@ const StreamProvider = ({ children }: Props) => {
           );
         }
         client.disconnect(() => {
-          client.unsubscribe(`/topic/stream/${streamId}`);
-          client.unsubscribe(`/topic/stream-end-notification/${streamId}`);
+          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream/${streamId}`);
+          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream-end-notification/${streamId}`);
         });
         if (!ownerEnded) {
           updateStream(

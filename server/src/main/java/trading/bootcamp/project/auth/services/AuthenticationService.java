@@ -24,7 +24,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         UserEntity user = userService.addUser(new UserInput(request.getEmail(), request.getUsername(),
-            null, request.getPassword(), null));
+            null, request.getPassword(), null, false, 4));
 
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()

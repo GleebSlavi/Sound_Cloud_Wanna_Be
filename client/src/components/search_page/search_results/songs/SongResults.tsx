@@ -77,7 +77,7 @@ const SongResults = ({ items }: Props) => {
           />
         ))}
       </div>
-      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} />
+      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} profileButtonPage={false} />
     </div>
   );
 };

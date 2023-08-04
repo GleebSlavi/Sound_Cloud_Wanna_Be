@@ -4,7 +4,10 @@ CREATE TABLE user(
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     create_date DATE NOT NULL,
-    image_url VARCHAR(255)
+    image_url VARCHAR(255),
+    is_premium boolean NOT NULL,
+    subscription_end_date DATE NULL,
+    left_songs INTEGER NOT NULL
 );
 
 CREATE TABLE song(

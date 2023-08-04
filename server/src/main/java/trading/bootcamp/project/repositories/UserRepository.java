@@ -1,5 +1,6 @@
 package trading.bootcamp.project.repositories;
 
+import org.springframework.cglib.core.Local;
 import trading.bootcamp.project.repositories.entities.PlaylistEntity;
 import trading.bootcamp.project.repositories.entities.UserEntity;
 
@@ -13,19 +14,25 @@ public interface UserRepository {
 
     List<UserEntity> searchForUsers(List<String> ids);
 
-    Optional<UserEntity> getUserById(UUID id);
+    List<UserEntity> getAllPremiumUsers();
 
-    Optional<UserEntity> getUserByEmail(String email);
+    Optional<UserEntity> getUserById(UUID id);
 
     Optional<UserEntity> getUserByUsername(String username);
 
-    int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl);
+    int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl, Boolean isPremium, Integer leftSongs, LocalDate subEndDate);
 
     int deleteUser(UUID id);
 
     int updateUserPassword(UUID id, String password);
 
     int updateUserImageUrl(UUID id, String imageUrl);
+
+    int updateUserLeftSongs(UUID id, Integer leftSongs);
+
+    int resetLeftSongs(Integer leftSongs);
+
+    int updateUserPremium(UUID id, Boolean isPremium, LocalDate endDate);
 
     List<PlaylistEntity> getUserFavouritePlaylists(UUID userId, Integer offset, Integer limit);
 

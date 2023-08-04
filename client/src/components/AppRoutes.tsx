@@ -12,6 +12,7 @@ import NotFoundSection from "./not_found/Section";
 import PlaylistPageSection from "./playlist/playlist_page/Section";
 import SearchPageSection from "./search_page/Section";
 import AddToPlaylistSection from "./song/burger_menu/add_to_playlist/AddToPlaylist";
+import SubscribeSection from "./subscribe/Sections";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const AppRoutes = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (/*!isValidToken()*/ false && isValidRoute(location.pathname)) {
+    if (!isValidToken() && isValidRoute(location.pathname)) {
       localStorage.clear();
       navigate("/login");
     }
@@ -47,6 +48,7 @@ const AppRoutes = () => {
       /^\/search\/(songs|playlists|users)\/.*?$/,
       /^\/user\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
       /^\/add-to-playlist\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+      "/subscription"
     ];
     return validRoutes.includes(path);
   };
@@ -58,7 +60,7 @@ const AppRoutes = () => {
     <div>
       <Routes >
         <Route path="/login" element={<LoginRegisterMain />} />
-        {/* {//isLoggedIn && ( */}
+        {isLoggedIn && (
         <Route path="/" element={<NavbarAndPlayerBarMain />}>
           <Route index element={<HomeSection />} />
           <Route path="/streams" element={<StreamsSection />} />
@@ -67,6 +69,7 @@ const AppRoutes = () => {
             path="/add-to-playlist/:uuid"
             element={<AddToPlaylistSection />}
           />
+          <Route path="/subscription" element={<SubscribeSection />} />
           <Route path="/profile">
             <Route index element={<ProfileSection />} />
             <Route path=":uuid" element={<ProfileSection />} />
@@ -76,10 +79,10 @@ const AppRoutes = () => {
           </Route>
           <Route path="/playlist/:uuid" element={<PlaylistPageSection />} />
         </Route>
-        {/* )} */}
-        {/* // {!isValidPath && (   */}
+        )}
+        {!isValidPath && (  
         <Route path="*" element={<NotFoundSection />} />
-        {/* //)} */}
+        )}
       </Routes>
     </div>
   );

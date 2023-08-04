@@ -176,6 +176,7 @@ const CreatePlaylistSection = () => {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         message={message}
+        profileButtonPage={true}
       />
     </section>
   );

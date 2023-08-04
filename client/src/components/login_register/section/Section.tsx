@@ -37,6 +37,7 @@ const Section = () => {
         isVisible={isMessageWindowVisible}
         setIsVisible={setIsMessageWindowVisible}
         message={windowMessage}
+        profileButtonPage={false}
       />
     </section>
   );

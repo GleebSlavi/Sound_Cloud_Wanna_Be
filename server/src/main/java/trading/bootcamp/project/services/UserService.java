@@ -1,6 +1,7 @@
 package trading.bootcamp.project.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
 @Transactional
 public class UserService {
 
+    private static final Integer LEFT_SONGS = 4;
     private static final String EMAIL_REGEX = "^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
     private final UserRepository userRepository;
@@ -77,6 +79,7 @@ public class UserService {
         return user.get();
     }
 
+
     public void updateUser(UUID id, UserInput inputUser) {
         Optional<UserEntity> user = userRepository.getUserById(id);
         if (user.isEmpty()) {
@@ -101,6 +104,12 @@ public class UserService {
             if (userRepository.updateUserImageUrl(id, inputUser.getImageUrl()) != 1) {
                 throw new IllegalStateException("Couldn't update the user");
             }
+        }
+
+        if (inputUser.getLeftSongs() != null) {
+            if (userRepository.updateUserLeftSongs(id, inputUser.getLeftSongs()) != 1) {{
+                throw new IllegalStateException("Couldn't update the user");
+            }}
         }
     }
 
@@ -144,7 +153,8 @@ public class UserService {
         }
 
         UserEntity user = ToEntityMappers.toUserEntity(userInput);
-        userRepository.createUser(user.getId(), user.getUsername(), user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getCreateDate(), user.getImageUrl());
+        userRepository.createUser(user.getId(), user.getUsername(), user.getEmail(), passwordEncoder.encode(user.getPassword()),
+                user.getCreateDate(), user.getImageUrl(), user.getIsPremium(), user.getLeftSongs(), null);
 
         // Create all songs playlist and add it to favorites
         UUID playlistId = UUID.randomUUID();
@@ -183,5 +193,10 @@ public class UserService {
             .stream()
             .map(playlist -> ToOutputMappers.toPlaylistOutput(userRepository, playlist))
             .toList();
+    }
+
+    @Scheduled(cron = "0 0 * * * 1")
+    public void resetLeftSongs() {
+        userRepository.resetLeftSongs(LEFT_SONGS);
     }
 }

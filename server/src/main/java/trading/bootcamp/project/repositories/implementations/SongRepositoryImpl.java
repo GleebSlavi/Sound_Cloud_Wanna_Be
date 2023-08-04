@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import trading.bootcamp.project.repositories.SongRepository;
-import trading.bootcamp.project.repositories.entities.enums.SongType;
 import trading.bootcamp.project.repositories.entities.SongEntity;
 import trading.bootcamp.project.repositories.mappers.SongRowMapper;
 
@@ -42,9 +41,9 @@ public class SongRepositoryImpl implements SongRepository {
 
     @Override
     public int createSong(UUID id, UUID userId, String name, String artist, Integer releaseYear, Double duration,
-                          SongType type, LocalDate uploadDate, String imageUrl, String couldUrl) {
+                          LocalDate uploadDate, String imageUrl, String couldUrl) {
         return jdbcTemplate.update(Queries.INSERT_SONG, id.toString(), userId.toString(),
-            name, artist, releaseYear, duration, type.name(), uploadDate.toString(), imageUrl, couldUrl);
+            name, artist, releaseYear, duration, uploadDate.toString(), imageUrl, couldUrl);
     }
 
     @Override

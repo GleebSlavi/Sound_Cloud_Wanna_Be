@@ -27,6 +27,8 @@ const SongController = () => {
     id: "",
     username: "",
     imageUrl: null,
+    isPremium: false,
+    leftSongs: 0,
     role: "",
   });
 
@@ -179,6 +181,7 @@ const SongController = () => {
         isVisible={isMessageWindowVissible}
         setIsVisible={setIsMessageWindowVisible}
         message={message}
+        profileButtonPage={false}
       />
     </div>
   );

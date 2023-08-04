@@ -26,16 +26,26 @@ public class UserEntity implements UserDetails {
 
     private final String imageUrl;
 
+    private final Boolean isPremium;
+
+    private final Integer leftSongs;
+
+    private final LocalDate subscriptionEndDate;
+
     private final Role role;
 
     public UserEntity(UUID id, String username, String email,
-                      String password, LocalDate createDate, String imageUrl) {
+                      String password, LocalDate createDate, String imageUrl,
+                      Boolean isPremium, Integer leftSongs, LocalDate subscriptionEndDate) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
         this.imageUrl = imageUrl;
+        this.isPremium = isPremium;
+        this.leftSongs = leftSongs;
+        this.subscriptionEndDate = subscriptionEndDate;
         role = Role.USER;
     }
 

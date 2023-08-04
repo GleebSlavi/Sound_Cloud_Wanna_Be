@@ -152,6 +152,7 @@ const EditProfileSection = () => {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         message={message}
+        profileButtonPage={true}
       />
     </section>
   );

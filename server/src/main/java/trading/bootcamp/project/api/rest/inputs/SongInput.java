@@ -3,7 +3,6 @@ package trading.bootcamp.project.api.rest.inputs;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import trading.bootcamp.project.repositories.entities.enums.SongType;
 
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ public class SongInput {
 
     private final Double duration;
 
-    private final SongType type;
 
     private final String imageUrl;
 
@@ -31,7 +29,6 @@ public class SongInput {
                      @JsonProperty("artist") String artist,
                      @JsonProperty("releaseYear") Integer releaseYear,
                      @JsonProperty("duration") Double duration,
-                     @JsonProperty("type") String type,
                      @JsonProperty("imageUrl") String imageUrl,
                      @JsonProperty("cloudUrl") String cloudUrl) {
         this.userid = UUID.fromString(userId);
@@ -39,7 +36,6 @@ public class SongInput {
         this.artist = artist;
         this.releaseYear = releaseYear;
         this.duration = duration;
-        this.type = SongType.valueOf(type);
         this.imageUrl = imageUrl;
         this.cloudUrl = cloudUrl;
     }

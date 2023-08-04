@@ -18,7 +18,7 @@ public class ToOutputMappers {
     public static SongOutput toSongOutput(UserRepository repository, SongEntity song) {
         String username = repository.getUserById(song.userId()).get().getUsername();
         return new SongOutput(song.id(), song.userId(), song.name(), song.artist(), song.releaseYear(),
-            song.duration(), song.type(), song.uploadDate(), song.imageUrl(), song.cloudUrl(), username);
+            song.duration(), song.uploadDate(), song.imageUrl(), song.cloudUrl(), username);
     }
 
     public static PlaylistOutput toPlaylistOutput(UserRepository repository, PlaylistEntity playlist) {
@@ -28,7 +28,7 @@ public class ToOutputMappers {
     }
 
     public static UserOutput toUserOutput(UserEntity user) {
-        return new UserOutput(user.getId(), user.getUsername(), user.getImageUrl(), user.getRole());
+        return new UserOutput(user.getId(), user.getUsername(), user.getImageUrl(), user.getIsPremium(), user.getLeftSongs(), user.getRole());
     }
 
     public static StreamOutput toStreamOutput(UserRepository repository, StreamInput stream) {

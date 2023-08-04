@@ -49,7 +49,6 @@ const StreamsSection = () => {
           />
         ))}
       </div>
-      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} />
     </section>
   );
 };

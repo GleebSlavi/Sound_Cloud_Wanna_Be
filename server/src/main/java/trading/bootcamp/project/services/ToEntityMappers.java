@@ -13,7 +13,8 @@ import java.util.UUID;
 public class ToEntityMappers {
 
     public static UserEntity toUserEntity(UserInput user) {
-        return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getNewPassword(), LocalDate.now(), null);
+        return new UserEntity(UUID.randomUUID(), user.getUsername(), user.getEmail(), user.getNewPassword(), LocalDate.now(), null,
+                user.getIsPremium(), user.getLeftSongs(), LocalDate.now());
    }
 
     public static PlaylistEntity toPlaylistEntity(PlaylistInput playlist) {
@@ -23,6 +24,6 @@ public class ToEntityMappers {
 
     public static SongEntity toSongEntity(SongInput song) {
         return new SongEntity(UUID.randomUUID(), song.getUserid(), song.getName(), song.getArtist(),
-            song.getReleaseYear(), song.getDuration(), song.getType(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
+            song.getReleaseYear(), song.getDuration(), LocalDate.now(), song.getImageUrl(), song.getCloudUrl());
     }
 }

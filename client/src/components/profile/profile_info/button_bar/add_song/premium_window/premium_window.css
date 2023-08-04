@@ -1,0 +1,44 @@
+
+
+.premium-buttons-container {
+  grid-template-columns: 1fr 1fr;
+  gap: 15%;
+}
+
+.accept-button-container{
+  justify-items: end;
+}
+
+.decline-button-container {
+  justify-items: start;
+}
+
+.premium-button {
+  width: 45%;
+  height: 45%;
+  border-radius: 14px;
+  border: 3px solid white;
+  font-family: 'Press Start 2P';
+  font-size: 0.875rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgb(70, 0, 70);
+  color: white;
+  transition: transform 0.15s, width 0.15s, height 0.15s, font-size 0.15s, border-radius 0.15s;
+
+}
+
+.premium-button:hover {
+  width: 45.5%;
+  height: 45.5%;
+  font-size: 0.9rem;
+  border-radius: 15px;
+}
+
+.premium-button:active {
+  transform: translate(1px, 1px);
+  width: 45%;
+  height: 45%;
+  font-size: 0.9rem;
+  border-radius: 14px;
+}

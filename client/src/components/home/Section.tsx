@@ -5,15 +5,20 @@ import { Playlist } from "../../interfaces/Playlist";
 import axios from "axios";
 import MessageWindow from "../message_window/MessageWindow";
 import { useRef} from 'react';
+import PremiumWindow from "../profile/profile_info/button_bar/add_song/premium_window/PremiumWindow";
+import { useLocation } from "react-router-dom";
 
 const HomeSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [isPremiumWindowVisible, setIsPremiumWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [offset, setOffset] = useState(0);
   const [hasMoreItems, setHasMoreItems] = useState(true);
 
   const sectionRef = useRef<HTMLElement>(null);
+
+  const location = useLocation();
 
   const limit = 10;
 
@@ -43,6 +48,13 @@ const HomeSection = () => {
 
     fetchItems();
   }, [offset]);
+
+  useEffect(() => {
+    if (location.state && location.state.from == "/login") {
+      setIsPremiumWindowVisible(true);
+      setMessage("Become subscriber and get unlimited uploads.");
+    }
+  }, []);
 
   const handleScroll = () => {
     if (sectionRef.current && 
@@ -75,7 +87,9 @@ const HomeSection = () => {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         message={message}
+        profileButtonPage={false}
       />
+      <PremiumWindow  isVisible={isPremiumWindowVisible} setIsVisible={setIsPremiumWindowVisible} message={message} />
     </section>
   );
 };

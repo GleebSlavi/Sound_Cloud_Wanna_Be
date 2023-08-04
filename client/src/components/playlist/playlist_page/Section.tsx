@@ -379,6 +379,7 @@ const PlaylistPageSection = () => {
         isVisible={messageWindowVisible}
         setIsVisible={setMessageWindowVisible}
         message={message}
+        profileButtonPage={false}
       />
     </section>
   );

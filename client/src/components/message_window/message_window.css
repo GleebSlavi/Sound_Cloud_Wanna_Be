@@ -26,7 +26,7 @@
 }
 
 .message-text {
-  width: 95%;
+  width: 80%;
   user-select: none;
   font-family: 'Press Start 2P';
   text-align: center;
@@ -39,7 +39,7 @@
   width: 30%;
   height: 45%;
   border-radius: 14px;
-  border: darkmagenta;
+  border: 3px solid white;
   font-family: 'Press Start 2P';
   font-size: 0.875rem;
   text-align: center;
@@ -57,7 +57,7 @@
 }
 
 .ok-button:active {
-  transform: translate(2px, 2px);
+  transform: translate(1px, 1px);
   width: 30%;
   height: 45%;
   font-size: 0.9375rem;

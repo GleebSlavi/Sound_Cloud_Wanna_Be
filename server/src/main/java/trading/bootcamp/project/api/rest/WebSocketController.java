@@ -10,19 +10,19 @@ import trading.bootcamp.project.api.rest.inputs.WebSocketMessage;
 public class WebSocketController {
 
     @MessageMapping("/send-data/{streamId}")
-    @SendTo("/topic/stream/{streamId}")
+    @SendTo("/api/streams/topic/stream/{streamId}")
     public WebSocketMessage broadcastMessage(@Payload WebSocketMessage message) {
         return message;
     }
 
     @MessageMapping("/user-join/{streamId}")
-    @SendTo("/topic/user-join-notification/{streamId}")
+    @SendTo("/api/streams/topic/user-join-notification/{streamId}")
     public String handleUserJoin(@Payload String message) {
         return message;
     }
 
     @MessageMapping("/stream-end/{streamId}")
-    @SendTo("/topic/stream-end-notification/{streamId}")
+    @SendTo("/api/streams/topic/stream-end-notification/{streamId}")
     public String handleStreamEnd(@Payload String message) {
         return message;
     }

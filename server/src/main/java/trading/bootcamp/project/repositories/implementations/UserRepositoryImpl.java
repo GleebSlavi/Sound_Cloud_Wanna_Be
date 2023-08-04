@@ -34,15 +34,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<UserEntity> getUserById(UUID id) {
-        return jdbcTemplate.query(Queries.GET_USER_BY_ID, new UserRowMapper(), id.toString())
-                .stream()
-                .findFirst();
+    public List<UserEntity> getAllPremiumUsers() {
+        return jdbcTemplate.query(Queries.GET_PREMIUM_USERS,
+                new UserRowMapper());
     }
 
     @Override
-    public Optional<UserEntity> getUserByEmail(String email) {
-        return jdbcTemplate.query(Queries.GET_USER_BY_EMAIL, new UserRowMapper(), email)
+    public Optional<UserEntity> getUserById(UUID id) {
+        return jdbcTemplate.query(Queries.GET_USER_BY_ID, new UserRowMapper(), id.toString())
                 .stream()
                 .findFirst();
     }
@@ -55,9 +54,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl) {
+    public int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl,
+                          Boolean isPremium, Integer leftSongs, LocalDate subsEndDate) {
         return jdbcTemplate.update(Queries.INSERT_USER,
-                id.toString(), username, email, password, createDate.toString(), imageUrl);
+                id.toString(), username, email, password, createDate.toString(), imageUrl, isPremium, leftSongs, subsEndDate);
     }
 
     @Override
@@ -73,6 +73,21 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int updateUserImageUrl(UUID id, String imageUrl) {
         return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "image_url"), imageUrl, id.toString());
+    }
+
+    @Override
+    public int updateUserLeftSongs(UUID id, Integer leftSongs) {
+        return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "left_songs"), leftSongs, id.toString());
+    }
+
+    @Override
+    public int resetLeftSongs(Integer leftSongs) {
+        return jdbcTemplate.update(Queries.RESET_LEFT_SONGS, leftSongs);
+    }
+
+    @Override
+    public int updateUserPremium(UUID id, Boolean isPremium, LocalDate endDate) {
+        return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "is_premium = ?, subscription_end_date"), isPremium, endDate.toString(), id.toString());
     }
 
     @Override
@@ -103,16 +118,21 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static class Queries {
 
+        public final static String GET_PREMIUM_USERS = """
+                SELECT id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date
+                FROM user
+                WHERE is_premium = 1;
+                """;
+
+        public final static String RESET_LEFT_SONGS = """
+                UPDATE user
+                SET left_songs = ?;
+                """;
+
         public final static String UPDATE_USER = """
                 UPDATE user
                 SET %s = ?
                 WHERE id = ?;
-                """;
-
-        private final static String GET_USER_BY = """
-                SELECT id, username, email, password, create_date, image_url
-                FROM user
-                WHERE %s = ?;
                 """;
 
         public final static String IS_FAVORITE_PLAYLIST = """
@@ -120,6 +140,18 @@ public class UserRepositoryImpl implements UserRepository {
                 FROM user_playlist
                 WHERE user_id = ? AND
                       playlist_id = ?;
+                """;
+
+        public final static String GET_USER_BY_ID = """
+                SELECT id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date
+                FROM user
+                WHERE id = ?;
+                """;
+
+        public final static String GET_USER_BY_USERNAME = """
+                SELECT id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date
+                FROM user
+                WHERE username = ?;
                 """;
 
         public final static String ADD_TO_FAVORITES = """
@@ -133,27 +165,21 @@ public class UserRepositoryImpl implements UserRepository {
                 """;
 
         public final static String LIST_USERS = """
-                SELECT id, username, email, password, create_date, image_url
+                SELECT id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date
                 FROM user
                 LIMIT 100;
                 """;
 
         public final static String SEARCH_FOR_USERS = """
-                SELECT id, username, email, password, create_date, image_url
+                SELECT id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date
                 FROM user
                 WHERE id IN (%s)
                 LIMIT 100;
                 """;
 
-        public final static String GET_USER_BY_ID = String.format(GET_USER_BY, "id");
-
-        public final static String GET_USER_BY_USERNAME = String.format(GET_USER_BY, "username");
-
-        public final static String GET_USER_BY_EMAIL = String.format(GET_USER_BY, "email");
-
         public final static String INSERT_USER = """
-                INSERT INTO user(id, username, email, password, create_date, image_url)
-                VALUES(?, ?, ?, ?, ?, ?);
+                INSERT INTO user(id, username, email, password, create_date, image_url, is_premium, left_songs, subscription_end_date)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_USER = """

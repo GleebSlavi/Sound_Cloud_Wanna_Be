@@ -1,0 +1,65 @@
+
+
+.subscription-field {
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 55%;
+  height: 75%;
+  background-color: black;
+  box-shadow: 
+    -1px 0 50px rgba(70, 0, 70, 0.6),
+    1px 0 50px rgba(70, 0, 70, 0.6);
+  border-radius: 15px;
+}
+
+.subscription-form {
+  grid-template-rows: 4fr 1fr;
+}
+
+.subscription-field-container {
+  width: 90%;
+  height: 85%;
+  border: 4px solid white;
+  border-radius: 2px;
+}
+
+.subscription-button-container {
+  padding-bottom: 3%;
+}
+
+.subscription-button {
+  height: 45%;
+  width: 27%;
+}
+
+.subscription-button:hover {
+  height: 45.5%;
+  width: 27.5%;
+}
+
+.subscription-button:active {
+  height: 45%;
+  width: 27.5%;
+}
+
+.payment-element {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.StripeElement {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 60%;
+  height: 85%;
+}
+
+.p-FieldLabel {
+  font-family: "Press Start 2P";
+}
+
