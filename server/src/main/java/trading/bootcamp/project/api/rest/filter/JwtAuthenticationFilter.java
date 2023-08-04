@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth;
+package trading.bootcamp.project.api.rest.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import trading.bootcamp.project.auth.services.JwtService;
+import trading.bootcamp.project.services.JwtService;
 
 import java.io.IOException;
 

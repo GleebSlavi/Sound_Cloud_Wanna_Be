@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth.api.rest;
+package trading.bootcamp.project.api.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import trading.bootcamp.project.auth.services.AuthenticationService;
-import trading.bootcamp.project.auth.requests.AuthenticationRequest;
-import trading.bootcamp.project.auth.requests.RegisterRequest;
-import trading.bootcamp.project.auth.responses.AuthenticationResponse;
+import trading.bootcamp.project.services.AuthenticationService;
+import trading.bootcamp.project.api.rest.inputs.AuthenticationRequest;
+import trading.bootcamp.project.api.rest.inputs.RegisterRequest;
+import trading.bootcamp.project.services.outputs.AuthenticationResponse;
 import trading.bootcamp.project.exceptions.*;
 
 @RestController

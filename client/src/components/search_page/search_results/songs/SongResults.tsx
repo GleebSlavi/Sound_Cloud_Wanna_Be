@@ -74,6 +74,7 @@ const SongResults = ({ items }: Props) => {
             playlistUploaderId=""
             isAllSongsPlaylist={false}
             songId=""
+            songUrl={item.cloudUrl}
           />
         ))}
       </div>

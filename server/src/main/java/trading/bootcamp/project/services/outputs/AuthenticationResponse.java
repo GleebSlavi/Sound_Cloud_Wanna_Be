@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth.responses;
+package trading.bootcamp.project.services.outputs;
 
 import lombok.*;
 

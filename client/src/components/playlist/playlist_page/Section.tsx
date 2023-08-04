@@ -368,12 +368,14 @@ const PlaylistPageSection = () => {
             playlistUploaderId={playlistData.userId}
             isAllSongsPlaylist={playlistData.isAllSongs}
             songId={item.id}
+            songUrl={item.cloudUrl}
           />
         ))}
       </div>
       <DeleteWindow
         isVisible={isDeleteWindowVisible}
         setIsVisible={setIsDeleteWindowVisible}
+        imgKey={playlistData.imageUrl}
       />
       <MessageWindow
         isVisible={messageWindowVisible}

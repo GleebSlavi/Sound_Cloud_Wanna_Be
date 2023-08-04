@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth.services;
+package trading.bootcamp.project.services;
 
 
 import lombok.RequiredArgsConstructor;
@@ -6,11 +6,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.UserInput;
-import trading.bootcamp.project.auth.requests.AuthenticationRequest;
-import trading.bootcamp.project.auth.requests.RegisterRequest;
-import trading.bootcamp.project.auth.responses.AuthenticationResponse;
+import trading.bootcamp.project.api.rest.inputs.AuthenticationRequest;
+import trading.bootcamp.project.api.rest.inputs.RegisterRequest;
+import trading.bootcamp.project.services.outputs.AuthenticationResponse;
 import trading.bootcamp.project.repositories.entities.UserEntity;
-import trading.bootcamp.project.services.UserService;
 
 @Service
 @RequiredArgsConstructor

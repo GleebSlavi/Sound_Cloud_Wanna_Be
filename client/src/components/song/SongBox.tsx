@@ -19,6 +19,7 @@ interface Props {
   playlistUploaderId: string;
   isAllSongsPlaylist: boolean;
   songId: string;
+  songUrl: string;
 }
 
 const SongBox = ({
@@ -33,7 +34,8 @@ const SongBox = ({
   inPlaylist,
   playlistUploaderId,
   isAllSongsPlaylist,
-  songId
+  songId,
+  songUrl
 }: Props) => {
   const [hovering, setHovering] = useState(false);
 
@@ -107,7 +109,8 @@ const SongBox = ({
         <div ref={burgerMenuRef}>
           <BurgerMenuSong isYours={
           playlistUploaderId === localStorage.getItem("id")} isBarVisible={isBurgerMenuVisible}
-            inPlaylist={inPlaylist} songId={songId} isAllSongs={isAllSongsPlaylist}/>
+            inPlaylist={inPlaylist} songId={songId} isAllSongs={isAllSongsPlaylist}
+            imgKey={imageUrl} songKey={songUrl}/>
         </div>
       </div>
     </div>

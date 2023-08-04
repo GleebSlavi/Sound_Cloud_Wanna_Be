@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth.requests;
+package trading.bootcamp.project.api.rest.inputs;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

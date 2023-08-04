@@ -1,13 +1,15 @@
 import axios from "axios";
 import "./delete_window.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { deleteFileFromS3 } from "../../../../s3/s3";
 
 interface Props {
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
+  imgKey: string | null;
 }
 
-const DeleteWindow = ({ isVisible, setIsVisible }: Props) => {
+const DeleteWindow = ({ isVisible, setIsVisible, imgKey }: Props) => {
   const navigate = useNavigate();
 
   const { uuid } = useParams();
@@ -22,6 +24,14 @@ const DeleteWindow = ({ isVisible, setIsVisible }: Props) => {
           },
         }
       );
+
+      if (imgKey) {
+        deleteFileFromS3(
+          imgKey,
+          process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET
+        );
+      }
+
       setIsVisible(false);
       navigate("/profile");
     } catch (error) {

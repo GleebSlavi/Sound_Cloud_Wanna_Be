@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { nanoid } from 'nanoid';
 
 export const s3 = new S3Client({
@@ -32,5 +32,18 @@ export const uploadFileToS3 = async (file: File, bucket: string | undefined,
   } catch (error) {
     alert("Couldn't upload the file! Please try again!");
     return "";
+  }
+}
+
+export const deleteFileFromS3 = async (key: string, bucket: string | undefined) => {
+  try {
+    const command = new DeleteObjectCommand({
+      Bucket: bucket,
+      Key: key
+    })
+
+    await s3.send(command);
+  } catch (error) {
+    alert("Couldn't delete the file! Please try again!");
   }
 }

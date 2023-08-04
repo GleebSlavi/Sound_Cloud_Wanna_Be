@@ -1,25 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./burger_menu_song.css"
 import axios from "axios";
+import { deleteFileFromS3 } from "../../../s3/s3";
 
 interface Props {
   isYours: boolean
   isBarVisible: boolean;
   inPlaylist: boolean;
   songId: string;
-  isAllSongs: boolean
+  isAllSongs: boolean;
+  imgKey: string | null;
+  songKey: string;
 }
 
 
-const BurgerMenuSong = ({ isYours, isBarVisible, inPlaylist, songId, isAllSongs }: Props) => {
+const BurgerMenuSong = ({ isYours, isBarVisible, inPlaylist, songId, isAllSongs, imgKey, songKey }: Props) => {
   const navigate = useNavigate();
 
   const { uuid } = useParams();
 
   const removeSongFromPlaylist = async () => {
     try {
-      !isAllSongs 
-        ? await axios.delete(
+      if (!isAllSongs) {
+        await axios.delete(
           `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}/remove/${songId}`,
           {
             headers: {
@@ -27,7 +30,8 @@ const BurgerMenuSong = ({ isYours, isBarVisible, inPlaylist, songId, isAllSongs 
             },
           }
         )
-        : await axios.delete(
+      } else {
+        await axios.delete(
           `${process.env.REACT_APP_SONGS_ENDPOINT}/${songId}`,
           {
             headers: {
@@ -35,6 +39,13 @@ const BurgerMenuSong = ({ isYours, isBarVisible, inPlaylist, songId, isAllSongs 
             },
           }
         )
+
+        deleteFileFromS3(songKey, process.env.REACT_APP_AWS_SONGS_BUCKET);
+        if (imgKey) {
+          deleteFileFromS3(imgKey, process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET);
+        }
+      }
+
       window.location.reload();
     } catch (error) {
       console.log(error);

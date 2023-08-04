@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import trading.bootcamp.project.auth.JwtAuthenticationFilter;
+import trading.bootcamp.project.api.rest.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
-                        .requestMatchers("/**")
+                        .requestMatchers("/api/auth/**", "/ws/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

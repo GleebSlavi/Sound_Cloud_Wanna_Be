@@ -1,4 +1,4 @@
-package trading.bootcamp.project.auth.services;
+package trading.bootcamp.project.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
