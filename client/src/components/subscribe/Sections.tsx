@@ -4,6 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { Appearance, StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 import SubscriptionForm from "./subscription_form/SubscriptionForm";
 import MessageWindow from "../message_window/MessageWindow";
+import { paymentsEndpoint, stripePublicApiKey } from "../../reusable_parameters/reusable_parameters";
 
 const SubscriptionSection = () => {
   const [clientSecret, setClientSecret] = useState("");
@@ -16,7 +17,7 @@ const SubscriptionSection = () => {
       }
 
       const response = await axios.post(
-        `${process.env.REACT_APP_PAYMENTS_ENDPOINT}`,
+        `${paymentsEndpoint}`,
         data,
         {
         headers: {
@@ -80,7 +81,7 @@ const options: StripeElementsOptions = {
   return (
     <section className="section subscription-section">
       {clientSecret && 
-        <Elements options={options} stripe={loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_API_KEY!)}>
+        <Elements options={options} stripe={loadStripe(stripePublicApiKey)}>
           <SubscriptionForm clientSecret={clientSecret}/>
         </Elements>
       } 

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import MessageWindow from "../../message_window/MessageWindow";
 import { error } from "console";
 import axios from "axios";
+import { usersEndpoint } from "../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   clientSecret: string;
@@ -29,7 +30,7 @@ const SubscriptionForm = ({ clientSecret }: Props) => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+          `${usersEndpoint}/${localStorage.getItem(
             "id"
           )}`,
           {
@@ -57,7 +58,7 @@ const SubscriptionForm = ({ clientSecret }: Props) => {
       };
 
       await axios.patch(
-        `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+        `${usersEndpoint}/${localStorage.getItem("id")}`,
         data,
         {
           headers: {

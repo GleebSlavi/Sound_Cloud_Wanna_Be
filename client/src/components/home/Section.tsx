@@ -7,6 +7,7 @@ import MessageWindow from "../message_window/MessageWindow";
 import { useRef} from 'react';
 import PremiumWindow from "../profile/profile_info/button_bar/add_song/premium_window/PremiumWindow";
 import { useLocation } from "react-router-dom";
+import { usersEndpoint } from "../../reusable_parameters/reusable_parameters";
 
 const HomeSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
@@ -26,7 +27,7 @@ const HomeSection = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+          `${usersEndpoint}/${localStorage.getItem(
             "id"
           )}/playlists?offset=${offset}&limit=${limit}`,
           {

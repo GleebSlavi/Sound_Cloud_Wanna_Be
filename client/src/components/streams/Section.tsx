@@ -4,6 +4,7 @@ import StreamBox from "./stream_box/StreamBox";
 import axios from "axios";
 import { useStreamContext } from "../../providers/StreamProvider";
 import MessageWindow from "../message_window/MessageWindow";
+import { streamsEndpoint } from "../../reusable_parameters/reusable_parameters";
 
 const StreamsSection = () => {
   const { setStreams, streams } = useStreamContext();
@@ -15,7 +16,7 @@ const StreamsSection = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_STREAMS_ENDPOINT}`,
+          `${streamsEndpoint}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

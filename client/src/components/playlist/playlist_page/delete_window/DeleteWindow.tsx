@@ -2,6 +2,7 @@ import axios from "axios";
 import "./delete_window.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteFileFromS3 } from "../../../../s3/s3";
+import { awsPlaylistPicturesBucket, playlistsEndpoint } from "../../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   isVisible: boolean;
@@ -17,7 +18,7 @@ const DeleteWindow = ({ isVisible, setIsVisible, imgKey }: Props) => {
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}`,
+        `${playlistsEndpoint}/${uuid}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,7 +29,7 @@ const DeleteWindow = ({ isVisible, setIsVisible, imgKey }: Props) => {
       if (imgKey) {
         deleteFileFromS3(
           imgKey,
-          process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET
+          awsPlaylistPicturesBucket
         );
       }
 

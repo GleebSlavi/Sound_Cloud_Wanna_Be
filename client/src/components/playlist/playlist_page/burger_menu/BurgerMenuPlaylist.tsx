@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import "./burger_menu.css"
 import axios from "axios";
+import { playlistsEndpoint, usersEndpoint } from "../../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   isYours: boolean;
@@ -22,7 +23,7 @@ const BurgerMenuPlaylist = ({ isYours, isBarVisible, onClick, isPublic, setTypeC
     try {
       !isFavorite
         ? await axios.post(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}/favorite/${uuid}`,
+          `${usersEndpoint}/${localStorage.getItem("id")}/favorite/${uuid}`,
           {
            headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -30,7 +31,7 @@ const BurgerMenuPlaylist = ({ isYours, isBarVisible, onClick, isPublic, setTypeC
           }
         )
         : await axios.delete(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}/favorite/${uuid}`,
+          `${usersEndpoint}/${localStorage.getItem("id")}/favorite/${uuid}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -53,7 +54,7 @@ const BurgerMenuPlaylist = ({ isYours, isBarVisible, onClick, isPublic, setTypeC
       }
 
       await axios.patch(
-        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${uuid}`,
+        `${playlistsEndpoint}/${uuid}`,
         data,
         {
           headers: {

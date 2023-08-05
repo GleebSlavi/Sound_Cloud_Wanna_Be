@@ -9,6 +9,7 @@ import { uploadFileToS3 } from "../../../../../s3/s3";
 import MessageWindow from "../../../../message_window/MessageWindow";
 import { useStreamContext } from "../../../../../providers/StreamProvider";
 import { Stream } from "../../../../../interfaces/Stream";
+import { awsProfilePicturesBucket, usersEndpoint } from "../../../../../reusable_parameters/reusable_parameters";
 
 const EditProfileSection = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -28,7 +29,7 @@ const EditProfileSection = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+          `${usersEndpoint}/${localStorage.getItem("id")}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +71,7 @@ const EditProfileSection = () => {
       if (image) {
         imgS3Url = await uploadFileToS3(
           image,
-          process.env.REACT_APP_AWS_PROFILE_PICTURES_BUCKET,
+          awsProfilePicturesBucket,
           null
         );
       }
@@ -82,7 +83,7 @@ const EditProfileSection = () => {
       };
 
       await axios.patch(
-        `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+        `${usersEndpoint}/${localStorage.getItem("id")}`,
         data,
         {
           headers: {

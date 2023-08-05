@@ -9,6 +9,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Song } from "../../interfaces/Song";
 import { User } from "../../interfaces/User";
 import axios from "axios";
+import { playlistsEndpoint, songsEndpoint, usersEndpoint } from "../../reusable_parameters/reusable_parameters";
 
 const SearchPageSection = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -40,11 +41,11 @@ const SearchPageSection = () => {
   useEffect(() => {
     (async () => {
       if (search) {
-        await fetchItems(setSongs, process.env.REACT_APP_SONGS_ENDPOINT!);
-        await fetchItems(setUsers, process.env.REACT_APP_USERS_ENDPOINT!);
+        await fetchItems(setSongs, songsEndpoint);
+        await fetchItems(setUsers, usersEndpoint);
         await fetchItems(
           setPlaylists,
-          process.env.REACT_APP_PLAYLISTS_ENDPOINT!
+          playlistsEndpoint
         );
       }
     })();

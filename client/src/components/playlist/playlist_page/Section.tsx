@@ -13,6 +13,7 @@ import BurgerMenuPlaylist from "./burger_menu/BurgerMenuPlaylist";
 import DeleteWindow from "./delete_window/DeleteWindow";
 import { useStreamContext } from "../../../providers/StreamProvider";
 import MessageWindow from "../../message_window/MessageWindow";
+import { playlistsEndpoint, usersEndpoint } from "../../../reusable_parameters/reusable_parameters";
 
 const PlaylistPageSection = () => {
   const [playlistData, setPlaylistData] = useState<Playlist>({
@@ -70,7 +71,7 @@ const PlaylistPageSection = () => {
     (async () => {
       try {
         const responsePlaylist = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/${uuid}`,
+          `${playlistsEndpoint}/${uuid}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +84,7 @@ const PlaylistPageSection = () => {
         );
 
         const responseFavorite = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+          `${usersEndpoint}/${localStorage.getItem(
             "id"
           )}/favorite/${uuid}`,
           {
@@ -105,7 +106,7 @@ const PlaylistPageSection = () => {
         try {
           const responseSongs = await axios.get(
             `${
-              process.env.REACT_APP_PLAYLISTS_ENDPOINT
+             playlistsEndpoint
             }/${uuid}/songs?offset=${offset}&limit=${limit}`,
             {
               headers: {

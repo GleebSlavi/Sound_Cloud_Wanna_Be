@@ -4,6 +4,7 @@ import { Playlist } from "../../../../interfaces/Playlist";
 import axios from "axios";
 import PlaylistBox from "../../../playlist/playlist_box/PlaylistBox";
 import { useParams } from "react-router-dom";
+import { playlistsEndpoint } from "../../../../reusable_parameters/reusable_parameters";
 
 
 const AddToPlaylistSection = () => {
@@ -15,7 +16,7 @@ const AddToPlaylistSection = () => {
     (async () => {
       try{
         const response = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${localStorage.getItem("id")}/song-not-in/${uuid}`,
+          `${playlistsEndpoint}/${localStorage.getItem("id")}/song-not-in/${uuid}`,
           {
             headers: {
              Authorization: `Bearer ${localStorage.getItem('token')}`,

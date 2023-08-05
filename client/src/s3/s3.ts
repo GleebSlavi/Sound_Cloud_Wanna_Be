@@ -1,10 +1,11 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { nanoid } from 'nanoid';
+import { awsAccessKeyId, awsBucketRegion } from '../reusable_parameters/reusable_parameters';
 
 export const s3 = new S3Client({
-  region: process.env.REACT_APP_AWS_BUCKET_REGION,
+  region: awsBucketRegion,
   credentials: {
-    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID ?? "",
+    accessKeyId: awsAccessKeyId,
     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY ?? ""
   },
 });
@@ -28,7 +29,7 @@ export const uploadFileToS3 = async (file: File, bucket: string | undefined,
     });
 
     await s3.send(command);
-    return `https://${bucket}.s3.${process.env.REACT_APP_AWS_BUCKET_REGION}.amazonaws.com/${key}`;
+    return `https://${bucket}.s3.${awsBucketRegion}.amazonaws.com/${key}`;
   } catch (error) {
     alert("Couldn't upload the file! Please try again!");
     return "";

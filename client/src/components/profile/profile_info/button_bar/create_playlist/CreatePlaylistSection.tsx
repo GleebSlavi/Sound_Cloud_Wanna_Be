@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ImageUpload from "../../../../image_upload/ImageUpload";
 import { uploadFileToS3 } from "../../../../../s3/s3";
 import MessageWindow from "../../../../message_window/MessageWindow";
+import { awsPlaylistPicturesBucket, playlistsEndpoint } from "../../../../../reusable_parameters/reusable_parameters";
 
 const CreatePlaylistSection = () => {
   const [isPrivateType, setPrivateType] = useState(false);
@@ -24,7 +25,7 @@ const CreatePlaylistSection = () => {
     if (image) {
       imgS3Url = await uploadFileToS3(
         image,
-        process.env.REACT_APP_AWS_PLAYLIST_PICTURES_BUCKET,
+        awsPlaylistPicturesBucket,
         null
       );
     }
@@ -38,7 +39,7 @@ const CreatePlaylistSection = () => {
     };
 
     await axios
-      .post(process.env.REACT_APP_PLAYLISTS_ENDPOINT!, playlistData, {
+      .post(playlistsEndpoint, playlistData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -66,7 +67,7 @@ const CreatePlaylistSection = () => {
 
     try {
       await axios.get(
-        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT!}/users/${localStorage.getItem(
+        `${playlistsEndpoint}/users/${localStorage.getItem(
           "id"
         )}/${name}`,
         {

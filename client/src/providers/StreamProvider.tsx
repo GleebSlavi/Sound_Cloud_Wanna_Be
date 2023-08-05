@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { usePlayerContext } from "./PlayerProvider";
 import { Song } from "../interfaces/Song";
 import axios from "axios";
+import { streamsEndpoint, websocketsEndpoint } from "../reusable_parameters/reusable_parameters";
 
 const StreamContext = createContext<StreamContextData>({
   stompClient: null,
@@ -78,7 +79,7 @@ const StreamProvider = ({ children }: Props) => {
     client.connect({}, (frame) => {
       if (!isOwner) {
         client.subscribe(
-          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream-end-notification/${streamId}`,
+          `${websocketsEndpoint}/topic/stream-end-notification/${streamId}`,
           (message) => {
             if (message.body) {
               leaveStream(client, true, true);
@@ -87,7 +88,7 @@ const StreamProvider = ({ children }: Props) => {
         );
 
 
-        client.subscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream/${streamId}`, (message) => {
+        client.subscribe(`${websocketsEndpoint}/topic/stream/${streamId}`, (message) => {
           if (message.body) {
             const receivedData: WebSocketMessage = JSON.parse(message.body);
             setStreamData(receivedData);
@@ -97,7 +98,7 @@ const StreamProvider = ({ children }: Props) => {
 
         if (!hasJoined) {
           client.send(
-            `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/user-join/${streamId}`,
+            `${websocketsEndpoint}/user-join/${streamId}`,
             {},
             JSON.stringify({ message: "User has joined!" })
           );
@@ -105,7 +106,7 @@ const StreamProvider = ({ children }: Props) => {
         }
       } else {
         client.subscribe(
-          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/user-join-notification/${streamId}`,
+          `${websocketsEndpoint}/topic/user-join-notification/${streamId}`,
           (message) => {
             if (message.body) {
               sendData(client, dataRef.current!, streamId);
@@ -161,7 +162,7 @@ const StreamProvider = ({ children }: Props) => {
         songArtist: streamData.songArtist,
         listeners: 0,
       };
-      await axios.post(`${process.env.REACT_APP_STREAMS_ENDPOINT}`, data, {
+      await axios.post(`${streamsEndpoint}`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -185,7 +186,7 @@ const StreamProvider = ({ children }: Props) => {
   const removeStreamFromServer = async (streamId: string) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_STREAMS_ENDPOINT}/${streamId}`,
+        `${streamsEndpoint}/${streamId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -216,7 +217,7 @@ const StreamProvider = ({ children }: Props) => {
         ownerImage: ownerImage
       };
       await axios.patch(
-        `${process.env.REACT_APP_STREAMS_ENDPOINT}/${streamId}`,
+        `${streamsEndpoint}/${streamId}`,
         data,
         {
           headers: {
@@ -273,7 +274,7 @@ const StreamProvider = ({ children }: Props) => {
     if (client && data) {
       const jsonData = JSON.stringify(data);
       console.log(data.currentTime);
-      await client.send(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/send-data/${streamId}`, {}, jsonData);
+      await client.send(`${websocketsEndpoint}/send-data/${streamId}`, {}, jsonData);
       console.log(data.currentTime);
     }
   };
@@ -282,14 +283,14 @@ const StreamProvider = ({ children }: Props) => {
     if (client) {
       if (isStreamOwner) {
         await client.send(
-          `${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/stream-end/${streamId}`,
+          `${websocketsEndpoint}/stream-end/${streamId}`,
           {},
           JSON.stringify({ message: "Stream has ended!" })
         );
         setIsStreamOwner(false);
         removeStreamFromServer(streamId);
         client.disconnect(() => {
-          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/user-join-notification/${streamId}`);
+          client.unsubscribe(`${websocketsEndpoint}/topic/user-join-notification/${streamId}`);
         });
       } else if (inStream) {
         console.log("here");
@@ -306,8 +307,8 @@ const StreamProvider = ({ children }: Props) => {
             null);
         }
         client.disconnect(() => {
-          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream/${streamId}`);
-          client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream-end-notification/${streamId}`);
+          client.unsubscribe(`${websocketsEndpoint}/topic/stream/${streamId}`);
+          client.unsubscribe(`${websocketsEndpoint}/topic/stream-end-notification/${streamId}`);
         });
         if (!ownerEnded) {
           updateStream(

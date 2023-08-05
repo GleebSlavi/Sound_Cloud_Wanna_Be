@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
 import { useLocation, useParams } from "react-router-dom";
+import { usersEndpoint } from "../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   setUsernameForPlaylist: React.Dispatch<React.SetStateAction<string>>;
@@ -26,7 +27,7 @@ const ProfileInfo = ({ setUsernameForPlaylist }: Props) => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${
+          `${usersEndpoint}/${
             checkPath() ? localStorage.getItem("id") : uuid
           }`,
           {

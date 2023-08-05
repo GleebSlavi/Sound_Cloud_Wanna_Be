@@ -3,6 +3,7 @@ import Field from "../field/Field";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { authEndpoint } from "../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,7 +64,7 @@ const RegisterForm = ({ setIsVisible, setMessage }: Props) => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_AUTH_ENDPOINT}/register`,
+        `${authEndpoint}/register`,
         registerData
       );
 

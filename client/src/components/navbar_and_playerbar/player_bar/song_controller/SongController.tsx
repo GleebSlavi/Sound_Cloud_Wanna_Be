@@ -17,6 +17,7 @@ import { User } from "../../../../interfaces/User";
 import axios from "axios";
 import cron from 'node-cron';
 import PremiumWindow from "../../../profile/profile_info/button_bar/add_song/premium_window/PremiumWindow";
+import { usersEndpoint } from "../../../../reusable_parameters/reusable_parameters";
 
 const SongController = () => {
   const { startStream, inStream, isStreamOwner, leaveStream, stompClient } =
@@ -53,7 +54,7 @@ const SongController = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+          `${usersEndpoint}/${localStorage.getItem(
             "id"
           )}`,
           {

@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { Playlist } from "../../interfaces/Playlist";
+import { playlistsEndpoint } from "../../reusable_parameters/reusable_parameters";
 
 
 const ProfileSection = () => {
@@ -30,7 +31,7 @@ const ProfileSection = () => {
     const fetchItems = async () => {
       try {
         const responsePlaylists = await axios.get(
-          `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/user/${
+          `${playlistsEndpoint}/user/${
             checkPath() ? localStorage.getItem("id") : uuid
           }?offset=${offset}&limit=${limit}`,
           {

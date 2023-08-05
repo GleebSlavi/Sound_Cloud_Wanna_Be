@@ -11,6 +11,7 @@ import MessageWindow from "../../../../message_window/MessageWindow";
 import { useEffect } from "react";
 import { User } from "../../../../../interfaces/User";
 import PremiumWindow from "./premium_window/PremiumWindow";
+import { awsSongBucket, awsSongPicturesBucket, songsEndpoint, usersEndpoint } from "../../../../../reusable_parameters/reusable_parameters";
 
 const AddSongSection = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -43,7 +44,7 @@ const AddSongSection = () => {
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+          `${usersEndpoint}/${localStorage.getItem(
             "id"
           )}`,
           {
@@ -92,7 +93,7 @@ const AddSongSection = () => {
     if (file) {
       let songS3Url = await uploadFileToS3(
         file,
-        process.env.REACT_APP_AWS_SONGS_BUCKET,
+        awsSongBucket,
         null
       );
 
@@ -100,7 +101,7 @@ const AddSongSection = () => {
       if (image) {
         imgS3Url = await uploadFileToS3(
           image,
-          process.env.REACT_APP_AWS_SONG_PICTURES_BUCKET,
+          awsSongPicturesBucket,
           null
         );
       }
@@ -116,7 +117,7 @@ const AddSongSection = () => {
       };
 
       try {
-        await axios.post(`${process.env.REACT_APP_SONGS_ENDPOINT}`, songData, {
+        await axios.post(`${songsEndpoint}`, songData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -128,7 +129,7 @@ const AddSongSection = () => {
           };
 
           await axios.patch(
-            `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            `${usersEndpoint}/${localStorage.getItem(
               "id"
             )}`,
             userData,

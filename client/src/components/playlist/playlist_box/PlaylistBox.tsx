@@ -2,6 +2,7 @@ import "./playlist_box.css";
 import playlist_default_picture from "../../../pictures/playlist_default_picture.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { playlistsEndpoint } from "../../../reusable_parameters/reusable_parameters";
 
 interface Props {
   id: string;
@@ -24,7 +25,7 @@ const PlaylistBox = ({ id, name, creator, imageUrl, songId }: Props) => {
   const handleAddSongToPlaylist = async () => {
     try {
       await axios.post(
-        `${process.env.REACT_APP_PLAYLISTS_ENDPOINT}/${id}/add/${songId}`,
+        `${playlistsEndpoint}/${id}/add/${songId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
