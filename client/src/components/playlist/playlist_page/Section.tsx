@@ -119,7 +119,6 @@ const PlaylistPageSection = () => {
           if (responseSongs.data.length < limit) {
             setHasMoreItems(false);
           }
-          console.log(responseSongs.data);
         } catch (error) {
           console.log(error);
         }

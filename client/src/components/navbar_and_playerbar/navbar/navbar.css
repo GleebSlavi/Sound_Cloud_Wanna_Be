@@ -59,7 +59,7 @@
 }
 
 .search-bar, .search-bar::placeholder {
-  text-indent: 2%;
+  text-indent: 3%;
   font-size: 0.8125rem;
 }
 

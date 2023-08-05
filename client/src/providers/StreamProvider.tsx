@@ -139,7 +139,7 @@ const StreamProvider = ({ children }: Props) => {
         true,
         true,
         message.currentTime !== 0
-          ? message.currentTime + (Date.now() - message.delay!) / 700
+          ? message.currentTime + ((Date.now() - message.delay!) / 100)
           : -1
       );
       setIsPlaying(message.isPlaying);
