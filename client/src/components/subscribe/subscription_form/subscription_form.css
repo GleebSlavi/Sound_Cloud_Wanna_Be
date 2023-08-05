@@ -1,8 +1,10 @@
-
+.payment-container {
+  grid-template-rows: 1fr;
+}
 
 .subscription-field {
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-rows: 1fr 5fr;
   align-items: center;
   justify-items: center;
   width: 55%;
@@ -12,6 +14,10 @@
     -1px 0 50px rgba(70, 0, 70, 0.6),
     1px 0 50px rgba(70, 0, 70, 0.6);
   border-radius: 15px;
+}
+
+.subscription-header {
+  padding-bottom: 0;
 }
 
 .subscription-form {
@@ -55,12 +61,13 @@
 .StripeElement {
   display: grid;
   grid-template-columns: 1fr;
-  background-color: white;
-  width: 60%;
-  height: 85%;
+  background-color: black;
+  width: 70%;
+  height: 90%;
 }
 
 .p-FieldLabel {
   font-family: "Press Start 2P";
 }
+
 

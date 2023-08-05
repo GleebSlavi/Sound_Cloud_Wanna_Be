@@ -5,8 +5,8 @@ import {
   useElements,
   CardElement,
 } from "@stripe/react-stripe-js";
-import "./subscription_form.css"
-import { StripeCardElementOptions } from "@stripe/stripe-js";
+import "./subscription_form.css";
+import { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useNavigate } from "react-router-dom";
 import MessageWindow from "../../message_window/MessageWindow";
 import { error } from "console";
@@ -16,9 +16,7 @@ interface Props {
   clientSecret: string;
 }
 
-const SubscriptionForm = ({
-  clientSecret,
-}: Props) => {
+const SubscriptionForm = ({ clientSecret }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -31,13 +29,15 @@ const SubscriptionForm = ({
     (async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem(
+            "id"
+          )}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
-        )
+        );
 
         if (response.data.isPremium) {
           setMessage("You are already a premium user!");
@@ -54,7 +54,7 @@ const SubscriptionForm = ({
     try {
       const data = {
         isPremium: true,
-      }
+      };
 
       await axios.patch(
         `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
@@ -64,11 +64,11 @@ const SubscriptionForm = ({
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
-      )
+      );
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,44 +77,62 @@ const SubscriptionForm = ({
       return;
     }
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)!
-      }
-    });
-    
-    const error = payload.error;
-    if (payload.paymentIntent?.status === "succeeded") {
-      setPremium();
-      setMessage("Payment successful!");
-      setRedirect(true);
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setMessage(submitError.message!);
+      setIsVisible(true);
+      return;
+    }
 
-    } else if (error?.type === "card_error" || error?.type === "validation_error") {
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {},
+      redirect: "if_required",
+    });
+
+    if (error) {
       setMessage(error.message!);
     } else {
-      setMessage("")
+      setPremium();
+      setMessage("Payment successful.");
+      setRedirect(true);
     }
 
     setIsVisible(true);
   };
 
-  const cardElementOptions: StripeCardElementOptions = {
-    style: {
-      
-    }
+  const options: StripePaymentElementOptions = {
+    layout: {
+      type: 'tabs',
+      defaultCollapsed: false,
+    },
   }
 
   return (
-    <div className="container subscription-field">
-      <form className="container subscription-form" onSubmit={handleSubmit}>
-        <div className="container subscription-field-container">
-          <CardElement className="card-element" />
+    <div className="container payment-container">
+      <div className="button-bar-field subscription-field">
+        <div className="container button-bar-header-container">
+          <h2 className="button-bar-header subscription-header">Card Info</h2>
         </div>
-        <div className="container subscription-button-container">
-          <button className="button-bar-button subscription-button">Subscribe</button>
-        </div>
-      </form>
-      <MessageWindow isVisible={isVisible} setIsVisible={setIsVisible} message={message} profileButtonPage={redirect} />
+        <form className="container button-bar-form" onSubmit={handleSubmit}>
+          <div className="container subscription-field-container">
+            <PaymentElement
+              className="card-element"
+              options={options}
+            />
+          </div>
+          <div className="container subscription-button-container">
+            <button className="button-bar-button">Subscribe</button>
+          </div>
+        </form>
+      </div>
+      <MessageWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message={message}
+        profileButtonPage={redirect}
+      />
     </div>
   );
 };

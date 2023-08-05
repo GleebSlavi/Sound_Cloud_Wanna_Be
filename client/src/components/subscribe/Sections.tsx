@@ -33,19 +33,44 @@ const SubscriptionSection = () => {
 }, []);
 
 const appearance: Appearance = {
-  theme: 'stripe',
+  theme: 'flat',
   variables: {
-    colorPrimary: 'rgb(70, 0, 70)',
-    borderRadius: '5px',
-    colorDanger: 'rgb(70, 0, 70)',
-    fontFamily: 'Press Start 2P'
+    fontFamily: 'Press Start 2P',
+    fontSizeBase: '16px',
+    colorDanger: 'rgb(100, 0, 100)',
+    colorWarning: 'rgb(100, 0, 100)',
+    spacingGridRow: "20px"
   },
   rules: {
+    '.Input::placeholder': {
+      color: 'black',
+      fontSize: '1.3rem',
+    },
+    '.Input': {
+      color: 'black',
+      border: '2px solid darkmagenta',
+      textIndent: '2px',
+      fontSize:  '1.3rem',
+    },
+    '.Input:hover': {
+      boxShadow: '1px 1px 5px rgba(70, 0, 70, 0.6)',
+      borderWidth: '3px'
+    },
+    '.Input:focus::placeholder': {
+      color: 'transparent'
+    },
     '.Label': {
-
-    }
+      color: 'white',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+    },
+    '.Error': {
+      fontSize: '1.3rem',
+      fontWeight: 'bold',
+    },
   }
 };
+
 
 const options: StripeElementsOptions = {
   clientSecret,

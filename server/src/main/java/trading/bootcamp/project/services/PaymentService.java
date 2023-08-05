@@ -5,16 +5,10 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import trading.bootcamp.project.api.rest.inputs.PaymentInput;
-import trading.bootcamp.project.repositories.UserRepository;
-import trading.bootcamp.project.repositories.entities.UserEntity;
 import trading.bootcamp.project.services.outputs.PaymentOutput;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
