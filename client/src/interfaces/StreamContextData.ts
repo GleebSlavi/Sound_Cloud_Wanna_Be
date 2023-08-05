@@ -27,6 +27,7 @@ export interface StreamContextData {
     streamId: string,
     songName: string | null,
     songArtist: string | null,
-    listeners: number | null
+    listeners: number | null,
+    ownerImage: string | null
   ) => void;
 }

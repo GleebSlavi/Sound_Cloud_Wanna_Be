@@ -19,7 +19,7 @@ public class StreamOutput {
 
     private final String ownerUsername;
 
-    private final String ownerImageUrl;
+    private String ownerImageUrl;
 
     private String songName;
 
@@ -27,7 +27,7 @@ public class StreamOutput {
 
     private Integer listeners;
 
-    public StreamOutput updateStream(String songName, String songArtist, Integer listeners, UUID songId) {
+    public StreamOutput updateStream(String songName, String songArtist, Integer listeners, UUID songId, String ownerImageUrl) {
         if (songName != null && songArtist != null && songId != null) {
             this.songArtist = songArtist;
             this.songName = songName;
@@ -36,6 +36,10 @@ public class StreamOutput {
 
         if (listeners != null) {
             this.listeners = listeners;
+        }
+
+        if (ownerImageUrl != null) {
+            this.ownerImageUrl = ownerImageUrl;
         }
         return this;
     }

@@ -36,7 +36,7 @@
 }
 
 .user-username-header {
-  font-size: 2.5rem;
+  font-size: 2.7rem;
   color: white;
   width: 80%;
   font-family: 'Press Start 2P';
@@ -44,6 +44,20 @@
   margin-top: 2%;
   margin-bottom: 0;
   margin-left: 3%;
+}
+
+.profile-header-container {
+  grid-template-columns: 3.5fr 1fr;
+}
+
+.profile-user-tier {
+  font-size: 1.5rem;
+  color: white;
+  width: 90%;
+  font-family: 'Press Start 2P';
+  user-select: none;
+  margin-bottom: 0;
+  text-align: center;
 }
 
 .profile-picture-container:hover, .picture-text-pop-up {

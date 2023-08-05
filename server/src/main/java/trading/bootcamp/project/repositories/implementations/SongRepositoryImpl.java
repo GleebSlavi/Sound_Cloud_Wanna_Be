@@ -59,13 +59,13 @@ public class SongRepositoryImpl implements SongRepository {
     private static class Queries {
 
         private final static String SELECT_SONG_QUERY = """
-                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                SELECT id, user_id, name, artist, release_year, duration, upload_date, image_url, cloud_url
                 FROM song
                 WHERE %s
                 """;
 
         public final static String SEARCH_FOR_SONGS = """
-                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                SELECT id, user_id, name, artist, release_year, duration, upload_date, image_url, cloud_url
                 FROM song
                 WHERE id IN (%s)
                 LIMIT 100;
@@ -76,21 +76,21 @@ public class SongRepositoryImpl implements SongRepository {
                 VALUES(?, ?);
                 """;
         public final static String LIST_SONGS_BY_USER = """
-                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                 SELECT id, user_id, name, artist, release_year, duration, upload_date, image_url, cloud_url
                 FROM song
                 WHERE user_id = ?
                 LIMIT 100;
                 """;
 
         public final static String GET_SONG_BY_ID = """
-                SELECT id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url
+                 SELECT id, user_id, name, artist, release_year, duration, upload_date, image_url, cloud_url
                 FROM song
                 WHERE id = ?;
                 """;
 
         public final static String INSERT_SONG = """
-                INSERT INTO song(id, user_id, name, artist, release_year, duration, type, upload_date, image_url, cloud_url)
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO song(id, user_id, name, artist, release_year, duration, upload_date, image_url, cloud_url)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
 
         public final static String DELETE_SONG = """

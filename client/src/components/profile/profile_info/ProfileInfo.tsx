@@ -5,9 +5,14 @@ import axios from "axios";
 import default_picture from "../../../pictures/default_profile_picture.png";
 import { useLocation, useParams } from "react-router-dom";
 
-const ProfileInfo = () => {
+interface Props {
+  setUsernameForPlaylist: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ProfileInfo = ({ setUsernameForPlaylist }: Props) => {
   const [username, setUsername] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [isPremium, setIsPremium] = useState(false);
 
   const { uuid } = useParams();
 
@@ -15,7 +20,7 @@ const ProfileInfo = () => {
 
   const checkPath = () => {
     return location.pathname === "/profile";
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -32,12 +37,16 @@ const ProfileInfo = () => {
         );
 
         setUsername(response.data.username);
+        if (!checkPath()) {
+          setUsernameForPlaylist(response.data.username);
+        }
+        setIsPremium(response.data.isPremium);
         response.data.imageUrl && setImageUrl(response.data.imageUrl);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [setUsername, setImageUrl]);
+  }, [uuid]);
 
   return (
     <div className="container profile-container">
@@ -48,11 +57,13 @@ const ProfileInfo = () => {
         />
       </div>
       <div className="container user-profile-info-container">
-        <h2 className="user-username-header">{username}</h2>
-        {checkPath() 
-          ? <ButtonBar />
-          : <div></div>
-        } 
+        <div className="container profile-header-container">
+          <h2 className="user-username-header">{username}</h2>
+          <h3 className="profile-user-tier">
+            {isPremium ? "Premium" : "Free"}
+          </h3>
+        </div>
+        {checkPath() ? <ButtonBar /> : <div></div>}
       </div>
     </div>
   );

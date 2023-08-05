@@ -7,8 +7,10 @@ import com.stripe.param.PaymentIntentCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import trading.bootcamp.project.api.rest.inputs.PaymentInput;
 import trading.bootcamp.project.repositories.UserRepository;
 import trading.bootcamp.project.repositories.entities.UserEntity;
+import trading.bootcamp.project.services.outputs.PaymentOutput;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,10 +20,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentService {
 
-    private final UserRepository userRepository;
-
-    public PaymentIntent createPaymentIntent() throws StripeException {
-        Stripe.apiKey = "sk_test_51NbNXCDapT1nmrTQymVtEAj6yn7OW9cdmLEiLXHdGTBydG3uZDFMDzL5gkihPFHdqjbLy0NT8s1apK50lyfKIppU00DBeAjALX";
+    public PaymentOutput createPaymentIntent(PaymentInput paymentInput) throws StripeException {
+        Stripe.apiKey = paymentInput.getStripeSecretKey();
 
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
@@ -35,17 +35,6 @@ public class PaymentService {
                         )
                         .build();
 
-        return PaymentIntent.create(params);
-    }
-
-    @Scheduled(fixedRate = 30000)
-    public void checkSubscriptions() {
-        List<UserEntity> premiumUsers = userRepository.getAllPremiumUsers();
-
-        for (UserEntity user : premiumUsers) {
-            if (user.getSubscriptionEndDate() != null && user.getSubscriptionEndDate().isAfter(LocalDate.now())) {
-                userRepository.updateUserPremium(user.getId(), false, null);
-            }
-        }
+        return new PaymentOutput(PaymentIntent.create(params).getClientSecret());
     }
 }

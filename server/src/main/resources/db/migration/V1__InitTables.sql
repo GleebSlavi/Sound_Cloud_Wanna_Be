@@ -17,7 +17,6 @@ CREATE TABLE song(
     artist VARCHAR(255) NOT NULL,
     release_year INTEGER NOT NULL,
     duration DOUBLE NOT NULL,
-    type VARCHAR(255) NOT NULL,
     upload_date DATE NOT NULL,
     image_url VARCHAR(255),
     cloud_url VARCHAR(255) NOT NULL UNIQUE,

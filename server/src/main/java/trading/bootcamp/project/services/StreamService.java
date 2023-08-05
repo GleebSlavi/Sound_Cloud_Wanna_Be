@@ -24,12 +24,12 @@ public class StreamService {
     }
 
     public void removeStream(UUID id) {
-        StreamOutput stream = new StreamOutput(id, "", "");
+        StreamOutput stream = new StreamOutput(id, "");
         streams.remove(stream);
     }
 
     private int getStreamIndex(UUID id) {
-        StreamOutput stream = new StreamOutput(id, "", "");
+        StreamOutput stream = new StreamOutput(id, "");
         return streams.indexOf(stream);
     }
 
@@ -39,7 +39,9 @@ public class StreamService {
                     streamInput.getSongName(),
                     streamInput.getSongArtist(),
                     streamInput.getListeners(),
-                    streamInput.getSongId()));
+                    streamInput.getSongId(),
+                    streamInput.getOwnerImage()));
+        System.out.println("here");
     }
 
     public List<StreamOutput> getStreams() {

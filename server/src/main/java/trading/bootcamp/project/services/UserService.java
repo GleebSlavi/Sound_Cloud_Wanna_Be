@@ -111,6 +111,12 @@ public class UserService {
                 throw new IllegalStateException("Couldn't update the user");
             }}
         }
+
+        if (inputUser.getIsPremium() != null) {
+            if (userRepository.updateUserPremium(id, inputUser.getIsPremium(), LocalDate.now()) != 1) {
+                throw new IllegalStateException("Couldn't update the user");
+            }
+        }
     }
 
     public boolean isFavoritePlaylistOfUser(UUID playlistId, UUID userId) {
@@ -198,5 +204,16 @@ public class UserService {
     @Scheduled(cron = "0 0 * * * 1")
     public void resetLeftSongs() {
         userRepository.resetLeftSongs(LEFT_SONGS);
+    }
+
+    @Scheduled(fixedRate = 30000)
+    public void checkSubscriptions() {
+        List<UserEntity> premiumUsers = userRepository.getAllPremiumUsers();
+
+        for (UserEntity user : premiumUsers) {
+            if (user.getSubscriptionEndDate() != null && user.getSubscriptionEndDate().isAfter(LocalDate.now())) {
+                userRepository.updateUserPremium(user.getId(), false, null);
+            }
+        }
     }
 }

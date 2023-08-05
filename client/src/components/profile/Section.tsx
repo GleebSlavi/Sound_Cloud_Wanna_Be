@@ -6,10 +6,12 @@ import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { Playlist } from "../../interfaces/Playlist";
 
+
 const ProfileSection = () => {
   const [items, setItems] = useState<Playlist[]>([]);
   const [offset, setOffset] = useState(0);
   const [hasMoreItems, setHasMoreItems] = useState(true);
+  const [username, setUsername] = useState("");
 
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -66,10 +68,10 @@ const ProfileSection = () => {
 
   return (
     <section ref={sectionRef} onScroll={handleScroll} className="section profile-section">
-      <ProfileInfo />
+      <ProfileInfo setUsernameForPlaylist={setUsername}/>
       <div className="container playlists-header-container">
         <h3 className="playlists-header">
-          {checkPath() ? "Your Playlists" : `${items[0]?.creator}'s Playlists`}
+          {checkPath() ? "Your playlists" : `${username}'s playlists`}
         </h3>
       </div>
       <div className="container profile-playlists-container">

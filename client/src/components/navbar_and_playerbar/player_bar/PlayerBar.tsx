@@ -6,6 +6,7 @@ import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { useEffect, useRef } from "react";
 import { useStreamContext } from "../../../providers/StreamProvider";
 import { WebSocketMessage } from "../../../interfaces/WebSocketMessage";
+import cron from 'node-cron';
 
 const PlayerBar = () => {
   const {
@@ -65,8 +66,8 @@ const PlayerBar = () => {
               streamId,
               updatedData.songName,
               updatedData.songArtist,
-              null
-            );
+              null,
+              null);
           }
           sendData(stompClient!, updatedData, streamId);
         }

@@ -46,7 +46,6 @@ const CreatePlaylistSection = () => {
       .then((response) => {
         setIsVisible(true);
         setMessage(`Successfully created playlist ${response.data.name}`);
-        navigate("/profile");
       })
       .catch((error) => {
         if (axios.isAxiosError(error) && error.response) {

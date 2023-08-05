@@ -15,6 +15,8 @@ import MessageWindow from "../../../message_window/MessageWindow";
 import { v4 as uuidv4 } from "uuid";
 import { User } from "../../../../interfaces/User";
 import axios from "axios";
+import cron from 'node-cron';
+import PremiumWindow from "../../../profile/profile_info/button_bar/add_song/premium_window/PremiumWindow";
 
 const SongController = () => {
   const { startStream, inStream, isStreamOwner, leaveStream, stompClient } =
@@ -22,6 +24,7 @@ const SongController = () => {
 
   const [streamIsActive, setStreamIsActive] = useState(false);
   const [isMessageWindowVissible, setIsMessageWindowVisible] = useState(false);
+  const [isPremiumWindowVisible, setIsPremiumWindowVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [user, setUser] = useState<User>({
     id: "",
@@ -41,27 +44,6 @@ const SongController = () => {
     isShuffled,
     setIsShuffled,
   } = usePlayerContext();
-
-  // const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-  //   event.preventDefault();
-  //   event.returnValue = "onbeforeunload";
-  //   leaveStream(stompClient, false);
-  // };
-
-  // const beforeunloadRef = useRef<HTMLDivElement>(null);
-
-  // useEffect(() => {
-  //   if (streamIsActive) {
-  //     window.addEventListener("beforeunload", handleBeforeUnload);
-  //   }
-
-  //   return () => {
-  //     if (streamIsActive) {
-  //       leaveStream(stompClient, false, inStream ? true : false);
-  //       window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     }
-  //   };
-  // }, []);
 
   useEffect(() => {
     setStreamIsActive(isStreamOwner || inStream);
@@ -86,6 +68,19 @@ const SongController = () => {
       }
     })();
   }, []);
+
+  // useEffect(() => {
+  //   const cronJob = cron.schedule('*/5 * * * *', () => {
+  //     setMessage("Subscribe for Premium and get unlimited uploads and no ads.")
+  //     setIsPremiumWindowVisible(true);
+  //   });
+
+  //   cronJob.start();
+
+  //   return () => {
+  //     cronJob.stop();
+  //   };
+  // }, []);
 
   const handlePreviousSong = () => {
     if (!inStream) {
@@ -135,7 +130,7 @@ const SongController = () => {
   };
 
   return (
-    <div /*ref={beforeunloadRef}*/ className="container song-controller-container">
+    <div className="container song-controller-container">
       <div className="container shuffle-songs-container">
         <button
           className={`song-controller-button shuffle-button 
@@ -183,6 +178,7 @@ const SongController = () => {
         message={message}
         profileButtonPage={false}
       />
+      <PremiumWindow setIsVisible={setIsPremiumWindowVisible} isVisible={isPremiumWindowVisible} message={message} />
     </div>
   );
 };

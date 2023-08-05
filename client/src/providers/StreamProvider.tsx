@@ -202,7 +202,8 @@ const StreamProvider = ({ children }: Props) => {
     streamId: string,
     songName: string | null,
     songArtist: string | null,
-    listeners: number | null
+    listeners: number | null,
+    ownerImage: string | null
   ) => {
     try {
       const data = {
@@ -212,6 +213,7 @@ const StreamProvider = ({ children }: Props) => {
         songName: songName,
         songArtist: songArtist,
         listeners: listeners,
+        ownerImage: ownerImage
       };
       await axios.patch(
         `${process.env.REACT_APP_STREAMS_ENDPOINT}/${streamId}`,
@@ -230,6 +232,7 @@ const StreamProvider = ({ children }: Props) => {
                 songName: songName ? songName : stream.songName,
                 songArtist: songArtist ? songArtist : stream.songArtist,
                 listeners: listeners ? listeners : stream.listeners,
+                ownerImageUrl: ownerImage ? ownerImage : stream.ownerImageUrl
               }
             : stream
         )
@@ -258,9 +261,8 @@ const StreamProvider = ({ children }: Props) => {
       streamId,
       null,
       null,
-      (streams.find((stream) => stream.streamId === streamId)?.listeners ?? 0) +
-        1
-    );
+      (streams.find((stream) => stream.streamId === streamId)?.listeners ?? 0) + 1,
+      null);
   };
 
   const sendData = async (
@@ -300,8 +302,8 @@ const StreamProvider = ({ children }: Props) => {
             null,
             null,
             streams.find((stream) => stream.streamId === streamId)?.listeners! -
-              1
-          );
+              1,
+            null);
         }
         client.disconnect(() => {
           client.unsubscribe(`${process.env.REACT_APP_WEBSOCKET_ENDPOINTS}/topic/stream/${streamId}`);
@@ -313,8 +315,8 @@ const StreamProvider = ({ children }: Props) => {
             null,
             null,
             streams.find((stream) => stream.streamId === streamId)?.listeners! -
-              1
-          );
+              1,
+            null);
         }
       }
     }

@@ -11,15 +11,21 @@ const SubscriptionSection = () => {
   useEffect(() => {
     (async () => {
       try {
+      const data = {
+        stripeSecretKey: process.env.REACT_APP_STRIPE_SECRET_API_KEY!
+      }
+
       const response = await axios.post(
         `${process.env.REACT_APP_PAYMENTS_ENDPOINT}`,
+        data,
         {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json",
         }
       });
-      setClientSecret(response.data);
+
+      setClientSecret(response.data.clientSecret);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +55,7 @@ const options: StripeElementsOptions = {
   return (
     <section className="section subscription-section">
       {clientSecret && 
-        <Elements options={options} stripe={loadStripe(process.env.REACT_APP_STRIPE_API_KEY!)}>
+        <Elements options={options} stripe={loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_API_KEY!)}>
           <SubscriptionForm clientSecret={clientSecret}/>
         </Elements>
       } 

@@ -24,18 +24,22 @@ public class StreamInput {
 
     private final Integer listeners;
 
+    private final String ownerImage;
+
     @JsonCreator
     public StreamInput(@JsonProperty("streamId") String streamId,
                        @JsonProperty("songId") String songId,
                        @JsonProperty("ownerId") String ownerId,
                        @JsonProperty("songName") String songName,
                        @JsonProperty("songArtist") String songArtist,
-                       @JsonProperty("listeners") Integer listeners) {
+                       @JsonProperty("listeners") Integer listeners,
+                       @JsonProperty("ownerImage") String ownerImage) {
         this.streamId = UUID.fromString(streamId);
         this.songId = UUID.fromString(songId);
         this.ownerId = UUID.fromString(ownerId);
         this.songName = songName;
         this.songArtist = songArtist;
         this.listeners = listeners;
+        this.ownerImage = ownerImage;
     }
 }

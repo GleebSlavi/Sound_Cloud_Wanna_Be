@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./edit_profile.css";
 import Field from "./field/Field";
 import axios from "axios";
@@ -7,6 +7,8 @@ import ImageUpload from "../../../../image_upload/ImageUpload";
 import default_profile_picture from "../../../../../pictures/default_profile_picture.png";
 import { uploadFileToS3 } from "../../../../../s3/s3";
 import MessageWindow from "../../../../message_window/MessageWindow";
+import { useStreamContext } from "../../../../../providers/StreamProvider";
+import { Stream } from "../../../../../interfaces/Stream";
 
 const EditProfileSection = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -19,6 +21,27 @@ const EditProfileSection = () => {
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
+
+  const { isStreamOwner, setStreams, streamId, updateStream } = useStreamContext();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_USERS_ENDPOINT}/${localStorage.getItem("id")}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        setImageUrl(response.data.imageUrl);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const handleErros = (error: unknown) => {
     if (axios.isAxiosError(error) && error.response) {
@@ -68,9 +91,14 @@ const EditProfileSection = () => {
         }
       );
 
+      if (isStreamOwner) {
+        updateStream(
+          streamId, null, null, null, imageUrl
+        );
+      }
+
       setIsVisible(true);
       setMessage("Successfully updated you profile.");
-      navigate("/profile");
     } catch (error) {
       handleErros(error);
     }
