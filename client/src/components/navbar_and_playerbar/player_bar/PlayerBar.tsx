@@ -32,7 +32,23 @@ const PlayerBar = () => {
     setStreamData,
     streamId,
     updateStream,
+    leaveStream,
+    setStreams
   } = useStreamContext();
+
+  const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
+    if (isStreamOwner) {
+      event.preventDefault();
+      leaveStream(stompClient, true, false);
+      return (event.returnValue = "");
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => 
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
 
   useEffect(() => {
     if (currentPlaylistIndex === -1 && audioRef.current) {
