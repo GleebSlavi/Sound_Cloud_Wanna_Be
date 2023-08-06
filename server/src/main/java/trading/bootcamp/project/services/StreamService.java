@@ -41,7 +41,6 @@ public class StreamService {
                     streamInput.getListeners(),
                     streamInput.getSongId(),
                     streamInput.getOwnerImage()));
-        System.out.println("here");
     }
 
     public List<StreamOutput> getStreams() {

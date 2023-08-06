@@ -1,0 +1,1251 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [{
+    "url": "http://10.16.6.17:8080",
+    "description": "Generated server url"
+  }],
+  "paths": {
+    "/api/users/{userId}/favorite/{playlistId}": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "isFavoritePlaylistOfUser",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["user-controller"],
+        "operationId": "addToFavorites",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user-controller"],
+        "operationId": "removeFromFavorites",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/streams": {
+      "get": {
+        "tags": ["stream-controller"],
+        "operationId": "getStreams",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StreamOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["stream-controller"],
+        "operationId": "newStream",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StreamInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/songs": {
+      "post": {
+        "tags": ["song-controller"],
+        "operationId": "addSong",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SongInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SongOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists": {
+      "post": {
+        "tags": ["playlist-controller"],
+        "operationId": "createPlaylist",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaylistInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaylistOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/{playlistId}/add/{songId}": {
+      "post": {
+        "tags": ["playlist-controller"],
+        "operationId": "addSongToPlaylist",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "songId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/payments": {
+      "post": {
+        "tags": ["payment-controller"],
+        "operationId": "subscription",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": ["authentication-controller"],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/authenticate": {
+      "post": {
+        "tags": ["authentication-controller"],
+        "operationId": "authenticate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getById",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["user-controller"],
+        "operationId": "updateUser",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/streams/{id}": {
+      "delete": {
+        "tags": ["stream-controller"],
+        "operationId": "removeStream",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["stream-controller"],
+        "operationId": "updateStream",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StreamInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/playlists/{id}": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "getById_2",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaylistOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["playlist-controller"],
+        "operationId": "deletePlaylist",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaylistOutput"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["playlist-controller"],
+        "operationId": "changePlaylistType",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaylistInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}/playlists": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getUserFavouritePlaylists",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "offset",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }, {
+          "name": "limit",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaylistOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/search/{search}": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "searchForUsers",
+        "parameters": [{
+          "name": "search",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/songs/user/{userId}": {
+      "get": {
+        "tags": ["song-controller"],
+        "operationId": "getAllSongsByUser",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SongEntity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/songs/search/{search}": {
+      "get": {
+        "tags": ["song-controller"],
+        "operationId": "searchForSongs",
+        "parameters": [{
+          "name": "search",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SongOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/songs/id/{id}": {
+      "get": {
+        "tags": ["song-controller"],
+        "operationId": "getById_1",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SongEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/{userId}/song-not-in/{songId}": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "allPlaylistsNotContainingSong",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "songId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaylistOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/{playlistId}/songs": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "getSongsInPlaylistIDs",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "offset",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }, {
+          "name": "limit",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SongOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/users/{user-id}/{playlist-name}": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "getPlaylistByNameAndUserId",
+        "parameters": [{
+          "name": "user-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "playlist-name",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/playlists/user/{userId}": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "getAllPlaylistsByUser",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "offset",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }, {
+          "name": "limit",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaylistOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/search/{search}": {
+      "get": {
+        "tags": ["playlist-controller"],
+        "operationId": "searchForPlaylists",
+        "parameters": [{
+          "name": "search",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaylistOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/songs/{id}": {
+      "delete": {
+        "tags": ["song-controller"],
+        "operationId": "deleteSong",
+        "parameters": [{
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SongOutput"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playlists/{playlistId}/remove/{songId}": {
+      "delete": {
+        "tags": ["playlist-controller"],
+        "operationId": "removeSongFromPlaylist",
+        "parameters": [{
+          "name": "playlistId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }, {
+          "name": "songId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StreamInput": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "songId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "songName": {
+            "type": "string"
+          },
+          "songArtist": {
+            "type": "string"
+          },
+          "listeners": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ownerImage": {
+            "type": "string"
+          }
+        }
+      },
+      "SongInput": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "artist": {
+            "type": "string"
+          },
+          "releaseYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "cloudUrl": {
+            "type": "string"
+          },
+          "userid": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "SongOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "artist": {
+            "type": "string"
+          },
+          "releaseYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "uploadDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "cloudUrl": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "PlaylistInput": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["PRIVATE", "PUBLIC"]
+          },
+          "imageUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "PlaylistOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isAllSongs": {
+            "type": "boolean"
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["PRIVATE", "PUBLIC"]
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentInput": {
+        "type": "object",
+        "properties": {
+          "stripeSecretKey": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentOutput": {
+        "type": "object",
+        "properties": {
+          "clientSecret": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "isPremium": {
+            "type": "boolean"
+          },
+          "leftSongs": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UserOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "isPremium": {
+            "type": "boolean"
+          },
+          "leftSongs": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["USER", "ADMIN"]
+          }
+        }
+      },
+      "StreamOutput": {
+        "type": "object",
+        "properties": {
+          "streamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "songId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ownerUsername": {
+            "type": "string"
+          },
+          "ownerImageUrl": {
+            "type": "string"
+          },
+          "songName": {
+            "type": "string"
+          },
+          "songArtist": {
+            "type": "string"
+          },
+          "listeners": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SongEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "artist": {
+            "type": "string"
+          },
+          "releaseYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double"
+          },
+          "uploadDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "cloudUrl": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

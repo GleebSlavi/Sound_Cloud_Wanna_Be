@@ -70,7 +70,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}/favorite/{playlistId}")
     public void removeFromFavorites(@PathVariable("playlistId") UUID playlistId,
-                                       @PathVariable("userId") UUID userId) {
+                                    @PathVariable("userId") UUID userId) {
         service.removeFromFavorites(playlistId, userId);
     }
 }

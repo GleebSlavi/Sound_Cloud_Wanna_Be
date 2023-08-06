@@ -44,7 +44,7 @@ export const deleteFileFromS3 = async (key: string, bucket: string | undefined) 
     })
 
     await s3.send(command);
-  } catch (error) {
-    alert("Couldn't delete the file! Please try again!");
+  } catch (error) { 
+    console.log(error);
   }
 }
