@@ -49,17 +49,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public UserOutput deleteUser(@PathVariable("id") UUID id) throws NoSuchUserException {
-        return service.deleteUser(id);
-    }
-
     @GetMapping("/{userId}/playlists")
     public List<PlaylistOutput> getUserFavouritePlaylists(@PathVariable("userId") UUID userId,
                                                           @RequestParam("offset") Integer offset,
                                                           @RequestParam("limit") Integer limit) {
-        System.out.println(offset);
-        System.out.println(limit);
         return service.getUserFavouritePlaylists(userId, offset, limit);
     }
 

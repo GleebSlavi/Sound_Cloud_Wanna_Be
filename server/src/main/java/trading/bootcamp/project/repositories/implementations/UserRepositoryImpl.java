@@ -61,11 +61,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int deleteUser(UUID id) {
-        return jdbcTemplate.update(Queries.DELETE_USER, id.toString());
-    }
-
-    @Override
     public int updateUserPassword(UUID id, String password) {
         return jdbcTemplate.update(String.format(Queries.UPDATE_USER, "password"), password, id.toString());
     }

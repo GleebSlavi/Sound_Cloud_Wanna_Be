@@ -176,23 +176,6 @@ public class UserService {
         return user;
     }
 
-    public UserOutput deleteUser(UUID id) throws NoSuchUserException {
-        Optional<UserEntity> user = userRepository.getUserById(id);
-        if (user.isEmpty()) {
-            throw new NoSuchUserException(String.format("User with id %s not found", id.toString()));
-        }
-
-        if (userRepository.deleteUser(id) != 1) {
-            throw new IllegalStateException("Couldn't delete the user!");
-        }
-
-        if (!searchRepository.deleteUserIndex(id).equals(id.toString())) {
-            throw new IllegalStateException("Couldn't delete the index!");
-        }
-
-        return ToOutputMappers.toUserOutput(user.get());
-    }
-
 
     public List<PlaylistOutput> getUserFavouritePlaylists(UUID userId, Integer offset, Integer limit) {
         return userRepository.getUserFavouritePlaylists(userId, offset, limit)

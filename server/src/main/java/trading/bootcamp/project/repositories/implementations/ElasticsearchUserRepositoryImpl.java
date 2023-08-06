@@ -51,8 +51,4 @@ public class ElasticsearchUserRepositoryImpl implements ElasticsearchUserReposit
                 .toList();
     }
 
-    @Override
-    public String deleteUserIndex(UUID id) {
-        return elasticsearchOperations.delete(id.toString(), IndexCoordinates.of(USER_INDEX));
-    }
 }

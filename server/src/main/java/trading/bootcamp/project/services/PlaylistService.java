@@ -104,6 +104,11 @@ public class PlaylistService {
         if (playlistRepository.deletePlaylist(id) != 1) {
             throw new IllegalStateException("Couldn't delete the playlist");
         }
+
+        if (searchRepository.deletePlaylistIndex(id).equals(id.toString())) {
+            throw new IllegalStateException("Couldn't delete the index!");
+        }
+
         return ToOutputMappers.toPlaylistOutput(userRepository, playlist.get());
     }
 

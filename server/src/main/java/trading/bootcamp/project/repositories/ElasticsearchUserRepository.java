@@ -12,5 +12,4 @@ public interface ElasticsearchUserRepository{
 
     List<String> searchForUser(String search);
 
-    String deleteUserIndex(UUID id);
 }

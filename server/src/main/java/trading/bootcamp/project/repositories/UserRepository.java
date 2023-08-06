@@ -22,8 +22,6 @@ public interface UserRepository {
 
     int createUser(UUID id, String username, String email, String password, LocalDate createDate, String imageUrl, Boolean isPremium, Integer leftSongs, LocalDate subEndDate);
 
-    int deleteUser(UUID id);
-
     int updateUserPassword(UUID id, String password);
 
     int updateUserImageUrl(UUID id, String imageUrl);
