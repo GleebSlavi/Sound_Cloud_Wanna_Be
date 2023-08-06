@@ -32,6 +32,7 @@ const StreamContext = createContext<StreamContextData>({
   streams: [],
   setStreams: () => {},
   updateStream: () => {},
+  streamCheck: 0
 });
 
 export const useStreamContext = () => {
@@ -58,6 +59,7 @@ const StreamProvider = ({ children }: Props) => {
   const [inStream, setInStream] = useState(false);
   const [streamId, setStreamId] = useState("");
   const [streams, setStreams] = useState<Stream[]>([]);
+  const [streamCheck, setStreamCheck] = useState(0);
 
   const {
     setCurrentPlaylist,
@@ -67,11 +69,18 @@ const StreamProvider = ({ children }: Props) => {
     setPlayingPlaylistId,
     currentSongId,
     setCurrentPlaylistIndex,
+    isPlaying
   } = usePlayerContext();
 
   const dataRef = useRef<WebSocketMessage>();
   dataRef.current = streamData;
 
+  const isPlayingRef = useRef<boolean>();
+  isPlayingRef.current = isPlaying;
+
+  const streamCheckRef = useRef<number>();
+  streamCheckRef.current = streamCheck;
+  
   const createClient = (isOwner: boolean, streamId: string) => {
     const socket: WebSocket = new SockJS("http://10.16.6.17:8080/ws");
     const client: Stomp.Client = Stomp.over(socket);
@@ -91,7 +100,6 @@ const StreamProvider = ({ children }: Props) => {
         client.subscribe(`${websocketsEndpoint}/topic/stream/${streamId}`, (message) => {
           if (message.body) {
             const receivedData: WebSocketMessage = JSON.parse(message.body);
-            setStreamData(receivedData);
             handleReceivedMessage(receivedData);
           }
         });
@@ -119,7 +127,7 @@ const StreamProvider = ({ children }: Props) => {
   };
 
   const handleReceivedMessage = (message: WebSocketMessage) => {
-    if (streamData.songId !== message.songId) {
+    if (dataRef.current!.songId !== message.songId) {
       const song: Song = {
         id: message.songId,
         name: message.songName,
@@ -132,8 +140,6 @@ const StreamProvider = ({ children }: Props) => {
       setCurrentPlaylist({ id: id, songs: [song] });
       setPlayingPlaylistId(id);
       setCurrentSongId(message.songId);
-
-      console.log(message.currentTime!)
       setSong(
         0,
         true,
@@ -142,10 +148,10 @@ const StreamProvider = ({ children }: Props) => {
           ? message.currentTime + ((Date.now() - message.delay!) / 100)
           : -1
       );
-      setIsPlaying(message.isPlaying);
-    } else if (streamData.isPlaying !== message.isPlaying) {
-      setIsPlaying(message.isPlaying);
     }
+    setStreamCheck(streamCheckRef.current! + 1);
+    setIsPlaying(message.isPlaying);
+    setStreamData(message);
   };
 
   const addStreamToServer = async (
@@ -273,9 +279,7 @@ const StreamProvider = ({ children }: Props) => {
   ) => {
     if (client && data) {
       const jsonData = JSON.stringify(data);
-      console.log(data.currentTime);
       await client.send(`${websocketsEndpoint}/send-data/${streamId}`, {}, jsonData);
-      console.log(data.currentTime);
     }
   };
 
@@ -293,7 +297,6 @@ const StreamProvider = ({ children }: Props) => {
           client.unsubscribe(`${websocketsEndpoint}/topic/user-join-notification/${streamId}`);
         });
       } else if (inStream) {
-        console.log("here");
         setInStream(false);
         setHasJoined(false);
         setCurrentPlaylistIndex(-1);
@@ -341,6 +344,8 @@ const StreamProvider = ({ children }: Props) => {
         streams,
         setStreams,
         updateStream,
+        isPlayingRef,
+        streamCheck
       }}
     >
       {children}

@@ -30,4 +30,6 @@ export interface StreamContextData {
     listeners: number | null,
     ownerImage: string | null
   ) => void;
+  isPlayingRef?: React.MutableRefObject<boolean | undefined>;
+  streamCheck: number;
 }

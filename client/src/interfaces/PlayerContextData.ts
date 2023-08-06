@@ -7,7 +7,7 @@ type Playlist = {
 
 export interface PlayerContextData {
   isPlaying: boolean;
-  setIsPlaying: (value: boolean) => void;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
   currentTime: number;
   setCurrentTime: (value: number) => void;
   currentPlaylist: Playlist;

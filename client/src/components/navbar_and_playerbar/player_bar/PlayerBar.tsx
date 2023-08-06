@@ -6,7 +6,7 @@ import { usePlayerContext } from "../../../providers/PlayerProvider";
 import { useEffect, useRef } from "react";
 import { useStreamContext } from "../../../providers/StreamProvider";
 import { WebSocketMessage } from "../../../interfaces/WebSocketMessage";
-import cron from 'node-cron';
+import cron from "node-cron";
 
 const PlayerBar = () => {
   const {
@@ -33,7 +33,9 @@ const PlayerBar = () => {
     streamId,
     updateStream,
     leaveStream,
-    setStreams
+    inStream,
+    isPlayingRef,
+    streamCheck
   } = useStreamContext();
 
   const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
@@ -42,56 +44,58 @@ const PlayerBar = () => {
       leaveStream(stompClient, true, false);
       return (event.returnValue = "");
     }
-  }
+  };
 
   useEffect(() => {
     window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => 
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
   useEffect(() => {
-    if (currentPlaylistIndex === -1 && audioRef.current) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      const currentSong = currentPlaylist.songs[currentPlaylistIndex];
-      if (currentSong && audioRef.current) {
-        const dataToSend: WebSocketMessage = {
-          songId: currentSong.id,
-          songUrl: currentSong.cloudUrl,
-          songName: currentSong.name,
-          songArtist: currentSong.artist,
-          songImageUrl: currentSong.imageUrl,
-          isPlaying: isPlaying,
-          currentTime: currentTime,
-        };
-        setStreamData(dataToSend);
-
-        audioRef.current.src = currentSong.cloudUrl;
-        audioRef.current.currentTime = currentTime;
-
-        if (isStreamOwner) {
-          const updatedData: WebSocketMessage = {
-            ...dataToSend,
+    if (audioRef.current) {
+      if (currentPlaylistIndex === -1) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        const currentSong = currentPlaylist.songs[currentPlaylistIndex];
+        if (currentSong) {
+          const dataToSend: WebSocketMessage = {
+            songId: currentSong.id,
+            songUrl: currentSong.cloudUrl,
+            songName: currentSong.name,
+            songArtist: currentSong.artist,
+            songImageUrl: currentSong.imageUrl,
             isPlaying: isPlaying,
+            currentTime: currentTime,
           };
-          setStreamData(updatedData);
-          if (currentSong.id !== currentSongId) {
-            updateStream(
-              streamId,
-              updatedData.songName,
-              updatedData.songArtist,
-              null,
-              null);
-          }
-          sendData(stompClient!, updatedData, streamId);
-        }
+          setStreamData(dataToSend);
 
-        if (!isPlaying) {
-          audioRef.current.pause();
-        } else {
-          audioRef.current.play();
+          audioRef.current.src = currentSong.cloudUrl;
+          audioRef.current.currentTime = currentTime;
+
+          if (isStreamOwner) {
+            const updatedData: WebSocketMessage = {
+              ...dataToSend,
+              isPlaying: isPlaying,
+            };
+            setStreamData(updatedData);
+            if (currentSong.id !== currentSongId) {
+              updateStream(
+                streamId,
+                updatedData.songName,
+                updatedData.songArtist,
+                null,
+                null
+              );
+            }
+            sendData(stompClient!, updatedData, streamId);
+          }
+
+          if (!isPlaying || (streamCheck > 2 && !isPlayingRef?.current)) {
+            audioRef.current.pause();
+          } else {
+            audioRef.current.play();
+          }
         }
       }
     }
@@ -103,7 +107,7 @@ const PlayerBar = () => {
       setStreamData((prevStreamData) => ({
         ...prevStreamData,
         currentTime: audioRef.current!.currentTime,
-        delay: Date.now()
+        delay: Date.now(),
       }));
     }
   };
