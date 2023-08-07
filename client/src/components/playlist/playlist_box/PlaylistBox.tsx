@@ -26,6 +26,7 @@ const PlaylistBox = ({ id, name, creator, imageUrl, songId }: Props) => {
     try {
       await axios.post(
         `${playlistsEndpoint}/${id}/add/${songId}`,
+        null,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -83,11 +83,12 @@ const AddSongSection = () => {
   const handleAddSong = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
-    if (!user.isPremium && user.leftSongs === 0) {
+    if (!user.isPremium && user.leftSongs <= 0) {
       setPremiumWindowVisible(true);
       setMessage(
         "You've run out of uploads. Become premium user and upload unlimited or wait till Monday."
       );
+      return;
     }
 
     if (file) {

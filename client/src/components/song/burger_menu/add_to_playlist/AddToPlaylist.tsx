@@ -28,7 +28,7 @@ const AddToPlaylistSection = () => {
         console.log(error);
       }
     })();
-  })
+  }, []);
 
   return (
     <div className="section add-to-playlist-section">

@@ -34,6 +34,7 @@ const BurgerMenuPlaylist = ({
       if (!isFavorite) {
         await axios.post(
           `${usersEndpoint}/${localStorage.getItem("id")}/favorite/${uuid}`,
+          null,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
