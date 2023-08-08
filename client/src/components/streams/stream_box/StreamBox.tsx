@@ -24,7 +24,7 @@ const StreamBox = ({
   setIsVisible
 }: Props) => {
 
-  const { isStreamOwner, joinStream, inStream, leaveStream, stompClient } = useStreamContext();
+  const { isStreamOwner, joinStream, inStream, leaveStream, stompClient, streamId } = useStreamContext();
 
   const handleJoinStream = () => {
     if (isStreamOwner) {
@@ -32,6 +32,11 @@ const StreamBox = ({
       setMessage("You can't join a stream while streaming!");
     } else {
       if (inStream) {
+        if (streamId === id) {
+          setMessage("You are already in this stream!");
+          setIsVisible(true);
+          return;
+        }
         leaveStream(stompClient, false, true);
       }
       joinStream(id);

@@ -50,6 +50,7 @@ const StreamsSection = () => {
           />
         ))}
       </div>
+      <MessageWindow setIsVisible={setIsVisible} message={message} isVisible={isVisible} profileButtonPage={false} />
     </section>
   );
 };
