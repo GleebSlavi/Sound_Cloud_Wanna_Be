@@ -213,13 +213,18 @@ const StreamProvider = ({ children }: Props) => {
     ownerImage: string | null
   ) => {
     try {
+      let streamListeners = listeners;
+      if (listeners && listeners < 0) {
+        streamListeners = 0;
+      }
+      
       const data = {
         streamId: streamId,
         songId: currentSongId ? currentSongId : uuidv4(),
         ownerId: localStorage.getItem("id"),
         songName: songName,
         songArtist: songArtist,
-        listeners: listeners,
+        listeners: streamListeners,
         ownerImage: ownerImage
       };
       await axios.patch(
