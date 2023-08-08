@@ -145,7 +145,7 @@ const StreamProvider = ({ children }: Props) => {
         true,
         true,
         message.currentTime !== 0
-          ? message.currentTime + ((Date.now() - message.delay!) / 1000)
+          ? message.currentTime + ((Date.now() - message.delay!) / 1000) + 0.5
           : -1
       );
     }
