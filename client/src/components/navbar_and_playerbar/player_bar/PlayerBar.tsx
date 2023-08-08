@@ -79,7 +79,7 @@ const PlayerBar = () => {
               isPlaying: isPlaying,
             };
             setStreamData(updatedData);
-            console.log(updatedData);
+
             if (currentSong.id !== currentSongId) {
               updateStream(
                 streamId,

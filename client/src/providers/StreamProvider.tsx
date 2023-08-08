@@ -217,7 +217,7 @@ const StreamProvider = ({ children }: Props) => {
       if (listeners && listeners < 0) {
         streamListeners = 0;
       }
-      
+
       const data = {
         streamId: streamId,
         songId: currentSongId ? currentSongId : uuidv4(),
@@ -305,6 +305,16 @@ const StreamProvider = ({ children }: Props) => {
         setInStream(false);
         setHasJoined(false);
         setCurrentPlaylistIndex(-1);
+        setCurrentSongId("");
+        setStreamData({
+          songId: "",
+          isPlaying: false,
+          songUrl: "",
+          currentTime: 0,
+          songName: "",
+          songArtist: "",
+          songImageUrl: null,
+        });
         if (!ownerEnded) {
           updateStream(
             streamId,
